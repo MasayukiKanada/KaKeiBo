@@ -4,24 +4,17 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
-import { computed } from 'vue';
 
 const props = defineProps({
     mustVerifyEmail: Boolean,
     status: String,
 });
 
-const page = usePage();
-const user = computed(() => {
-    if (page.props && page.props.auth && page.props.auth.user) {
-        return page.props.auth.user;
-    }
-    return null;
-});
+const user = usePage().props.auth.user;
 
 const form = useForm({
-    name: user.value ? user.value.name : '',
-    email: user.value ? user.value.email : '',
+    name: user.name,
+    email: user.email,
 });
 </script>
 
@@ -67,7 +60,7 @@ const form = useForm({
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
-            <div v-if="props.mustVerifyEmail && user.value?.email_verified_at === null">
+            <div v-if="props.mustVerifyEmail && user.email_verified_at === null">
                 <p class="text-sm mt-2 text-gray-800">
                     Your email address is unverified.
                     <Link
