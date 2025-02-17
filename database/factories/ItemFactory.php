@@ -17,7 +17,15 @@ class ItemFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'primary_category_id' => $this->faker->numberBetween(0, 10),
+            'date' => $this->faker->date,
+            'partner_id' => $this->faker->numberBetween(0, 10),
+            'secondary_category_id' => $this->faker->numberBetween(0, 10),
+            'thirdry_category_id' => $this->faker->numberBetween(0, 10),
+            'subject_id' => $this->faker->numberBetween(0, 10),
+            'price' => $this->faker->numberBetween(300, 10000),
+            'memo' => $this->faker->realText(20),
+            'sort_order' => $this->faker->numberBetween(0, 10),
         ];
     }
 }
