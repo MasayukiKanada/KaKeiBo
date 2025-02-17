@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('partners', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('item_id')->onUpdate('cascade');
             $table->integer('sort_order')->nullable();
             $table->timestamps();
         });
