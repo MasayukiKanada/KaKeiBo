@@ -24,6 +24,7 @@ return new class extends Migration
             $table->integer('price');
             $table->text('memo')->nullable();
             $table->integer('sort_order')->nullable();
+            $table->foreignId('user_id')->onUpdate('cascade');
             $table->timestamps();
         });
     }

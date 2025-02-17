@@ -12,4 +12,8 @@ class PrimaryCategory extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function item() {
+        return $this->hasMany(Item::class);
+    }
 }

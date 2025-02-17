@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Item;
 
 class Partner extends Model
 {
@@ -12,4 +13,8 @@ class Partner extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function item() {
+        return $this->hasMany(Item::class);
+    }
 }

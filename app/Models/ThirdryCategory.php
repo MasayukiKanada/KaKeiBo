@@ -13,4 +13,8 @@ class ThirdryCategory extends Model
         'name',
         'secondary_category_id',
     ];
+
+    public function item() {
+        return $this->hasMany(Item::class);
+    }
 }
