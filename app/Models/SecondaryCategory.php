@@ -11,6 +11,6 @@ class SecondaryCategory extends Model
 
     protected $fillable = [
         'name',
-        'item_id',
+        'primary_category_id',
     ];
 }

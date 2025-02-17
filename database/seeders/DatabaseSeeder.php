@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\PrimaryCategory;
+use App\Models\ThirdryCategory;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -19,6 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PrimaryCategorySeeder::class,
             SecondaryCategorySeeder::class,
+            ThirdryCategorySeeder::class,
         ]);
 
         // \App\Models\User::factory(10)->create();

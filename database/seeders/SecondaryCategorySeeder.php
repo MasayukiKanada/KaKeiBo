@@ -69,7 +69,7 @@ class SecondaryCategorySeeder extends Seeder
                 'primary_category_id' => 2,
             ],
             [
-                'name' => '水道・ガス・光熱費',
+                'name' => '水道・光熱費',
                 'primary_category_id' => 2,
             ],
             [
