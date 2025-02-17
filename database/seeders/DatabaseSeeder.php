@@ -23,13 +23,15 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call([
+            SubjectSeeder::class,
             PrimaryCategorySeeder::class,
             SecondaryCategorySeeder::class,
             ThirdryCategorySeeder::class,
         ]);
 
         // \App\Models\User::factory(10)->create();
-        \App\Models\Item::factory(10)->create();\App\Models\Partner::factory(10)->create();
-        \App\Models\Subject::factory(10)->create();
+        \App\Models\Item::factory(10)->create();
+        \App\Models\Partner::factory(10)->create();
+        // \App\Models\Subject::factory(10)->create();
     }
 }

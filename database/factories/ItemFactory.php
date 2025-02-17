@@ -26,7 +26,7 @@ class ItemFactory extends Factory
             'price' => $this->faker->numberBetween(300, 10000),
             'memo' => $this->faker->realText(20),
             'sort_order' => $this->faker->numberBetween(0, 10),
-            'user' => 1,
+            'user_id' => 1,
         ];
     }
 }
