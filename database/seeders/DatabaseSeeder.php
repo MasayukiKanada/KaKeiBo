@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             PrimaryCategorySeeder::class,
+            SecondaryCategorySeeder::class,
         ]);
 
         // \App\Models\User::factory(10)->create();
