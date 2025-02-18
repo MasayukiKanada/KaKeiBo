@@ -1,7 +1,8 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
-import { reactive } from 'vue';
+import { onMounted, reactive } from 'vue';
+import { getToday } from '@/common';
 
 const props = defineProps({
     partners: Array,
@@ -9,6 +10,10 @@ const props = defineProps({
     primary_categories: Array,
     secondary_categories: Array,
 });
+
+onMounted(() => {
+    form.date = getToday();
+})
 
 const form = reactive({
     primary_category: null,
