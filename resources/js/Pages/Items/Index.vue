@@ -2,9 +2,10 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import { onMounted } from 'vue';
+import Pagination from '@/Components/Pagination.vue'
 
 const props = defineProps({
-    items: Array,
+    items: Object,
     partner: Array,
     subject: Array,
     primary_category: Array,
@@ -46,7 +47,7 @@ onMounted(() => {
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr v-for="item in items" :key="item.id">
+                                    <tr v-for="item in items.data" :key="item.id">
                                         <td class="px-4 py-3">{{ item.date }}</td>
                                         <td class="px-4 py-3">{{ item.primary_category.name }}</td>
                                         <td class="px-4 py-3">{{ item.partner.name }}</td>
@@ -60,7 +61,8 @@ onMounted(() => {
                                 </table>
                                 </div>
                             </div>
-                            </section>
+                            <Pagination :links="items.links"></Pagination>
+                        </section>
 
                     </div>
                 </div>
