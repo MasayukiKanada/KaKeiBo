@@ -24,8 +24,7 @@ class ItemController extends Controller
     public function index()
     {
         $items = Item::with('partner', 'primary_category', 'secondary_category' ,'subject')
-        ->orderBy('date', 'desc')->paginate(5);
-
+        ->orderBy('date', 'desc')->paginate(20);
         return Inertia::render('Items/Index',[
             'items' => $items,
         ]);
