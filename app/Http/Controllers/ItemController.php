@@ -5,6 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
+use Inertia\Inertia;
+// use App\Models\Partner;
+// use App\Models\Subject;
+// use App\Models\PrimaryCategory;
+// use App\Models\ThirdryCategory;
+// use App\Models\User;
+// use Illuminate\Support\Facades\DB;
 
 class ItemController extends Controller
 {
@@ -15,7 +22,12 @@ class ItemController extends Controller
      */
     public function index()
     {
-        //
+        $items = Item::with('partner', 'primary_category', 'secondary_category' ,'subject')
+        ->orderBy('date', 'desc')->get();
+
+        return Inertia::render('Items/Index',[
+            'items' => $items,
+        ]);
     }
 
     /**

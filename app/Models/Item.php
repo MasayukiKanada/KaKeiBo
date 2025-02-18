@@ -26,27 +26,27 @@ class Item extends Model
         'user_id',
     ];
 
-    public function users() {
+    public function user() {
         return $this->belongsTo(User::class);
     }
 
-    public function partners() {
+    public function partner() {
         return $this->belongsTo(Partner::class);
     }
 
-    public function subjects() {
+    public function subject() {
         return $this->belongsTo(Subject::class);
     }
 
-    public function primary_categories() {
+    public function primary_category() {
         return $this->belongsTo(PrimaryCategory::class);
     }
 
-    public function secondary_categories() {
+    public function secondary_category() {
         return $this->belongsTo(SecondaryCategory::class);
     }
 
-    public function thirdry_categories() {
+    public function thirdry_category() {
         return $this->belongsTo(ThirdryCategory::class);
     }
 }

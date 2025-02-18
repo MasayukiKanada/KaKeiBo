@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use App\Models\PrimaryCategory;
 use App\Models\ThirdryCategory;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,6 +21,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory()->create([
             'name' => 'user',
             'email' => 'test@test.com',
+            'password' => Hash::make('password123'),
         ]);
 
         $this->call([
