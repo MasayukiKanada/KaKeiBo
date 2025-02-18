@@ -52,7 +52,8 @@ onMounted(() => {
                                         <td class="px-4 py-3">{{ item.partner.name }}</td>
                                         <td class="px-4 py-3">{{ item.secondary_category.name }}</td>
                                         <td class="px-4 py-3">{{ item.subject.name }}</td>
-                                        <td class="px-4 py-3 text-lg text-gray-900">￥{{ item.price.toLocaleString() }}</td>
+                                        <td v-if="item.primary_category.name === '収入'" class="px-4 py-3 text-lg text-blue-500">￥{{ item.price.toLocaleString() }}</td>
+                                        <td v-if="item.primary_category.name === '支出'" class="px-4 py-3 text-lg text-red-500">￥{{ item.price.toLocaleString() }}</td>
                                         <td class="px-4 py-3"><button class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">詳細</button></td>
                                     </tr>
                                     </tbody>
