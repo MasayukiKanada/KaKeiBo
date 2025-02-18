@@ -6,9 +6,10 @@ use App\Models\Item;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
 use Inertia\Inertia;
-// use App\Models\Partner;
-// use App\Models\Subject;
-// use App\Models\PrimaryCategory;
+use App\Models\Partner;
+use App\Models\Subject;
+use App\Models\PrimaryCategory;
+use App\Models\SecondaryCategory;
 // use App\Models\ThirdryCategory;
 // use App\Models\User;
 // use Illuminate\Support\Facades\DB;
@@ -37,7 +38,17 @@ class ItemController extends Controller
      */
     public function create()
     {
-        //
+        $partners = Partner::select('id', 'name')->get();
+        $primary_categories = PrimaryCategory::select('id', 'name')->get();
+        $secondary_categories = SecondaryCategory::select('id', 'name')->get();
+        $subjects = Subject::select('id', 'name')->get();
+
+        return Inertia::render('Items/Create', [
+            'partners' => $partners,
+            'primary_categories' => $primary_categories,
+            'secondary_categories' => $secondary_categories,
+            'subjects' => $subjects,
+        ]);
     }
 
     /**
