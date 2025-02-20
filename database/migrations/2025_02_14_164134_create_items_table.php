@@ -19,7 +19,7 @@ return new class extends Migration
             $table->date('date');
             $table->foreignId('partner_id')->onUpdate('cascade');
             $table->foreignId('secondary_category_id')->onUpdate('cascade');
-            $table->foreignId('thirdry_category_id')->onUpdate('cascade');
+            $table->foreignId('thirdry_category_id')->onUpdate('cascade')->nullable();
             $table->foreignId('subject_id')->onUpdate('cascade');
             $table->integer('price');
             $table->text('memo')->nullable();

@@ -10,7 +10,8 @@ use App\Models\Partner;
 use App\Models\Subject;
 use App\Models\PrimaryCategory;
 use App\Models\SecondaryCategory;
-// use App\Models\ThirdryCategory;
+use App\Models\ThirdryCategory;
+use Illuminate\Support\Facades\Auth;
 // use App\Models\User;
 // use Illuminate\Support\Facades\DB;
 
@@ -39,14 +40,18 @@ class ItemController extends Controller
     {
         $partners = Partner::select('id', 'name')->get();
         $primary_categories = PrimaryCategory::select('id', 'name')->get();
-        $secondary_categories = SecondaryCategory::select('id', 'name')->get();
+        $secondary_categories = SecondaryCategory::with('thirdry_category')->get();
+        $thirdry_categories = ThirdryCategory::select('id', 'name')->get();
         $subjects = Subject::select('id', 'name')->get();
+        $user_id = Auth::id();
 
         return Inertia::render('Items/Create', [
             'partners' => $partners,
             'primary_categories' => $primary_categories,
             'secondary_categories' => $secondary_categories,
+            'thirdry_categories' => $thirdry_categories,
             'subjects' => $subjects,
+            'user_id' => $user_id,
         ]);
     }
 
@@ -58,7 +63,20 @@ class ItemController extends Controller
      */
     public function store(StoreItemRequest $request)
     {
-        //
+
+        Item::create([
+            'primary_category_id' => $request->primary_category_id,
+            'date' => $request->date,
+            'partner_id' => $request->partner_id,
+            'secondary_category_id' => $request->secondary_category_id,
+            'thirdry_category_id' => $request->thirdry_category_id,
+            'subject_id' => $request->subject_id,
+            'price' => $request->price,
+            'memo' => $request->memo,
+            'user_id' => $request->user_id,
+        ]);
+
+        return to_route('items.index');
     }
 
     /**

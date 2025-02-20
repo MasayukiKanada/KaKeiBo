@@ -70,11 +70,11 @@ class ThirdryCategorySeeder extends Seeder
             ],
             [
                 'name' => '宿泊費',
-                'secondary_category_id' => 21,
+                'secondary_category_id' => 18,
             ],
             [
                 'name' => 'お土産代',
-                'secondary_category_id' => 21,
+                'secondary_category_id' => 18,
             ],
         ]);
     }
