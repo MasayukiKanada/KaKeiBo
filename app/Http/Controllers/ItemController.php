@@ -76,7 +76,11 @@ class ItemController extends Controller
             'user_id' => $request->user_id,
         ]);
 
-        return to_route('items.index');
+        return to_route('items.index')
+        ->with([
+            'message' => '作成しました。',
+            'status' => 'success',
+        ]);
     }
 
     /**

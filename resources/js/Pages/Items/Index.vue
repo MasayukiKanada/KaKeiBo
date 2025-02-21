@@ -2,7 +2,8 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import { onMounted } from 'vue';
-import Pagination from '@/Components/Pagination.vue'
+import Pagination from '@/Components/Pagination.vue';
+import FlashMessage from '@/Components/FlashMessage.vue';
 
 const props = defineProps({
     items: Object,
@@ -10,10 +11,6 @@ const props = defineProps({
     subject: Array,
     primary_category: Array,
     secondary_category: Array,
-});
-
-onMounted(() => {
-    console.log(props.items);
 });
 
 </script>
@@ -33,7 +30,8 @@ onMounted(() => {
 
                         <section class="text-gray-600 body-font">
                             <div class="container px-5 py-10 mx-auto">
-                                <div class="lg:w-2/3 w-full mx-auto overflow-auto">
+                                <FlashMessage />
+                                <div class="mt-8 w-full mx-auto overflow-auto">
                                 <table class="table-auto w-full text-left whitespace-no-wrap">
                                     <thead>
                                     <tr>
@@ -52,7 +50,7 @@ onMounted(() => {
                                         <td class="px-4 py-3">{{ item.primary_category.name }}</td>
                                         <td class="px-4 py-3">{{ item.partner.name }}</td>
                                         <td class="px-4 py-3">{{ item.secondary_category.name }}</td>
-                                        <td class="px-4 py-3">{{ item.subject.name }}</td>
+                                        <td class="px-4 py-3"><span v-if="item.subject">{{ item.subject.name }}</span><span v-else>なし</span></td>
                                         <td v-if="item.primary_category.name === '収入'" class="px-4 py-3 text-lg text-blue-500">￥{{ item.price.toLocaleString() }}</td>
                                         <td v-if="item.primary_category.name === '支出'" class="px-4 py-3 text-lg text-red-500">￥{{ item.price.toLocaleString() }}</td>
                                         <td class="px-4 py-3"><button class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">詳細</button></td>

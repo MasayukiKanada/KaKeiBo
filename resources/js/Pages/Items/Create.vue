@@ -4,6 +4,7 @@ import { Head } from '@inertiajs/vue3';
 import { onMounted, reactive } from 'vue';
 import { getToday } from '@/common';
 import { Inertia } from '@inertiajs/inertia';
+import ValidationErrors from '@/Components/ValidationErrors.vue';
 
 const props = defineProps({
     partners: Array,
@@ -12,6 +13,7 @@ const props = defineProps({
     secondary_categories: Array,
     thirdry_categories: Array,
     user_id: Number,
+    errors: Object
 });
 
 onMounted(() => {
@@ -50,6 +52,7 @@ const storeItem = () => {
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
 
+                        <ValidationErrors :errors="errors" />
                         <section class="text-gray-600 body-font relative">
                             <div class="container px-5 py-24 mx-auto">
 

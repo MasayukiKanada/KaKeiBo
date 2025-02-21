@@ -24,7 +24,12 @@ class StoreItemRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'primary_category_id' => ['required'],
+            'date' => ['required'],
+            'partner_id' => ['required'],
+            'secondary_category_id' => ['required'],
+            'price' => ['required', 'numeric'],
+            'user_id' => ['required'],
         ];
     }
 }

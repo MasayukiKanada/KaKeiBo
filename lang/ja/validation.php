@@ -154,18 +154,22 @@ return [
     */
 
     'attributes' => [
-        'title' => '件名',
-        'content' => '本文',
+        'primary_category' => '収支',
+        'primary_category_id' => '収支',
+        'date' => '日付',
         'name' => '名',
-        'memo' => 'メモ',
-        'price' => '料金',
-        'kana' => 'カナ',
-        'tel' => '電話番号',
+        'memo' => '備考',
+        'price' => '金額',
+        'partner' => '相手先',
+        'partner_id' => '相手先',
+        'secondary_category' => '主品目',
+        'secondary_category_id' => '主品目',
+        'thirdry_category' => '細目',
+        'thirdry_category_id' => '細目',
+        'subject' => '対象者',
+        'subject_id' => '対象者',
         'email' => 'メールアドレス',
-        'postcode' => '郵便番号',
-        'address' => '住所',
-        'birthday' => '誕生日',
-        'gender' => '性別'
+
     ],
 
 ];
