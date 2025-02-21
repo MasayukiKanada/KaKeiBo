@@ -91,7 +91,13 @@ class ItemController extends Controller
      */
     public function show(Item $item)
     {
-        //
+        $itemShow = Item::where('id', $item->id)
+        ->with('primary_category', 'secondary_category', 'thirdry_category', 'partner', 'subject', 'user')
+        ->get();
+
+        return Inertia::render('Items/Show', [
+            'item' => $itemShow,
+        ]);
     }
 
     /**
