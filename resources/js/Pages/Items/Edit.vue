@@ -33,8 +33,8 @@ const form = reactive({
     user_id: props.item[0].user_id,
 })
 
-const storeItem = () => {
- Inertia.post('/items', form)
+const updateItem = id => {
+    Inertia.put(route('items.update', { item: id }), form)
 }
 
 </script>
@@ -56,7 +56,7 @@ const storeItem = () => {
                         <section class="text-gray-600 body-font relative">
                             <div class="container px-5 py-24 mx-auto">
 
-                                <form @submit.prevent="storeItem">
+                                <form @submit.prevent="updateItem(form.id)">
                                 <div class="lg:w-1/2 md:w-2/3 mx-auto">
                                 <div class="flex flex-wrap -m-2">
                                     <div class="p-2 w-full">

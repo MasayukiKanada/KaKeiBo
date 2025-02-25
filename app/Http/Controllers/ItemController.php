@@ -138,7 +138,22 @@ class ItemController extends Controller
      */
     public function update(UpdateItemRequest $request, Item $item)
     {
-        //
+        $item->primary_category_id = $request->primary_category_id;
+        $item->date = $request->date;
+        $item->partner_id = $request->partner_id;
+        $item->secondary_category_id = $request->secondary_category_id;
+        $item->thirdry_category_id = $request->thirdry_category_id;
+        $item->subject_id = $request->subject_id;
+        $item->price = $request->price;
+        $item->memo = $request->memo;
+        $item->user_id = $request->user_id;
+        $item->save();
+
+        return to_route('items.index')
+        ->with([
+            'message' => '更新しました。',
+            'status' => 'success'
+        ]);
     }
 
     /**

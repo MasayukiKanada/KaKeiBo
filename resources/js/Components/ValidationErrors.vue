@@ -1,11 +1,12 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 
 const props = defineProps({
     errors: Object
 })
 
 const hasErrors = computed(() => Object.keys(props.errors).length > 0);
+
 </script>
 
 <template>
