@@ -108,7 +108,25 @@ class ItemController extends Controller
      */
     public function edit(Item $item)
     {
-        //
+        $itemEdit = Item::where('id', $item->id)
+        ->with('primary_category', 'secondary_category', 'thirdry_category', 'partner', 'subject', 'user')
+        ->get();
+        $partners = Partner::select('id', 'name')->get();
+        $primary_categories = PrimaryCategory::select('id', 'name')->get();
+        $secondary_categories = SecondaryCategory::with('thirdry_category')->get();
+        $thirdry_categories = ThirdryCategory::select('id', 'name')->get();
+        $subjects = Subject::select('id', 'name')->get();
+        $user_id = Auth::id();
+
+        return Inertia::render('Items/Edit',[
+            'item' => $itemEdit,
+            'partners' => $partners,
+            'primary_categories' => $primary_categories,
+            'secondary_categories' => $secondary_categories,
+            'thirdry_categories' => $thirdry_categories,
+            'subjects' => $subjects,
+            'user_id' => $user_id,
+        ]);
     }
 
     /**

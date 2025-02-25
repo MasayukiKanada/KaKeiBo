@@ -1,7 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
-import { onMounted, reactive } from 'vue';
+import { Head, Link } from '@inertiajs/vue3';
+// import { onMounted } from 'vue';
 import { nl2br } from '@/common';
 
 const props = defineProps({
@@ -103,7 +103,7 @@ const props = defineProps({
 
 
                                         <div class="p-2 w-full">
-                                        <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">編集する</button>
+                                        <Link as="button" :href="route('items.edit', { item:props.item[0].id })" class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">編集する</Link>
                                         </div>
                                     </div>
                                 </div>
