@@ -35,6 +35,9 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink :href="route('items.index')" :active="route().current('items.index')">
                                     項目一覧
                                 </NavLink>
+                                <NavLink :href="route('chart.table')" :active="route().current('chart.table')">
+                                    収支表
+                                </NavLink>
                             </div>
                         </div>
 
@@ -123,6 +126,9 @@ const showingNavigationDropdown = ref(false);
                         </ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('items.index')" :active="route().current('items.index')">
                             項目一覧
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('chart.table')" :active="route().current('chart.table')">
+                            収支表
                         </ResponsiveNavLink>
                     </div>
 

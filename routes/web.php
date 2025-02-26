@@ -5,6 +5,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\ChartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,8 @@ Route::get('/', function () {
 
 Route::resource('items', ItemController::class)
 ->middleware(['auth', 'verified']);
+
+Route::get('chart', [ChartController::class, 'table'])->name('chart.table');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
