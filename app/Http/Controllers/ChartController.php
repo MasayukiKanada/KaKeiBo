@@ -111,6 +111,7 @@ class ChartController extends Controller
         return Inertia::render('Chart/Table', [
             'total_accounts' => $total_accounts,
             'monthly_total_accounts' => $monthly_total_accounts,
+            'year' => $year,
             // 'monthlyTotalIncomes' => $monthlyTotalIncomes,
             // 'monthlyTotalOutcome' => $monthlyTotalOutcomes,
             // 'yearTotalIncomes' => $yearTotalIncomes,

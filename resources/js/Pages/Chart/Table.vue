@@ -9,16 +9,17 @@ import { Inertia } from '@inertiajs/inertia';
 const props = defineProps({
     total_accounts : Object,
     monthly_total_accounts : Object,
+    year: Number,
 });
-
-// const form = reactive({
-//     year: null,
-//     month: null,
-// })
 
 const target = reactive({
     total_account_year: null,
 })
+
+
+const isNotEmpty = obj => {
+    return Object.keys(obj).length != 0
+}
 
 const showMonthly = (year) => {
     target.total_account_year = year;
@@ -47,10 +48,10 @@ const showMonthly = (year) => {
                         <table class="table-auto w-full text-left whitespace-no-wrap">
                             <thead>
                             <tr>
-                                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl text-center">年／月</th>
+                                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl text-center">年</th>
                                 <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">収入</th>
                                 <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">支出</th>
-                                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">総計</th>
+                                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">合計</th>
                                 <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center"></th>
                             </tr>
                             </thead>
@@ -60,23 +61,33 @@ const showMonthly = (year) => {
                                 <td class="text-right px-4 py-3 text-lg text-blue-500">￥{{ total_account.income }}</td>
                                 <td class="text-right px-4 py-3 text-lg text-red-500">￥{{ total_account.outcome }}</td>
                                 <td v-if="total_account.income - total_account.outcome > 0" class="px-4 py-3 text-right text-lg text-blue-500">￥{{ total_account.income - total_account.outcome }}</td>
-                                <td v-if="total_account.income - total_account.outcome < 0" class="px-4 py-3 text-right text-lg text-red-500">￥{{ total_account.income - total_account.outcome }}</td>
+                                <td v-if="total_account.income - total_account.outcome < 0" class="px-4 py-3 text-right text-lg text-red-500">￥{{ Math.abs(total_account.income - total_account.outcome) }}</td>
                                 <td class="px-4 py-3">
-                                <!-- <form @submit.prevent="showMonthly">
-                                    <input type="hidden" name="year" id="year" v-bind:value="total_account.year" v-on:input="total_account.year = $event.target.value"/> -->
                                     <button @click="showMonthly(total_account.year)" class="text-center text-blue-600 hover:text-blue-400 text-lg">詳細</button>
-                                <!-- </form> -->
                                 </td>
                             </tr>
                             </tbody>
+                        </table>
+                        <table v-if="isNotEmpty(monthly_total_accounts)" class="table-auto w-full text-left whitespace-no-wrap">
+                            <thead>
+                            <tr>
+                                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl text-center">{{ props.year }}年</th>
+                                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl text-center">月</th>
+                                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">収入</th>
+                                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">支出</th>
+                                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">小計</th>
+                                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center"></th>
+                            </tr>
+                            </thead>
                             <tbody>
-                                <tr v-for="monthly_total_account in monthly_total_accounts">
-                                    <td class="px-4 py-3 text-center">{{ monthly_total_account.month }}月</td>
-                                    <td class="text-right px-4 py-3 text-lg text-blue-500">￥{{ monthly_total_account.income }}</td>
-                                    <td class="text-right px-4 py-3 text-lg text-red-500">￥{{ monthly_total_account.outcome }}</td>
-                                    <td v-if="monthly_total_account.income - monthly_total_account.outcome > 0" class="px-4 py-3 text-right text-lg text-blue-500">￥{{ monthly_total_account.income - monthly_total_account.outcome }}</td>
-                                    <td v-if="monthly_total_account.income - monthly_total_account.outcome < 0" class="px-4 py-3 text-right text-lg text-red-500">￥{{ monthly_total_account.income - monthly_total_account.outcome }}</td>
-                                </tr>
+                            <tr v-for="monthly_total_account in monthly_total_accounts">
+                                <td class="px-4 py-3 text-center"></td>
+                                <td class="px-4 py-3 text-center">{{ monthly_total_account.month }}月</td>
+                                <td class="text-right px-4 py-3 text-lg text-blue-500">￥{{ monthly_total_account.income }}</td>
+                                <td class="text-right px-4 py-3 text-lg text-red-500">￥{{ monthly_total_account.outcome }}</td>
+                                <td v-if="monthly_total_account.income - monthly_total_account.outcome > 0" class="px-4 py-3 text-right text-lg text-blue-500">￥{{ monthly_total_account.income - monthly_total_account.outcome }}</td>
+                                <td v-if="monthly_total_account.income - monthly_total_account.outcome < 0" class="px-4 py-3 text-right text-lg text-red-500">￥{{ Math.abs(monthly_total_account.income - monthly_total_account.outcome) }}</td>
+                            </tr>
                             </tbody>
                         </table>
                      </div>
