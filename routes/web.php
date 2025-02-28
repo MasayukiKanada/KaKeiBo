@@ -30,7 +30,8 @@ Route::get('/', function () {
 Route::resource('items', ItemController::class)
 ->middleware(['auth', 'verified']);
 
-Route::get('chart', [ChartController::class, 'table'])->name('chart.table');
+Route::get('table', [ChartController::class, 'table'])->name('chart.table');
+Route::get('daily', [ChartController::class, 'daily'])->name('chart.daily');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

@@ -1,6 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
+
 import { reactive, onMounted } from 'vue'
 import { getToday } from '@/common'
 import Checkbox from '@/Components/Checkbox.vue';
@@ -23,7 +24,7 @@ const isNotEmpty = obj => {
 
 const showMonthly = (year) => {
     target.total_account_year = year;
-    Inertia.get('/chart', target)
+    Inertia.get('/table', target)
 }
 
 </script>
