@@ -46,7 +46,7 @@ const props = defineProps({
                                     </thead>
                                     <tbody>
                                     <tr v-for="item in items.data" :key="item.id">
-                                        <td class="px-4 py-3">{{ item.date }}</td>
+                                        <td class="px-4 py-3 text-center">{{ item.date }}</td>
                                         <td class="px-4 py-3">{{ item.primary_category.name }}</td>
                                         <td class="px-4 py-3">{{ item.partner.name }}</td>
                                         <td class="px-4 py-3">{{ item.secondary_category.name }}</td>

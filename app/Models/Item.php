@@ -26,6 +26,25 @@ class Item extends Model
         'user_id',
     ];
 
+    public function scopeYearMonth($query, $year = null, $month = null)
+    {
+        if(is_null($year) && is_null($month)) {
+            return $query;
+        }
+
+        if(!is_null($year) && is_null($month)) {
+            return $query->whereYear($year);
+        }
+
+        if(is_null($year) && is_null($month)) {
+            return $query->whereMonth($month);
+        }
+
+        if(!is_null($year) && !is_null($month)) {
+            return $query->whereYear($year)->whereMonth($month);
+        }
+    }
+
     public function user() {
         return $this->belongsTo(User::class);
     }
