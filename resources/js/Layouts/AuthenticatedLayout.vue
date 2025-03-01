@@ -32,11 +32,14 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </NavLink>
-                                <NavLink :href="route('items.index')" :active="route().current('items.index')">
-                                    項目一覧
+                                <NavLink :href="route('chart.daily')" :active="route().current('chart.daily')">
+                                    日別
                                 </NavLink>
                                 <NavLink :href="route('chart.table')" :active="route().current('chart.table')">
                                     収支表
+                                </NavLink>
+                                <NavLink :href="route('items.index')" :active="route().current('items.index')">
+                                    項目一覧
                                 </NavLink>
                             </div>
                         </div>
@@ -124,11 +127,14 @@ const showingNavigationDropdown = ref(false);
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                             Dashboard
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('items.index')" :active="route().current('items.index')">
-                            項目一覧
+                        <ResponsiveNavLink :href="route('chart.daily')" :active="route().current('chart.daily')">
+                            日別
                         </ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('chart.table')" :active="route().current('chart.table')">
                             収支表
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('items.index')" :active="route().current('items.index')">
+                            項目一覧
                         </ResponsiveNavLink>
                     </div>
 
