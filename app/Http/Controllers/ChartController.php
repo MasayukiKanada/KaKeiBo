@@ -19,8 +19,10 @@ class ChartController extends Controller
 {
     public function table(Request $request)
     {
+        //１，URLパラメータから詳細表示させる年を取得
         $year = $request->total_budget_year;
 
+        //２，各年の収入と支出の合計を取得
         $total_budgets = Item::query()
         ->select(DB::raw("
         SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS income,
@@ -30,8 +32,7 @@ class ChartController extends Controller
         ->orderBy('year', 'desc')
         ->get();
 
-        // dd($total_budgets);
-
+        //３，１で取得した年に含まれる各月の収入と支出の合計を取得
         $monthly_total_budgets = Item::query()
         ->select(DB::raw("
         SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS income,
@@ -42,8 +43,6 @@ class ChartController extends Controller
         ->orderBy('month', 'desc')
         ->get();
 
-        // dd($monthly_total_budgets, $monthly_totals, $monthly_totals[0]['date']);
-
         return Inertia::render('Chart/Table', [
             'total_budgets' => $total_budgets,
             'monthly_total_budgets' => $monthly_total_budgets,
@@ -51,41 +50,23 @@ class ChartController extends Controller
         ]);
     }
 
-    public function daily(Request $request)
+    public function daily()
     {
-        $date_arry = [
-            'year' => 2025,
-            'month' => 2
-        ];
-
-        $date_newArry = [
-            [
-                'year' => null,
-                'month' => null,
-            ]
-        ];
-
-        $monthly_totals = [
-            [
-                'year' => null,
-                'month' => null,
-                'budget' => null,
-            ]
-        ];
-
+        //１，Itemモデルからフォーマット化した日付を取得
         $date_list = Item::query()
         ->select(DB::raw('DATE_FORMAT(date, "%Y%m") as date'))
         ->groupBy(DB::raw('DATE_FORMAT(date, "%Y%m")'))
         ->orderBy('date', 'desc')
         ->get();
 
-        // dd($date_list[0]->date);
-
+        //２，１の日付を更に['year']['month']に分割して新しい配列に代入
         for($i=0; $i < count($date_list); $i++) {
             $date_newArry[$i]['year'] = substr($date_list[$i]->date, 0, 4);
             $date_newArry[$i]['month'] = substr($date_list[$i]->date, 4);
         }
 
+        //３，２の['year']['month']と、該当する月のItemモデル内収入と支出合計を新しい配列に代入
+        //　配列から各年月に該当する収支を参照できるようにする
         for($i=0; $i < count($date_newArry); $i++) {
             $monthly_totals[$i]['year'] = $date_newArry[$i]['year'];
             $monthly_totals[$i]['month'] = $date_newArry[$i]['month'];
@@ -98,33 +79,34 @@ class ChartController extends Controller
             ->get();
         }
 
-        foreach($monthly_totals[0]['budget'] as $key => $value) {
-            echo $key;
-            echo ':';
-            echo $value;
+        //４，2の['year']['month']と、該当する月のItemモデル内の各列を新しい配列に代入
+        //　配列から３の年月に該当するItemモデルの各列を参照できるようにする
+        for($i=0; $i < count($date_newArry); $i++) {
+            $items_formated[$i]['year'] = $date_newArry[$i]['year'];
+            $items_formated[$i]['month'] = $date_newArry[$i]['month'];
+            $items_formated[$i]['items'] = Item::with('partner', 'primary_category', 'secondary_category' ,'subject')
+            ->select(DB::raw('id'),
+            DB::raw('date'),
+            DB::raw('partner_id'),
+            DB::raw('primary_category_id'),
+            DB::raw('secondary_category_id'),
+            DB::raw('subject_id'),
+            DB::raw('price')
+            )
+            ->where(DB::raw('DATE_FORMAT(date, "%Y%m")'), $date_newArry[$i]['year'].$date_newArry[$i]['month'])
+            ->orderBy('id','desc','date_format', 'desc')
+            ->paginate(20);
         }
 
-        $monthly_total_budgets = Item::query()
-        ->select(DB::raw("
-        SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS income,
-        SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgo"))
-        ->whereMonth('date', $date_arry['month'])
-        ->whereYear('date', $date_arry['year'])
-        ->get();
-
+        //items詳細ページへのリンク用
         $items = Item::with('partner', 'primary_category', 'secondary_category' ,'subject')
-        ->whereMonth('date', $date_arry['month'])
-        ->whereYear('date', $date_arry['year'])
-        ->orderBy('date', 'desc')
+        ->select(DB::raw('id'))
         ->paginate(20);
-
-        // dd($monthly_total_budgets);
 
         return Inertia::render('Chart/Daily', [
             'items' => $items,
-            'monthly_total_budgets' => $monthly_total_budgets,
-            'year' => $date_arry['year'],
-            'month' => $date_arry['month'],
+            'items_formated' => $items_formated,
+            'monthly_totals' => $monthly_totals,
             'date_list' => $date_newArry,
         ]);
     }
