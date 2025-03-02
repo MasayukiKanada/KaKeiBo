@@ -42,11 +42,6 @@ const showMonthly = (year) => {
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-8">
-                    <!-- <form @submit.prevent="">
-                        年： <input type="number" name="year" v-model="form.year">
-                        月: <input type="number" name="month" v-model="form.month">
-                        <button>検索する</button>
-                    </form> -->
                     <div class="mt-8 w-full mx-auto overflow-auto">
                         <div class="table-auto w-full text-left whitespace-no-wrap">
                             <div class="thead">
@@ -67,7 +62,7 @@ const showMonthly = (year) => {
                                     <div v-if="total_budget.income - total_budget.outgo > 0" class="w-1/5 px-4 py-3 text-right text-lg text-blue-500 border-t-2 border-gray-100">￥{{ total_budget.income - total_budget.outgo }}</div>
                                     <div v-if="total_budget.income - total_budget.outgo < 0" class="w-1/5 px-4 py-3 text-right text-lg text-red-500 border-t-2 border-gray-100">￥{{ Math.abs(total_budget.income - total_budget.outgo) }}</div>
                                     <div class="w-1/5 px-4 py-3 border-t-2 border-gray-100">
-                                        <button @click="showMonthly(total_budget.year)" class="text-center text-blue-600 hover:text-blue-400 text-md border-2 border-blue-500 px-2 rounded-md">内訳</button>
+                                        <button @click="showMonthly(total_budget.year)" v-if="total_budget.year != props.year" class="text-center text-blue-600 hover:text-blue-400 text-md border-2 border-blue-500 px-2 rounded-md">内訳</button>
                                     </div>
 
                                     <div v-if="isNotEmpty(monthly_total_budgets)" class="table-auto w-full text-left whitespace-no-wrap">
