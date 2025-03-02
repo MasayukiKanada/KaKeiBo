@@ -84,12 +84,12 @@ const $i = 0;
                                                 <div v-if="item.year + item.month === monthly_total.year + monthly_total.month">
                                                     <div v-for="data in item.items['data']">
                                                         <Link :href="route('items.show', { item:data.id })" class="hover:opacity-70 flex">
-                                                            <div class="w-1/5 px-4 py-3 text-center">{{ data.date }}</div>
-                                                            <div class="w-1/5 px-4 py-3">{{ data.partner.name }}</div>
-                                                            <div class="w-1/5 px-4 py-3">{{ data.secondary_category.name }}</div>
-                                                            <div class="w-1/5 px-4 py-3"><span v-if="data.subject">{{ data.subject.name }}</span><span v-else>なし</span></div>
-                                                            <div v-if="data.primary_category.name === '収入'" class="w-1/5 text-right px-4 py-3 text-lg text-blue-500">￥{{ data.price.toLocaleString() }}</div>
-                                                            <div v-if="data.primary_category.name === '支出'" class="w-1/5 text-right px-4 py-3 text-lg text-red-500">￥{{ data.price.toLocaleString() }}</div>
+                                                            <div class="w-1/5 px-4 py-3 text-center border-t-2 border-gray-100">{{ data.date }}</div>
+                                                            <div class="w-1/5 px-4 py-3 border-t-2 border-gray-100">{{ data.partner.name }}</div>
+                                                            <div class="w-1/5 px-4 py-3 border-t-2 border-gray-100">{{ data.secondary_category.name }}</div>
+                                                            <div class="w-1/5 px-4 py-3 border-t-2 border-gray-100"><span v-if="data.subject">{{ data.subject.name }}</span><span v-else>なし</span></div>
+                                                            <div v-if="data.primary_category.name === '収入'" class="w-1/5 text-right px-4 py-3 text-lg text-blue-500 border-t-2 border-gray-100">￥{{ data.price.toLocaleString() }}</div>
+                                                            <div v-if="data.primary_category.name === '支出'" class="w-1/5 text-right px-4 py-3 text-lg text-red-500 border-t-2 border-gray-100">￥{{ data.price.toLocaleString() }}</div>
                                                         </Link>
                                                     </div>
                                                 </div>

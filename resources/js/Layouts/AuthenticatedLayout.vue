@@ -39,14 +39,14 @@ const showingNavigationDropdown = ref(false);
                                     収支表
                                 </NavLink>
                                 <NavLink :href="route('items.index')" :active="route().current('items.index')">
-                                    項目一覧
+                                    仕訳一覧
                                 </NavLink>
                             </div>
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
                             <div class="ml-3 mr-12">
-                                <Link as="button" :href="route('items.create')" class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">項目作成</Link>
+                                <Link as="button" :href="route('items.create')" class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">仕訳入力</Link>
                             </div>
                             <!-- Settings Dropdown -->
                             <div class="ml-3 relative">
@@ -134,7 +134,7 @@ const showingNavigationDropdown = ref(false);
                             収支表
                         </ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('items.index')" :active="route().current('items.index')">
-                            項目一覧
+                            仕訳一覧
                         </ResponsiveNavLink>
                     </div>
 

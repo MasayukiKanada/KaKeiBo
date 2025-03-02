@@ -1,4 +1,12 @@
 .swiper {
     /* width: 600px; */
     height: 100hv;
-  }
+}
+
+.swiper-button-prev, .swiper-button-next {
+    top: 45px !important;
+}
+
+.swiper-button-prev:after, .swiper-button-next:after {
+    scale: 0.7;
+}

@@ -44,7 +44,7 @@ const storeItem = () => {
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">項目作成</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">仕訳入力</h2>
         </template>
 
         <div class="py-12">
@@ -165,7 +165,7 @@ const storeItem = () => {
 
 
                                         <div class="p-2 w-full">
-                                        <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">作成する</button>
+                                        <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">登録する</button>
                                         </div>
                                     </div>
                                 </div>
