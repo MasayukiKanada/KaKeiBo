@@ -40,7 +40,7 @@ class ItemController extends Controller
     public function create()
     {
         $partners = Partner::select('id', 'name')->get();
-        $primary_categories = PrimaryCategory::select('id', 'name')->get();
+        $primary_categories = PrimaryCategory::with('secondary_category')->select('id', 'name')->get();
         $secondary_categories = SecondaryCategory::with('thirdry_category')->get();
         $thirdry_categories = ThirdryCategory::select('id', 'name')->get();
         $subjects = Subject::select('id', 'name')->get();
@@ -112,7 +112,7 @@ class ItemController extends Controller
         ->with('primary_category', 'secondary_category', 'thirdry_category', 'partner', 'subject', 'user')
         ->get();
         $partners = Partner::select('id', 'name')->get();
-        $primary_categories = PrimaryCategory::select('id', 'name')->get();
+        $primary_categories = PrimaryCategory::with('secondary_category')->select('id', 'name')->get();
         $secondary_categories = SecondaryCategory::with('thirdry_category')->get();
         $thirdry_categories = ThirdryCategory::select('id', 'name')->get();
         $subjects = Subject::select('id', 'name')->get();

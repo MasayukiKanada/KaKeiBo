@@ -76,7 +76,7 @@ const $i = 0;
                                         <div>
                                             <div v-for="item in items_formated" :key="item.id">
                                                 <div v-if="item.year + item.month === monthly_total.year + monthly_total.month">
-                                                    <div v-for="data in item.items['data']">
+                                                    <div v-for="data in item.items">
                                                         <Link :href="route('items.show', { item:data.id })" class="hover:opacity-70 flex">
                                                             <div class="w-1/5 px-4 py-3 text-center border-t-2 border-gray-100">{{ data.date }}</div>
                                                             <div class="w-1/5 px-4 py-3 border-t-2 border-gray-100">{{ data.partner.name }}</div>
@@ -92,7 +92,7 @@ const $i = 0;
                                     </div>
                                     </div>
                                 </div>
-                                <Pagination :links="items_formated[0]['items'].links"></Pagination>
+                                <!-- <Pagination :links="items_formated[0]['items'].links"></Pagination> -->
                             </section>
 
                         </div>

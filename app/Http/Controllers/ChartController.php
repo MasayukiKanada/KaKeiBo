@@ -95,7 +95,7 @@ class ChartController extends Controller
             )
             ->where(DB::raw('DATE_FORMAT(date, "%Y%m")'), $date_newArry[$i]['year'].$date_newArry[$i]['month'])
             ->orderBy('id','desc','date_format', 'desc')
-            ->paginate(5);
+            ->get();
         }
 
         //items詳細ページへのリンク用
