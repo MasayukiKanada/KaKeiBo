@@ -110,7 +110,7 @@ class ChartController extends Controller
         ]);
     }
 
-    public function monthly(){
+    public function category(){
 
         //１，Itemモデルからフォーマット化した日付を取得
         $date_list = Item::query()
@@ -160,7 +160,7 @@ class ChartController extends Controller
             ->get();
         }
 
-        return Inertia::render('Chart/Monthly', [
+        return Inertia::render('Chart/Category', [
             'category_totals' => $category_totals,
             'monthly_totals' => $monthly_totals,
         ]);
