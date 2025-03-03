@@ -20,6 +20,7 @@ class Item extends Model
         'date',
         'partner_id',
         'secondary_category_id',
+        'thirdry_category_id',
         'subject_id',
         'price',
         'memo',

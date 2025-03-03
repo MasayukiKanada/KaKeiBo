@@ -35,6 +35,9 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink :href="route('chart.daily')" :active="route().current('chart.daily')">
                                     日別
                                 </NavLink>
+                                <NavLink :href="route('chart.monthly')" :active="route().current('chart.monthly')">
+                                    月別
+                                </NavLink>
                                 <NavLink :href="route('chart.table')" :active="route().current('chart.table')">
                                     収支表
                                 </NavLink>
@@ -129,6 +132,9 @@ const showingNavigationDropdown = ref(false);
                         </ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('chart.daily')" :active="route().current('chart.daily')">
                             日別
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('chart.monthly')" :active="route().current('chart.monthly')">
+                            月別
                         </ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('chart.table')" :active="route().current('chart.table')">
                             収支表

@@ -95,19 +95,74 @@ class ChartController extends Controller
             )
             ->where(DB::raw('DATE_FORMAT(date, "%Y%m")'), $date_newArry[$i]['year'].$date_newArry[$i]['month'])
             ->orderBy('id','desc','date_format', 'desc')
-            ->paginate(20);
+            ->paginate(5);
         }
 
         //items詳細ページへのリンク用
         $items = Item::with('partner', 'primary_category', 'secondary_category' ,'subject')
         ->select(DB::raw('id'))
-        ->paginate(20);
+        ->get();
 
         return Inertia::render('Chart/Daily', [
             'items' => $items,
             'items_formated' => $items_formated,
             'monthly_totals' => $monthly_totals,
-            'date_list' => $date_newArry,
+        ]);
+    }
+
+    public function monthly(){
+
+        //１，Itemモデルからフォーマット化した日付を取得
+        $date_list = Item::query()
+        ->select(DB::raw('DATE_FORMAT(date, "%Y%m") as date'))
+        ->groupBy(DB::raw('DATE_FORMAT(date, "%Y%m")'))
+        ->orderBy('date', 'desc')
+        ->get();
+
+        //２，１の日付を更に['year']['month']に分割して新しい配列に代入
+        for($i=0; $i < count($date_list); $i++) {
+            $date_newArry[$i]['year'] = substr($date_list[$i]->date, 0, 4);
+            $date_newArry[$i]['month'] = substr($date_list[$i]->date, 4);
+        }
+
+        //３，２の['year']['month']と、該当する月のItemモデル内収入と支出合計を新しい配列に代入
+        //　配列から各年月に該当する収支を参照できるようにする
+        for($i=0; $i < count($date_newArry); $i++) {
+            $monthly_totals[$i]['year'] = $date_newArry[$i]['year'];
+            $monthly_totals[$i]['month'] = $date_newArry[$i]['month'];
+            $monthly_totals[$i]['budget'] = Item::query()
+            ->select(DB::raw("
+            SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS income,
+            SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgo"))
+            ->whereMonth('date',$date_newArry[$i]['month'])
+            ->whereYear('date', $date_newArry[$i]['year'])
+            ->get();
+        }
+
+        //４，2の['year']['month']と、該当する月のItemモデル内大カテゴリの合計を新しい配列に代入
+        //　配列から３の年月に該当するItemモデルの大カテゴリを参照できるようにする
+        for($i=0; $i < count($date_newArry); $i++) {
+            $category_totals[$i]['year'] = $date_newArry[$i]['year'];
+            $category_totals[$i]['month'] = $date_newArry[$i]['month'];
+            $category_totals[$i]['budget'] = Item::with('primary_category', 'secondary_category' ,'thirdry_category')
+            ->select('secondary_category_id')
+            ->selectRaw('SUM(price) as price')
+            ->whereMonth('date',$date_newArry[$i]['month'])
+            ->whereYear('date', $date_newArry[$i]['year'])
+            ->groupBy('secondary_category_id')
+            ->get();
+            $category_totals[$i]['thirdry_category'] = Item::with('secondary_category' ,'thirdry_category')
+            ->select('thirdry_category_id')
+            ->selectRaw('SUM(price) as price')
+            ->whereMonth('date',$date_newArry[$i]['month'])
+            ->whereYear('date', $date_newArry[$i]['year'])
+            ->groupBy('thirdry_category_id')
+            ->get();
+        }
+
+        return Inertia::render('Chart/Monthly', [
+            'category_totals' => $category_totals,
+            'monthly_totals' => $monthly_totals,
         ]);
     }
 }

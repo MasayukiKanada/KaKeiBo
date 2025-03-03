@@ -1,7 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
-
 import { reactive, onMounted } from 'vue'
 import { getToday } from '@/common'
 import Checkbox from '@/Components/Checkbox.vue';

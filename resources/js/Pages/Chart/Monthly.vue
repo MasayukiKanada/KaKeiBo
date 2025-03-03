@@ -1,18 +1,26 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
-import { onMounted } from 'vue';
-import Pagination from '@/Components/Pagination.vue';
+import { reactive,onMounted } from 'vue';
 import FlashMessage from '@/Components/FlashMessage.vue';
-import { forEach } from 'lodash';
+import { Inertia } from '@inertiajs/inertia';
 
 const props = defineProps({
-    items: Object,
-    items_formated: Object,
+    category_totals: Object,
     monthly_totals: Object,
 });
 
+const target = reactive({
+    id: null,
+})
+
 const $i = 0;
+
+
+const showCategory = (id) => {
+    target.id = id;
+    Inertia.get('/monthly', target)
+}
 
 </script>
 
@@ -21,7 +29,7 @@ const $i = 0;
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">日別</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">月別</h2>
         </template>
 
         <div class="py-12">
@@ -66,25 +74,32 @@ const $i = 0;
                                     <div class="table-auto w-full text-left whitespace-no-wrap">
                                         <div>
                                             <div class="flex">
-                                                <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl text-center">日付</div>
-                                                <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">相手方</div>
-                                                <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">主品目</div>
-                                                <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">対象者</div>
-                                                <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">金額</div>
+                                                <div class="w-1/3 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl text-center">大カテゴリ</div>
+                                                <div class="w-1/3 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">小カテゴリ</div>
+                                                <div class="w-1/3 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">金額</div>
                                             </div>
                                         </div>
                                         <div>
-                                            <div v-for="item in items_formated" :key="item.id">
+                                            <div v-for="item in category_totals" :key="item.id">
                                                 <div v-if="item.year + item.month === monthly_total.year + monthly_total.month">
-                                                    <div v-for="data in item.items['data']">
-                                                        <Link :href="route('items.show', { item:data.id })" class="hover:opacity-70 flex">
-                                                            <div class="w-1/5 px-4 py-3 text-center border-t-2 border-gray-100">{{ data.date }}</div>
-                                                            <div class="w-1/5 px-4 py-3 border-t-2 border-gray-100">{{ data.partner.name }}</div>
-                                                            <div class="w-1/5 px-4 py-3 border-t-2 border-gray-100">{{ data.secondary_category.name }}</div>
-                                                            <div class="w-1/5 px-4 py-3 border-t-2 border-gray-100"><span v-if="data.subject">{{ data.subject.name }}</span><span v-else>なし</span></div>
-                                                            <div v-if="data.primary_category.name === '収入'" class="w-1/5 text-right px-4 py-3 text-lg text-blue-500 border-t-2 border-gray-100">￥{{ data.price.toLocaleString() }}</div>
-                                                            <div v-if="data.primary_category.name === '支出'" class="w-1/5 text-right px-4 py-3 text-lg text-red-500 border-t-2 border-gray-100">￥{{ data.price.toLocaleString() }}</div>
-                                                        </Link>
+                                                    <div v-for="data in item.budget" class="flex flex-wrap">
+                                                        <div class="w-1/3 px-4 py-3 border-t-2 border-gray-100">{{ data.secondary_category.name }}</div>
+                                                        <div class="w-1/3 px-4 py-3 border-t-2 border-gray-100"></div>
+                                                        <div v-if="data.secondary_category.primary_category_id === 1" class="w-1/3 text-right px-4 py-3 text-lg text-blue-500 border-t-2 border-gray-100">￥{{ data.price.toLocaleString() }}</div>
+                                                        <div v-if="data.secondary_category.primary_category_id === 2" class="w-1/3 text-right px-4 py-3 text-lg text-red-500 border-t-2 border-gray-100">￥{{ data.price.toLocaleString() }}</div>
+
+                                                        <div class="table-auto w-full text-left whitespace-no-wrap">
+                                                        <div v-for="value in item.thirdry_category">
+                                                            <div v-if="value.thirdry_category">
+                                                                <div v-if="value.thirdry_category['secondary_category_id'] == data.secondary_category.id" class="flex">
+                                                                    <div class="w-1/3 px-4 py-3"></div>
+                                                                    <div class="w-1/3 px-4 py-3 border-t-2 border-gray-100">{{ value.thirdry_category.name }}</div>
+                                                                    <div v-if="data.secondary_category.primary_category_id === 1" class="w-1/3 text-right px-4 py-3 text-lg text-blue-500 border-t-2 border-gray-100">￥{{ value.price }}</div>
+                                                                    <div v-if="data.secondary_category.primary_category_id === 2" class="w-1/3 text-right px-4 py-3 text-lg text-red-500 border-t-2 border-gray-100">￥{{ value.price }}</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -92,7 +107,6 @@ const $i = 0;
                                     </div>
                                     </div>
                                 </div>
-                                <Pagination :links="items_formated[0]['items'].links"></Pagination>
                             </section>
 
                         </div>

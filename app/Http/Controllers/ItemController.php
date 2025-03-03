@@ -64,7 +64,6 @@ class ItemController extends Controller
      */
     public function store(StoreItemRequest $request)
     {
-
         Item::create([
             'primary_category_id' => $request->primary_category_id,
             'date' => $request->date,
