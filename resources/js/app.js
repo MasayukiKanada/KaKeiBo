@@ -2,6 +2,7 @@ import './bootstrap';
 import '../css/app.css';
 import '../css/swiper.css';
 import './swiper';
+import '../css/style.css'
 
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/inertia-vue3';

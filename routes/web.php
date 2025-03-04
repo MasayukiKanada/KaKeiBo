@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ChartController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,9 +31,15 @@ Route::get('/', function () {
 Route::resource('items', ItemController::class)
 ->middleware(['auth', 'verified']);
 
-Route::get('table', [ChartController::class, 'table'])->name('chart.table');
-Route::get('daily', [ChartController::class, 'daily'])->name('chart.daily');
-Route::get('category', [ChartController::class, 'category'])->name('chart.category');
+Route::resource('categories', CategoryController::class)
+->middleware(['auth', 'verified']);
+
+Route::get('table', [ChartController::class, 'table'])
+->middleware(['auth', 'verified'])->name('chart.table');
+Route::get('daily', [ChartController::class, 'daily'])
+->middleware(['auth', 'verified'])->name('chart.daily');
+Route::get('category', [ChartController::class, 'category'])
+->middleware(['auth', 'verified'])->name('chart.category');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

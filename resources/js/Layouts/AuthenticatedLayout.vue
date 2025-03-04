@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
@@ -7,7 +7,15 @@ import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
 
+onMounted(() => {
+    const btn = window.document.querySelector('#cat_btn');
+    if(route().current('categories.index')) {
+        btn.classList.add('active');
+    }
+})
+
 const showingNavigationDropdown = ref(false);
+
 </script>
 
 <template>
@@ -49,7 +57,10 @@ const showingNavigationDropdown = ref(false);
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
                             <div class="ml-3 mr-12">
-                                <Link as="button" :href="route('items.create')" class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">仕訳入力</Link>
+                                <Link as="button" :href="route('items.create')" class="flex ml-auto text-white bg-indigo-400 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-500 rounded">仕訳入力</Link>
+                            </div>
+                            <div class="ml-3 mr-12">
+                                <Link id="cat_btn" as="button" :href="route('categories.index')" class="flex ml-auto text-white bg-gray-400 border-0 py-2 px-6 focus:outline-none hover:bg-gray-500 rounded">カテゴリ管理</Link>
                             </div>
                             <!-- Settings Dropdown -->
                             <div class="ml-3 relative">
@@ -141,6 +152,9 @@ const showingNavigationDropdown = ref(false);
                         </ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('items.index')" :active="route().current('items.index')">
                             仕訳一覧
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('categories.index')" :active="route().current('categories.index')">
+                            カテゴリ管理
                         </ResponsiveNavLink>
                     </div>
 

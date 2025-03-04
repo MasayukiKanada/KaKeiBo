@@ -1,0 +1,6 @@
+
+#cat_btn.active {
+    --tw-bg-opacity: 1;
+    background-color: rgb(107 114 128 / var(--tw-bg-opacity, 1));
+    /* background-color: rgb(249 115 22 / var(--tw-bg-opacity, 1)); */
+}
