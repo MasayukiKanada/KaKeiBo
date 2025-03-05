@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\StorePrimaryCategoryRequest;
+use App\Http\Requests\StoreSecondaryCategoryRequest;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -47,7 +50,18 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        $primary_categories = PrimaryCategory::select('id', 'name')
+        ->with('secondary_category')
+        ->get();
+
+        $secondary_categories = SecondaryCategory::select('id', 'name')
+        ->with('thirdry_category')
+        ->get();
+
+        return Inertia::render('Categories/Create', [
+            'primary_categories' => $primary_categories,
+            'secondary_categories' => $secondary_categories,
+        ]);
     }
 
     /**
@@ -56,9 +70,44 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
-        //
+
+        //大カテゴリを新規作成
+        if($request->secondary_category_name !== null) {
+            SecondaryCategory::create([
+                'name' => $request->secondary_category_name,
+                'primary_category_id' => $request->primary_category_id,
+            ]);
+
+            //小カテゴリも新規作成
+            if ($request->thirdry_category_name !== null) {
+                //作成した大カテゴリを取得
+                $secondary_category = SecondaryCategory::select('id')
+                ->where('name', '=', $request->secondary_category_name)
+                ->get();
+
+                //取得した大カテゴリのidで小カテゴリを作成
+                ThirdryCategory::create([
+                    'name' => $request->thirdry_category_name,
+                    'secondary_category_id' => $secondary_category[0]['id'],
+                ]);
+            }
+        }
+
+        //小カテゴリのみ新規作成
+        if($request->secondary_category_id !== null && $request->thirdry_category_name !== null) {
+            ThirdryCategory::create([
+                'name' => $request->thirdry_category_name,
+                'secondary_category_id' => $request->secondary_category_id,
+            ]);
+        }
+
+        return to_route('categories.index')
+        ->with([
+            'message' => '作成しました。',
+            'status' => 'success',
+        ]);
     }
 
     /**

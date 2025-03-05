@@ -60,15 +60,6 @@ const updateItem = id => {
                                 <div class="lg:w-1/2 md:w-2/3 mx-auto">
                                 <div class="flex flex-wrap -m-2">
 
-                                    <div class="p-2 w-full">
-                                        <div class="relative">
-                                            <label for="primary_category" class="leading-7 text-sm text-gray-600">収支</label>
-                                            <select id="primary_category" name="primary_category" v-model="form.primary_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                                <option v-for="primary_category in primary_categories" :value="primary_category.id" :key="primary_category.id">{{ primary_category.name }}</option>
-                                            </select>
-                                        </div>
-                                        </div>
-
                                         <div class="p-2 w-full">
                                         <div class="relative">
                                             <label for="date" class="leading-7 text-sm text-gray-600">日付</label>
@@ -81,6 +72,15 @@ const updateItem = id => {
                                             <label for="partner" class="leading-7 text-sm text-gray-600">相手先</label>
                                             <select id="partner" name="partner" v-model="form.partner_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                                                 <option v-for="partner in partners" :value="partner.id" :key="partner.id">{{ partner.name }}</option>
+                                            </select>
+                                        </div>
+                                        </div>
+
+                                        <div class="p-2 w-full">
+                                        <div class="relative">
+                                            <label for="primary_category" class="leading-7 text-sm text-gray-600">収支</label>
+                                            <select id="primary_category" name="primary_category" v-model="form.primary_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                                <option v-for="primary_category in primary_categories" :value="primary_category.id" :key="primary_category.id">{{ primary_category.name }}</option>
                                             </select>
                                         </div>
                                         </div>
@@ -165,13 +165,13 @@ const updateItem = id => {
                                         </div>
                                         <div class="p-2 w-full">
                                         <div class="relative">
-                                            <label for="price" class="leading-7 text-sm text-gray-600">支払金額</label>
+                                            <label for="price" class="leading-7 text-sm text-gray-600">金額</label>
                                             <input type="number" id="price" name="price" v-model="form.price" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                                         </div>
                                         </div>
                                         <div class="p-2 w-full">
                                         <div class="relative">
-                                            <label for="memo" class="leading-7 text-sm text-gray-600">備考</label>
+                                            <label for="memo" class="leading-7 text-sm text-gray-600">メモ</label>
                                             <textarea id="memo" name="memo" v-model="form.memo" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"></textarea>
                                         </div>
                                         </div>

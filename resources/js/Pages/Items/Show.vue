@@ -34,14 +34,7 @@ const deleteItem = id => {
 
                                 <div class="lg:w-1/2 md:w-2/3 mx-auto">
                                 <div class="flex flex-wrap -m-2">
-                                    <div class="p-2 w-full">
-                                        <div class="relative">
-                                            <label for="primary_category" class="leading-7 text-sm text-gray-600">収支</label>
-                                            <div id="primary_category" name="primary_category" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                                {{ props.item[0].primary_category.name }}
-                                            </div>
-                                        </div>
-                                        </div>
+
                                         <div class="p-2 w-full">
                                         <div class="relative">
                                             <label for="date" class="leading-7 text-sm text-gray-600">日付</label>
@@ -50,6 +43,7 @@ const deleteItem = id => {
                                             </div>
                                         </div>
                                         </div>
+
                                         <div class="p-2 w-full">
                                         <div class="relative">
                                             <label for="partner" class="leading-7 text-sm text-gray-600">相手先</label>
@@ -58,9 +52,19 @@ const deleteItem = id => {
                                             </div>
                                         </div>
                                         </div>
+
                                         <div class="p-2 w-full">
                                         <div class="relative">
-                                            <label for="secondary_category" class="leading-7 text-sm text-gray-600">主品目</label>
+                                            <label for="primary_category" class="leading-7 text-sm text-gray-600">収支</label>
+                                            <div id="primary_category" name="primary_category" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                                {{ props.item[0].primary_category.name }}
+                                            </div>
+                                        </div>
+                                        </div>
+
+                                        <div class="p-2 w-full">
+                                        <div class="relative">
+                                            <label for="secondary_category" class="leading-7 text-sm text-gray-600">大カテゴリ</label>
                                             <div id="secondary_category" name="secondary_category" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                                                 {{ props.item[0].secondary_category.name }}
                                             </div>
@@ -68,7 +72,7 @@ const deleteItem = id => {
                                         </div>
                                         <div class="p-2 w-full" v-if="props.item[0].thirdry_category">
                                         <div class="relative">
-                                            <label for="thirdry_category" class="leading-7 text-sm text-gray-600">細目</label>
+                                            <label for="thirdry_category" class="leading-7 text-sm text-gray-600">小カテゴリ</label>
                                             <div id="thirdry_category" name="thirdry_category" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                                                 {{ props.item[0].thirdry_category.name }}
                                             </div>
@@ -84,7 +88,7 @@ const deleteItem = id => {
                                         </div>
                                         <div class="p-2 w-full">
                                         <div class="relative">
-                                            <label for="price" class="leading-7 text-sm text-gray-600">支払金額</label>
+                                            <label for="price" class="leading-7 text-sm text-gray-600">金額</label>
                                             <div type="number" id="price" name="price" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                                                 {{ props.item[0].price }}
                                             </div>
@@ -92,7 +96,7 @@ const deleteItem = id => {
                                         </div>
                                         <div class="p-2 w-full" v-if="props.item[0].memo">
                                         <div class="relative">
-                                            <label for="memo" class="leading-7 text-sm text-gray-600">備考</label>
+                                            <label for="memo" class="leading-7 text-sm text-gray-600">メモ</label>
                                             <div v-html="nl2br(props.item[0].memo)" id="memo" name="memo" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out">
                                             </div>
                                         </div>

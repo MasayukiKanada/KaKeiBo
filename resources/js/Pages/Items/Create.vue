@@ -37,6 +37,16 @@ const storeItem = () => {
  Inertia.post('/items', form)
 }
 
+const deleteData = () => {
+    form.primary_category_id = null;
+    form.partner_id = null;
+    form.secondary_category_id = null;
+    form.subject_id = null;
+    form.price = null;
+    form.memo = null;
+    form.thirdry_category_id = null;
+}
+
 </script>
 
 <template>
@@ -59,25 +69,30 @@ const storeItem = () => {
                                 <form @submit.prevent="storeItem">
                                 <div class="lg:w-1/2 md:w-2/3 mx-auto">
                                 <div class="flex flex-wrap -m-2">
-                                    <div class="p-2 w-full">
-                                        <div class="relative">
-                                            <label for="primary_category" class="leading-7 text-sm text-gray-600">収支</label>
-                                            <select id="primary_category" name="primary_category" v-model="form.primary_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                                <option v-for="primary_category in primary_categories" :value="primary_category.id" :key="primary_category.id">{{ primary_category.name }}</option>
-                                            </select>
-                                        </div>
-                                        </div>
+
                                         <div class="p-2 w-full">
                                         <div class="relative">
                                             <label for="date" class="leading-7 text-sm text-gray-600">日付</label>
                                             <input type="date" id="date" name="date" v-model="form.date" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                                         </div>
+
                                         </div>
                                         <div class="p-2 w-full">
                                         <div class="relative">
                                             <label for="partner" class="leading-7 text-sm text-gray-600">相手先</label>
                                             <select id="partner" name="partner" v-model="form.partner_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                                <option :value="null" disabled>選択してください</option>
                                                 <option v-for="partner in partners" :value="partner.id" :key="partner.id">{{ partner.name }}</option>
+                                            </select>
+                                        </div>
+                                        </div>
+
+                                        <div class="p-2 w-full">
+                                        <div class="relative">
+                                            <label for="primary_category" class="leading-7 text-sm text-gray-600">収支</label>
+                                            <select id="primary_category" name="primary_category" v-model="form.primary_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                                <option :value="null" disabled>選択してください</option>
+                                                <option v-for="primary_category in primary_categories" :value="primary_category.id" :key="primary_category.id">{{ primary_category.name }}</option>
                                             </select>
                                         </div>
                                         </div>
@@ -87,6 +102,7 @@ const storeItem = () => {
                                         <div class="relative">
                                             <label for="secondary_category" class="leading-7 text-sm text-gray-600">大カテゴリ</label>
                                             <select id="secondary_category" name="secondary_category" v-model="form.secondary_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                                <option :value="null" disabled>選択してください</option>
                                                 <option v-for="secondary_category in primary_categories[0].secondary_category" :value="secondary_category.id" :key="secondary_category.id">{{ secondary_category.name }}</option>
                                             </select>
                                         </div>
@@ -96,6 +112,7 @@ const storeItem = () => {
                                         <div class="relative">
                                             <label for="secondary_category" class="leading-7 text-sm text-gray-600">大カテゴリ</label>
                                             <select id="secondary_category" name="secondary_category" v-model="form.secondary_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                                <option :value="null" disabled>選択してください</option>
                                                 <option v-for="secondary_category in primary_categories[1].secondary_category" :value="secondary_category.id" :key="secondary_category.id">{{ secondary_category.name }}</option>
                                             </select>
                                         </div>
@@ -106,6 +123,7 @@ const storeItem = () => {
                                         <div class="relative">
                                             <label for="thirdry_category" class="leading-7 text-sm text-gray-600">小カテゴリ</label>
                                             <select id="thirdry_category" name="thirdry_category" v-model="form.thirdry_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                                <option :value="null">選択してください／空白にする</option>
                                                 <option v-for="thirdry_category in secondary_categories[5].thirdry_category" :value="thirdry_category.id" :key="thirdry_category.id">{{ thirdry_category.name }}</option>
                                             </select>
                                         </div>
@@ -114,6 +132,7 @@ const storeItem = () => {
                                         <div class="relative">
                                             <label for="thirdry_category" class="leading-7 text-sm text-gray-600">小カテゴリ</label>
                                             <select id="thirdry_category" name="thirdry_category" v-model="form.thirdry_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                                <option :value="null">選択してください／空白にする</option>
                                                 <option v-for="thirdry_category in secondary_categories[7].thirdry_category" :value="thirdry_category.id" :key="thirdry_category.id">{{ thirdry_category.name }}</option>
                                             </select>
                                         </div>
@@ -122,6 +141,7 @@ const storeItem = () => {
                                         <div class="relative">
                                             <label for="thirdry_category" class="leading-7 text-sm text-gray-600">小カテゴリ</label>
                                             <select id="thirdry_category" name="thirdry_category" v-model="form.thirdry_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                                <option :value="null">選択してください／空白にする</option>
                                                 <option v-for="thirdry_category in secondary_categories[8].thirdry_category" :value="thirdry_category.id" :key="thirdry_category.id">{{ thirdry_category.name }}</option>
                                             </select>
                                         </div>
@@ -130,6 +150,7 @@ const storeItem = () => {
                                         <div class="relative">
                                             <label for="thirdry_category" class="leading-7 text-sm text-gray-600">小カテゴリ</label>
                                             <select id="thirdry_category" name="thirdry_category" v-model="form.thirdry_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                                <option :value="null">選択してください／空白にする</option>
                                                 <option v-for="thirdry_category in secondary_categories[13].thirdry_category" :value="thirdry_category.id" :key="thirdry_category.id">{{ thirdry_category.name }}</option>
                                             </select>
                                         </div>
@@ -138,6 +159,7 @@ const storeItem = () => {
                                         <div class="relative">
                                             <label for="thirdry_category" class="leading-7 text-sm text-gray-600">小カテゴリ</label>
                                             <select id="thirdry_category" name="thirdry_category" v-model="form.thirdry_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                                <option :value="null">選択してください／空白にする</option>
                                                 <option v-for="thirdry_category in secondary_categories[16].thirdry_category" :value="thirdry_category.id" :key="thirdry_category.id">{{ thirdry_category.name }}</option>
                                             </select>
                                         </div>
@@ -146,6 +168,7 @@ const storeItem = () => {
                                         <div class="relative">
                                             <label for="thirdry_category" class="leading-7 text-sm text-gray-600">小カテゴリ</label>
                                             <select id="thirdry_category" name="thirdry_category" v-model="form.thirdry_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                                <option :value="null">選択してください／空白にする</option>
                                                 <option v-for="thirdry_category in secondary_categories[17].thirdry_category" :value="thirdry_category.id" :key="thirdry_category.id">{{ thirdry_category.name }}</option>
                                             </select>
                                         </div>
@@ -155,6 +178,7 @@ const storeItem = () => {
                                         <div class="relative">
                                             <label for="subject" class="leading-7 text-sm text-gray-600">対象者</label>
                                             <select id="subject" name="subject" v-model="form.subject_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                                <option :value="null">選択してください</option>
                                                 <option v-for="subject in subjects" :value="subject.id" :key="subject.id">{{ subject.name }}</option>
                                             </select>
                                         </div>
@@ -162,12 +186,12 @@ const storeItem = () => {
                                         <div class="p-2 w-full">
                                         <div class="relative">
                                             <label for="price" class="leading-7 text-sm text-gray-600">金額</label>
-                                            <input type="number" id="price" name="price" v-model="form.price" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                            <input type="number" placeholder="金額を入力してください" id="price" name="price" v-model="form.price" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                                         </div>
                                         </div>
                                         <div class="p-2 w-full">
                                         <div class="relative">
-                                            <label for="memo" class="leading-7 text-sm text-gray-600">備考</label>
+                                            <label for="memo" class="leading-7 text-sm text-gray-600">メモ</label>
                                             <textarea id="memo" name="memo" v-model="form.memo" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"></textarea>
                                         </div>
                                         </div>
@@ -175,8 +199,9 @@ const storeItem = () => {
                                         <input hidden id="user" name="user" v-model="form.user_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-outt">
 
 
-                                        <div class="p-2 w-full">
-                                        <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">登録する</button>
+                                        <div class="p-2 w-full flex mt-10">
+                                            <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">登録する</button>
+                                            <button @click="deleteData" as="button" class="flex mx-auto text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg">入力の取消</button>
                                         </div>
                                     </div>
                                 </div>
