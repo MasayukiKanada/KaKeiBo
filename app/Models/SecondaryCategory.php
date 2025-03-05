@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Item;
 use App\Models\PrimaryCategory;
 use App\Models\ThirdryCategory;
+use SoftDeletes;
 
 class SecondaryCategory extends Model
 {
@@ -27,5 +28,14 @@ class SecondaryCategory extends Model
 
     public function thirdry_category() {
         return $this->hasMany(ThirdryCategory::class);
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($secondary_category) {
+            $secondary_category->thirdry_category()->delete();
+        });
     }
 }

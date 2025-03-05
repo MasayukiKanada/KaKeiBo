@@ -199,8 +199,15 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(SecondaryCategory $category)
     {
-        //
+
+        $category->delete();
+
+        return to_route('categories.index')
+        ->with([
+            'message' => '削除しました。',
+            'status' => 'danger'
+        ]);
     }
 }

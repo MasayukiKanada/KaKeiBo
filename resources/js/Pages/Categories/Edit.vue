@@ -30,6 +30,13 @@ const isNotEmpty = obj => {
     return Object.keys(obj).length != 0
 }
 
+const deleteCategory = id => {
+    console.log(route('categories.destroy', { category: id }));
+    Inertia.delete(route('categories.destroy', { category: id }), {
+        onBefore: () => confirm('本当に削除しますか？')
+    });
+}
+
 </script>
 
 <template>
@@ -107,6 +114,13 @@ const isNotEmpty = obj => {
                                 </div>
                                 </div>
                                 </form>
+                                <div class="lg:w-1/2 md:w-2/3 mx-auto">
+                                    <div class="flex flex-wrap -m-2">
+                                        <div class="flex mx-auto text-white bg-red-500 border-0 focus:outline-none hover:bg-red-600 rounded text-lg mt-8">
+                                        <button @click="deleteCategory(props.current_secondary_category[0].id)" class="py-2 px-8">削除する</button>
+                                    </div>
+                                    </div>
+                                </div>
 
                             </div>
                         </section>
