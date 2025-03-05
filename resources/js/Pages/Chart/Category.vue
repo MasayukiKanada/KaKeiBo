@@ -16,12 +16,6 @@ const target = reactive({
 
 const $i = 0;
 
-
-const showCategory = (id) => {
-    target.id = id;
-    Inertia.get('/monthly', target)
-}
-
 </script>
 
 <template>

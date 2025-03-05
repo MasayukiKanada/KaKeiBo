@@ -13,7 +13,7 @@ class UpdateCategoryRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,18 @@ class UpdateCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'primary_category_id' => ['required'],
+            'secondary_category_name' => ['required', 'max:50'],
+            'thirdry_category_name' => ['max:50'],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'primary_category_id.required' => '収支区分の選択は必須です。',
+            'secondary_category_name.max' => '大カテゴリ名は50文字以内で入力してください。',
+            'thirdry_category_name.max' => '小カテゴリ名は50文字以内で入力してください。',
         ];
     }
 }

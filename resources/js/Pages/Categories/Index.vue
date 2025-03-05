@@ -53,7 +53,9 @@ const props = defineProps({
                                                     <div class="w-1/4 px-4 py-3 border-gray-100"></div>
                                                     <div class="w-1/4 px-4 py-3 border-t-2 border-gray-100">{{ secondary_category.name }}</div>
                                                     <div class="w-1/4 px-4 py-3 border-t-2 border-gray-100"></div>
-                                                    <div class="w-1/4 px-4 py-3 border-t-2 border-gray-100"></div>
+                                                    <div class="w-1/4 px-4 py-3 border-t-2 border-gray-100">
+                                                        <Link as="button" :href="route('categories.edit', {category:secondary_category.id})" class="text-center text-blue-600 hover:text-blue-400 text-md border-2 border-blue-500 px-2 rounded-md">編集</Link>
+                                                    </div>
                                             </div>
                                             <div v-for="thirdry_category in secondary_categories">
                                                 <div v-if="thirdry_category.id === secondary_category.id">
@@ -80,7 +82,9 @@ const props = defineProps({
                                                     <div class="w-1/4 px-4 py-3 border-gray-100"></div>
                                                     <div class="w-1/4 px-4 py-3 border-t-2 border-gray-100">{{ secondary_category.name }}</div>
                                                     <div class="w-1/4 px-4 py-3 border-t-2 border-gray-100"></div>
-                                                    <div class="w-1/4 px-4 py-3 border-t-2 border-gray-100"></div>
+                                                    <div class="w-1/4 px-4 py-3 border-t-2 border-gray-100">
+                                                        <Link as="button" :href="route('categories.edit',  {category:secondary_category.id})" class="text-center text-blue-600 hover:text-blue-400 text-md border-2 border-blue-500 px-2 rounded-md">編集</Link>
+                                                    </div>
                                             </div>
                                             <div v-for="thirdry_category in secondary_categories">
                                                 <div v-if="thirdry_category.id === secondary_category.id">

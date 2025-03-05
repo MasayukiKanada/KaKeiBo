@@ -3,15 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCategoryRequest;
-use App\Http\Requests\StorePrimaryCategoryRequest;
-use App\Http\Requests\StoreSecondaryCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 use App\Models\PrimaryCategory;
 use App\Models\SecondaryCategory;
 use App\Models\ThirdryCategory;
-use App\Models\Item;
 
 class CategoryController extends Controller
 {
@@ -127,9 +125,30 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($category)
     {
-        //
+        $current_secondary_category = SecondaryCategory::with('primary_category')
+        ->where('id', '=', $category)
+        ->get();
+
+        $current_thirdry_categories = ThirdryCategory::with('secondary_category')
+        ->where('secondary_category_id', '=', $category)
+        ->get();
+
+        $primary_categories = PrimaryCategory::select('id', 'name')
+        ->with('secondary_category')
+        ->get();
+
+        $secondary_categories = SecondaryCategory::select('id', 'name')
+        ->with('thirdry_category')
+        ->get();
+
+        return Inertia::render('Categories/Edit', [
+            'current_secondary_category' => $current_secondary_category,
+            'current_thirdry_categories' => $current_thirdry_categories,
+            'primary_categories' => $primary_categories,
+            'secondary_categories' => $secondary_categories,
+        ]);
     }
 
     /**
@@ -139,9 +158,39 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateCategoryRequest $request, SecondaryCategory $category)
     {
-        //
+
+        //大カテゴリ名の変更
+        $category->name = $request->secondary_category_name;
+        $category->primary_category_id = $request->primary_category_id;
+        $category->save();
+
+        //小カテゴリの更新
+        if($request->thirdry_category_name !== null) {
+
+            if($request->thirdry_category_id !== null ){
+                //小カテゴリ名の変更
+                $thirdry_category = ThirdryCategory::where('id', $request->thirdry_category_id)
+                ->first();
+                $thirdry_category->name = $request->thirdry_category_name;
+                $thirdry_category->secondary_category_id = $request->secondary_category_id;
+                $thirdry_category->save();
+
+            } else {
+                //小カテゴリの新規作成
+                ThirdryCategory::create([
+                    'name' => $request->thirdry_category_name,
+                    'secondary_category_id' => $request->secondary_category_id,
+                ]);
+            }
+        }
+
+        return to_route('categories.index')
+        ->with([
+            'message' => '更新しました。',
+            'status' => 'success'
+        ]);
     }
 
     /**

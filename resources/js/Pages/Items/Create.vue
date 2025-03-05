@@ -47,6 +47,10 @@ const deleteData = () => {
     form.thirdry_category_id = null;
 }
 
+const isNotEmpty = obj => {
+    return Object.keys(obj).length != 0
+}
+
 </script>
 
 <template>
@@ -98,80 +102,31 @@ const deleteData = () => {
                                         </div>
 
                                         <!-- form.primary.categoryの値によって条件分岐 -->
-                                        <div class="p-2 w-full" v-if="form.primary_category_id === 1">
-                                        <div class="relative">
-                                            <label for="secondary_category" class="leading-7 text-sm text-gray-600">大カテゴリ</label>
-                                            <select id="secondary_category" name="secondary_category" v-model="form.secondary_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                                <option :value="null" disabled>選択してください</option>
-                                                <option v-for="secondary_category in primary_categories[0].secondary_category" :value="secondary_category.id" :key="secondary_category.id">{{ secondary_category.name }}</option>
-                                            </select>
-                                        </div>
-                                        </div>
+                                        <div v-for="primary_category in primary_categories">
+                                            <div class="p-2 w-full" v-if="primary_category.id === form.primary_category_id">
+                                                <div class="relative">
+                                                    <label for="secondary_category" class="leading-7 text-sm text-gray-600">大カテゴリ</label>
+                                                    <select id="secondary_category" name="secondary_category" v-model="form.secondary_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                                        <option :value="null">選択してください</option>
+                                                        <option v-for="secondary_category in  primary_category.secondary_category" :value="secondary_category.id" :key="secondary_category.id">{{ secondary_category.name }}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                         </div>
 
-                                        <div class="p-2 w-full" v-if="form.primary_category_id === 2">
-                                        <div class="relative">
-                                            <label for="secondary_category" class="leading-7 text-sm text-gray-600">大カテゴリ</label>
-                                            <select id="secondary_category" name="secondary_category" v-model="form.secondary_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                                <option :value="null" disabled>選択してください</option>
-                                                <option v-for="secondary_category in primary_categories[1].secondary_category" :value="secondary_category.id" :key="secondary_category.id">{{ secondary_category.name }}</option>
-                                            </select>
-                                        </div>
-                                        </div>
-
-                                        <!-- form.secondary.categoryの値によって条件分岐 -->
-                                        <div class="p-2 w-full" v-if="form.secondary_category_id === 6">
-                                        <div class="relative">
-                                            <label for="thirdry_category" class="leading-7 text-sm text-gray-600">小カテゴリ</label>
-                                            <select id="thirdry_category" name="thirdry_category" v-model="form.thirdry_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                                <option :value="null">選択してください／空白にする</option>
-                                                <option v-for="thirdry_category in secondary_categories[5].thirdry_category" :value="thirdry_category.id" :key="thirdry_category.id">{{ thirdry_category.name }}</option>
-                                            </select>
-                                        </div>
-                                        </div>
-                                        <div class="p-2 w-full" v-if="form.secondary_category_id === 8">
-                                        <div class="relative">
-                                            <label for="thirdry_category" class="leading-7 text-sm text-gray-600">小カテゴリ</label>
-                                            <select id="thirdry_category" name="thirdry_category" v-model="form.thirdry_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                                <option :value="null">選択してください／空白にする</option>
-                                                <option v-for="thirdry_category in secondary_categories[7].thirdry_category" :value="thirdry_category.id" :key="thirdry_category.id">{{ thirdry_category.name }}</option>
-                                            </select>
-                                        </div>
-                                        </div>
-                                        <div class="p-2 w-full" v-if="form.secondary_category_id === 9">
-                                        <div class="relative">
-                                            <label for="thirdry_category" class="leading-7 text-sm text-gray-600">小カテゴリ</label>
-                                            <select id="thirdry_category" name="thirdry_category" v-model="form.thirdry_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                                <option :value="null">選択してください／空白にする</option>
-                                                <option v-for="thirdry_category in secondary_categories[8].thirdry_category" :value="thirdry_category.id" :key="thirdry_category.id">{{ thirdry_category.name }}</option>
-                                            </select>
-                                        </div>
-                                        </div>
-                                        <div class="p-2 w-full" v-if="form.secondary_category_id === 14">
-                                        <div class="relative">
-                                            <label for="thirdry_category" class="leading-7 text-sm text-gray-600">小カテゴリ</label>
-                                            <select id="thirdry_category" name="thirdry_category" v-model="form.thirdry_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                                <option :value="null">選択してください／空白にする</option>
-                                                <option v-for="thirdry_category in secondary_categories[13].thirdry_category" :value="thirdry_category.id" :key="thirdry_category.id">{{ thirdry_category.name }}</option>
-                                            </select>
-                                        </div>
-                                        </div>
-                                        <div class="p-2 w-full" v-if="form.secondary_category_id === 17">
-                                        <div class="relative">
-                                            <label for="thirdry_category" class="leading-7 text-sm text-gray-600">小カテゴリ</label>
-                                            <select id="thirdry_category" name="thirdry_category" v-model="form.thirdry_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                                <option :value="null">選択してください／空白にする</option>
-                                                <option v-for="thirdry_category in secondary_categories[16].thirdry_category" :value="thirdry_category.id" :key="thirdry_category.id">{{ thirdry_category.name }}</option>
-                                            </select>
-                                        </div>
-                                        </div>
-                                        <div class="p-2 w-full" v-if="form.secondary_category_id === 18">
-                                        <div class="relative">
-                                            <label for="thirdry_category" class="leading-7 text-sm text-gray-600">小カテゴリ</label>
-                                            <select id="thirdry_category" name="thirdry_category" v-model="form.thirdry_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                                <option :value="null">選択してください／空白にする</option>
-                                                <option v-for="thirdry_category in secondary_categories[17].thirdry_category" :value="thirdry_category.id" :key="thirdry_category.id">{{ thirdry_category.name }}</option>
-                                            </select>
-                                        </div>
+                                         <!-- form.secondary_categoryの値によって条件分岐 -->
+                                         <div v-for="secondary_category in secondary_categories">
+                                            <div v-if="isNotEmpty(secondary_category.thirdry_category)">
+                                                <div class="p-2 w-full" v-if="secondary_category.id === form.secondary_category_id">
+                                                    <div class="relative">
+                                                        <label for="thirdry_category" class="leading-7 text-sm text-gray-600">小カテゴリ</label>
+                                                        <select id="thirdry_category" name="thirdry_category" v-model="form.thirdry_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                                            <option :value="null">選択してください／空白にする</option>
+                                                            <option v-for="thirdry_category in secondary_category.thirdry_category" :value="thirdry_category.id" :key="thirdry_category.id">{{ thirdry_category.name }}</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
 
                                         <div class="p-2 w-full">
@@ -196,7 +151,7 @@ const deleteData = () => {
                                         </div>
                                         </div>
 
-                                        <input hidden id="user" name="user" v-model="form.user_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-outt">
+                                        <input hidden id="user" name="user" v-model="form.user_id">
 
 
                                         <div class="p-2 w-full flex mt-10">
