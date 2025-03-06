@@ -24,6 +24,21 @@ const ChangeMonth = month => {
     return monthObject.getMonth() + 1;
 }
 
+const days = [
+    "日曜日",
+    "月曜日",
+    "火曜日",
+    "水曜日",
+    "木曜日",
+    "金曜日",
+    "土曜日",
+];
+
+const changeDay = day => {
+    let dayObject = new Date(day);
+    return days[dayObject.getDay()];
+}
+
 </script>
 
 <template>
@@ -80,9 +95,7 @@ const ChangeMonth = month => {
                                                     <div v-for="daily_budget in item.daily_budget" class="my-8 py-4 px-8 bg-white">
 
                                                         <div class="flex flex-wrap">
-                                                            <div class="w-1/5 px-4 py-3 text-center text-2xl font-bold border-gray-100">{{ changeDate(daily_budget.date) }}<span class="text-sm">日</span></div>
-                                                            <div class="w-1/5 px-4 py-3 border-gray-100"></div>
-                                                            <div class="w-1/5 px-4 py-3 border-gray-100"></div>
+                                                            <div class="w-3/5 px-4 py-3 text-center text-2xl font-bold border-gray-100 flex items-center">{{ changeDate(daily_budget.date) }}<span class="text-sm block mt-2">日</span><span class="px-2 py-1 bg-gray-300 rounded-md text-white font-normal text-sm ml-6 block">{{ changeDay(daily_budget.date) }}</span></div>
                                                             <div class="w-1/5 text-right px-4 py-3 text-lg text-blue-500 border-gray-100">￥{{ daily_budget.income }}</div>
                                                             <div class="w-1/5 text-right px-4 py-3 text-lg text-red-500 border-gray-100">￥{{ daily_budget.outgo }}</div>
                                                         </div>
