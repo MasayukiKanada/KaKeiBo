@@ -1,27 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
-use Inertia\Inertia;
+namespace App\Services;
 use Illuminate\Support\Facades\DB;
 use App\Models\Item;
-use PHPUnit\Framework\Constraint\Count;
-use SebastianBergmann\CodeCoverage\Report\Xml\Totals;
 
-// use App\Models\Partner;
-// use App\Models\Subject;
-// use App\Models\PrimaryCategory;
-// use App\Models\SecondaryCategory;
-// use App\Models\ThirdryCategory;
-
-class ChartController extends Controller
+class ChartService
 {
-    public function table(Request $request)
+    public static function totalBudgets($year)
     {
-        //１，URLパラメータから詳細表示させる年を取得
-        $year = $request->total_budget_year;
-
         //２，各年の収入と支出の合計を取得
         $total_budgets = Item::query()
         ->select(DB::raw("
@@ -43,22 +29,11 @@ class ChartController extends Controller
         ->orderBy('month', 'desc')
         ->get();
 
-        return Inertia::render('Chart/Table', [
-            'total_budgets' => $total_budgets,
-            'monthly_total_budgets' => $monthly_total_budgets,
-            'year' => $year,
-        ]);
+        return [$total_budgets, $monthly_total_budgets];
     }
 
-    public function daily()
+    public static function dailyBudgets($date_list)
     {
-        //１，Itemモデルからフォーマット化した日付を取得
-        $date_list = Item::query()
-        ->select(DB::raw('DATE_FORMAT(date, "%Y%m") as date'))
-        ->groupBy(DB::raw('DATE_FORMAT(date, "%Y%m")'))
-        ->orderBy('date', 'desc')
-        ->get();
-
         //２，１の日付を更に['year']['month']に分割して新しい配列に代入
         for($i=0; $i < count($date_list); $i++) {
             $date_newArry[$i]['year'] = substr($date_list[$i]->date, 0, 4);
@@ -96,29 +71,22 @@ class ChartController extends Controller
             ->where(DB::raw('DATE_FORMAT(date, "%Y%m")'), $date_newArry[$i]['year'].$date_newArry[$i]['month'])
             ->orderBy('id','desc','date_format', 'desc')
             ->get();
+            $items_formated[$i]['daily_budget'] = Item::query()
+            ->select(DB::raw('date'), DB::raw("
+            SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS income,
+            SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgo"))
+            ->whereMonth('date',$date_newArry[$i]['month'])
+            ->whereYear('date', $date_newArry[$i]['year'])
+            ->groupBy('date')
+            ->orderBy('date', 'desc')
+            ->get();
         }
 
-        //items詳細ページへのリンク用
-        $items = Item::with('partner', 'primary_category', 'secondary_category' ,'subject')
-        ->select(DB::raw('id'))
-        ->get();
-
-        return Inertia::render('Chart/Daily', [
-            'items' => $items,
-            'items_formated' => $items_formated,
-            'monthly_totals' => $monthly_totals,
-        ]);
+        return [$monthly_totals, $items_formated];
     }
 
-    public function category(){
-
-        //１，Itemモデルからフォーマット化した日付を取得
-        $date_list = Item::query()
-        ->select(DB::raw('DATE_FORMAT(date, "%Y%m") as date'))
-        ->groupBy(DB::raw('DATE_FORMAT(date, "%Y%m")'))
-        ->orderBy('date', 'desc')
-        ->get();
-
+    public static function categoryBudgets($date_list)
+    {
         //２，１の日付を更に['year']['month']に分割して新しい配列に代入
         for($i=0; $i < count($date_list); $i++) {
             $date_newArry[$i]['year'] = substr($date_list[$i]->date, 0, 4);
@@ -160,9 +128,6 @@ class ChartController extends Controller
             ->get();
         }
 
-        return Inertia::render('Chart/Category', [
-            'category_totals' => $category_totals,
-            'monthly_totals' => $monthly_totals,
-        ]);
+        return [ $monthly_totals, $category_totals];
     }
 }
