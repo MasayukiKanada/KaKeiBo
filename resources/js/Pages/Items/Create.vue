@@ -58,7 +58,7 @@ const isNotEmpty = obj => {
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">仕訳入力</h2>
+            <h2 class="font-semibold text-lg text-gray-500 leading-none">仕訳入力</h2>
         </template>
 
         <div class="py-12">

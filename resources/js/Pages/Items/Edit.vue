@@ -44,11 +44,11 @@ const isNotEmpty = obj => {
 </script>
 
 <template>
-    <Head title="Dashboard" />
+    <Head title="仕訳編集" />
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">項目編集</h2>
+            <h2 class="font-semibold text-lg text-gray-500 leading-none">仕訳編集</h2>
         </template>
 
         <div class="py-12">

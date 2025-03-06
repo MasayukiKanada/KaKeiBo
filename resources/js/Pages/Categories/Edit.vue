@@ -44,7 +44,7 @@ const deleteCategory = id => {
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">カテゴリ編集</h2>
+            <h2 class="font-semibold text-lg text-gray-500 leading-none">カテゴリ編集</h2>
         </template>
 
         <div class="py-12">
@@ -54,10 +54,10 @@ const deleteCategory = id => {
 
                         <ValidationErrors :errors="errors" />
                         <section class="text-gray-500 body-font relative">
-                            <div class="container px-5 py-24 mx-auto">
+                            <div class="container px-5 py-8 mx-auto">
 
                                 <form @submit.prevent="updateCategory(form.secondary_category_id)">
-                                <div class="lg:w-1/2 md:w-2/3 mx-auto">
+                                <div class="lg:w-2/3 md:w-4/5 mx-auto">
                                 <div class="flex flex-wrap -m-2">
                                     <div class="p-2 w-full">
                                         <div class="relative">

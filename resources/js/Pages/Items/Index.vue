@@ -16,12 +16,9 @@ const props = defineProps({
 </script>
 
 <template>
-    <Head title="Dashboard" />
+    <Head title="仕訳一覧" />
 
     <AuthenticatedLayout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">仕訳一覧</h2>
-        </template>
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">

@@ -17,11 +17,11 @@ const deleteItem = id => {
 </script>
 
 <template>
-    <Head title="Dashboard" />
+    <Head title="仕訳詳細" />
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">項目詳細</h2>
+            <h2 class="font-semibold text-lg text-gray-500 leading-none">仕訳詳細</h2>
         </template>
 
         <div class="py-12">
