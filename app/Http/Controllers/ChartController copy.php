@@ -96,32 +96,7 @@ class ChartController extends Controller
             ->where(DB::raw('DATE_FORMAT(date, "%Y%m")'), $date_newArry[$i]['year'].$date_newArry[$i]['month'])
             ->orderBy('id','desc','date_format', 'desc')
             ->get();
-            $items_formated[$i]['daily_budget'] = Item::query()
-            ->select(DB::raw('date'), DB::raw("
-            SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS income,
-            SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgo"))
-            ->whereMonth('date',$date_newArry[$i]['month'])
-            ->whereYear('date', $date_newArry[$i]['year'])
-            ->groupBy('date')
-            ->orderBy('date', 'desc')
-            ->get();
-
         }
-
-        for($i=0; $i < count($date_newArry); $i++) {
-            $daily_total[$i]['year'] = $date_newArry[$i]['year'];
-            $daily_total[$i]['month'] = $date_newArry[$i]['month'];
-            $daily_total[$i]['budget'] = Item::query()
-            ->select(DB::raw('date'), DB::raw("
-            SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS income,
-            SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgo"))
-            ->whereMonth('date',$date_newArry[$i]['month'])
-            ->whereYear('date', $date_newArry[$i]['year'])
-            ->groupBy('date')
-            ->get();
-        }
-
-        // dd($daily_total, $date_newArry);
 
         //items詳細ページへのリンク用
         $items = Item::with('partner', 'primary_category', 'secondary_category' ,'subject')

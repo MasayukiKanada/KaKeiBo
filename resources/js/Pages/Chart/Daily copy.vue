@@ -4,17 +4,15 @@ import { Head, Link } from '@inertiajs/vue3';
 import { onMounted } from 'vue';
 import Pagination from '@/Components/Pagination.vue';
 import FlashMessage from '@/Components/FlashMessage.vue';
+import { forEach } from 'lodash';
 
 const props = defineProps({
     items: Object,
-    total_budgets : Object,
-    monthly_total_budgets : Object,
-    year: Number,
-    month: Number,
-    date_list: Object,
+    items_formated: Object,
+    monthly_totals: Object,
 });
 
-const $i = 0;
+const $i = 1;
 
 </script>
 
@@ -32,12 +30,12 @@ const $i = 0;
 
                     <div class="swiper">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide" v-for="date in date_list">
+                        <div class="swiper-slide" v-for="monthly_total in monthly_totals">
                         <section class="text-gray-500 body-font">
                             <div class="container mx-auto">
                                 <FlashMessage />
                                 <div class="mt-8 w-full mx-auto overflow-auto">
-                                    <h1 class="font-bold text-2xl text-center mb-6">{{ date.year }}年{{ date.month }}月</h1>
+                                    <h1 class="font-bold text-2xl text-center mb-6">{{ monthly_total.year }}年{{ monthly_total.month }}月</h1>
                                     <div class="table-auto w-full text-left whitespace-no-wrap">
                                         <div class="head flex">
                                             <div class="px-4 py-3 title-font tracking-wider font-medium bg-gray-100 rounded-tl rounded-bl text-center w-1/3">収入
@@ -48,7 +46,7 @@ const $i = 0;
                                             </div>
                                         </div>
                                         <div class="body">
-                                            <div v-for="monthly_total_budget in monthly_total_budgets" class="row flex">
+                                            <div v-for="monthly_total_budget in monthly_total['budget']" class="row flex">
                                                 <div class="text-right px-4 py-3 text-lg text-blue-500 w-1/3">￥{{ monthly_total_budget.income }}</div>
                                                 <div class="text-right px-4 py-3 text-lg text-red-500 w-1/3">￥{{ monthly_total_budget.outgo }}</div>
                                                 <div v-if="monthly_total_budget.income - monthly_total_budget.outgo > 0" class="text-right px-4 py-3 text-lg text-blue-500 w-1/3">￥{{ monthly_total_budget.income - monthly_total_budget.outgo }}</div>
@@ -65,34 +63,36 @@ const $i = 0;
                             <section class="text-gray-600 body-font">
                                 <div class="container px-5 py-4 mx-auto">
                                     <div class="mt-8 w-full mx-auto overflow-auto">
-                                    <table class="table-auto w-full text-left whitespace-no-wrap">
-                                        <thead>
-                                        <tr>
-                                            <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl text-center">日付</th>
-                                            <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">収支</th>
-                                            <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">相手方</th>
-                                            <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">主品目</th>
-                                            <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">対象者</th>
-                                            <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">金額</th>
-                                            <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center"></th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr v-for="item in items.data" :key="item.id">
-                                            <td class="px-4 py-3 text-center">{{ item.date }}</td>
-                                            <td class="px-4 py-3">{{ item.primary_category.name }}</td>
-                                            <td class="px-4 py-3">{{ item.partner.name }}</td>
-                                            <td class="px-4 py-3">{{ item.secondary_category.name }}</td>
-                                            <td class="px-4 py-3"><span v-if="item.subject">{{ item.subject.name }}</span><span v-else>なし</span></td>
-                                            <td v-if="item.primary_category.name === '収入'" class="text-right px-4 py-3 text-lg text-blue-500">￥{{ item.price.toLocaleString() }}</td>
-                                            <td v-if="item.primary_category.name === '支出'" class="text-right px-4 py-3 text-lg text-red-500">￥{{ item.price.toLocaleString() }}</td>
-                                            <td class="px-4 py-3"><Link :href="route('items.show', { item:item.id })" class="text-center text-blue-600 hover:text-blue-400">詳細</Link></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                                    <div class="table-auto w-full text-left whitespace-no-wrap">
+                                        <div>
+                                            <div class="flex">
+                                                <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl text-center">日付</div>
+                                                <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">相手方</div>
+                                                <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">主品目</div>
+                                                <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">対象者</div>
+                                                <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">金額</div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div v-for="item in items_formated" :key="item.id">
+                                                <div v-if="item.year + item.month === monthly_total.year + monthly_total.month">
+                                                    <div v-for="data in item.items">
+                                                        <Link :href="route('items.show', { item:data.id })" class="hover:opacity-70 flex">
+                                                            <div class="w-1/5 px-4 py-3 text-center border-t-2 border-gray-100">{{ data.date }}</div>
+                                                            <div class="w-1/5 px-4 py-3 border-t-2 border-gray-100">{{ data.partner.name }}</div>
+                                                            <div class="w-1/5 px-4 py-3 border-t-2 border-gray-100">{{ data.secondary_category.name }}</div>
+                                                            <div class="w-1/5 px-4 py-3 border-t-2 border-gray-100"><span v-if="data.subject">{{ data.subject.name }}</span><span v-else>なし</span></div>
+                                                            <div v-if="data.primary_category.name === '収入'" class="w-1/5 text-right px-4 py-3 text-lg text-blue-500 border-t-2 border-gray-100">￥{{ data.price.toLocaleString() }}</div>
+                                                            <div v-if="data.primary_category.name === '支出'" class="w-1/5 text-right px-4 py-3 text-lg text-red-500 border-t-2 border-gray-100">￥{{ data.price.toLocaleString() }}</div>
+                                                        </Link>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     </div>
                                 </div>
-                                <Pagination :links="items.links"></Pagination>
+                                <!-- <Pagination :links="items_formated[0]['items'].links"></Pagination> -->
                             </section>
 
                         </div>
@@ -103,71 +103,8 @@ const $i = 0;
                     <div class="swiper-button-prev"></div>
                     <div class="swiper-button-next"></div>
                     <div class="swiper-scrollbar"></div>
-                    </div>
+                </div>
 
-                <section class="text-gray-500 body-font">
-                        <div class="container mx-auto">
-                            <FlashMessage />
-                            <div class="mt-8 w-full mx-auto overflow-auto">
-                                <h1 class="font-bold text-2xl text-center mb-6">{{ props.year }}年{{ props.month }}月</h1>
-                                <div class="table-auto w-full text-left whitespace-no-wrap">
-                                    <div class="head flex">
-                                        <div class="px-4 py-3 title-font tracking-wider font-medium bg-gray-100 rounded-tl rounded-bl text-center w-1/3">収入
-                                        </div>
-                                        <div class="px-4 py-3 title-font tracking-wider font-medium bg-gray-100 rounded-tl rounded-bl text-center w-1/3">支出
-                                        </div>
-                                        <div class="px-4 py-3 title-font tracking-wider font-medium bg-gray-100 rounded-tl rounded-bl text-center w-1/3">合計
-                                        </div>
-                                    </div>
-                                    <div class="body">
-                                        <div v-for="monthly_total_budget in monthly_total_budgets" class="row flex">
-                                            <div class="text-right px-4 py-3 text-lg text-blue-500 w-1/3">￥{{ monthly_total_budget.income }}</div>
-                                            <div class="text-right px-4 py-3 text-lg text-red-500 w-1/3">￥{{ monthly_total_budget.outgo }}</div>
-                                            <div v-if="monthly_total_budget.income - monthly_total_budget.outgo > 0" class="text-right px-4 py-3 text-lg text-blue-500 w-1/3">￥{{ monthly_total_budget.income - monthly_total_budget.outgo }}</div>
-                                            <div v-if="monthly_total_budget.income - monthly_total_budget.outgo < 0" class="text-right px-4 py-3 text-lg text-red-500 w-1/3">￥{{ Math.abs(monthly_total_budget.income - monthly_total_budget.outgo) }}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <div class="p-6 text-gray-900">
-
-                        <section class="text-gray-600 body-font">
-                            <div class="container px-5 py-4 mx-auto">
-                                <div class="mt-8 w-full mx-auto overflow-auto">
-                                <table class="table-auto w-full text-left whitespace-no-wrap">
-                                    <thead>
-                                    <tr>
-                                        <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl text-center">日付</th>
-                                        <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">収支</th>
-                                        <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">相手方</th>
-                                        <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">主品目</th>
-                                        <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">対象者</th>
-                                        <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">金額</th>
-                                        <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center"></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr v-for="item in items.data" :key="item.id">
-                                        <td class="px-4 py-3 text-center">{{ item.date }}</td>
-                                        <td class="px-4 py-3">{{ item.primary_category.name }}</td>
-                                        <td class="px-4 py-3">{{ item.partner.name }}</td>
-                                        <td class="px-4 py-3">{{ item.secondary_category.name }}</td>
-                                        <td class="px-4 py-3"><span v-if="item.subject">{{ item.subject.name }}</span><span v-else>なし</span></td>
-                                        <td v-if="item.primary_category.name === '収入'" class="text-right px-4 py-3 text-lg text-blue-500">￥{{ item.price.toLocaleString() }}</td>
-                                        <td v-if="item.primary_category.name === '支出'" class="text-right px-4 py-3 text-lg text-red-500">￥{{ item.price.toLocaleString() }}</td>
-                                        <td class="px-4 py-3"><Link :href="route('items.show', { item:item.id })" class="text-center text-blue-600 hover:text-blue-400">詳細</Link></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                                </div>
-                            </div>
-                            <Pagination :links="items.links"></Pagination>
-                        </section>
-
-                    </div>
                 </div>
             </div>
         </div>

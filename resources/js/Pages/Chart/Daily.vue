@@ -14,10 +14,20 @@ const props = defineProps({
 
 const $i = 0;
 
+const changeDate = date => {
+   let dateObject = new Date(date);
+   return dateObject.getDate();
+}
+
+const ChangeMonth = month => {
+    let monthObject = new Date(month);
+    return monthObject.getMonth() + 1;
+}
+
 </script>
 
 <template>
-    <Head title="Dashboard" />
+    <Head title="日別" />
 
     <AuthenticatedLayout>
         <template #header>
@@ -26,16 +36,16 @@ const $i = 0;
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="overflow-hidden shadow-sm sm:rounded-lg">
 
                     <div class="swiper">
                     <div class="swiper-wrapper">
                         <div class="swiper-slide" v-for="monthly_total in monthly_totals">
-                        <section class="text-gray-500 body-font">
+                        <section class="text-gray-500 body-font bg-white py-8">
                             <div class="container mx-auto">
                                 <FlashMessage />
-                                <div class="mt-8 w-full mx-auto overflow-auto">
-                                    <h1 class="font-bold text-2xl text-center mb-6">{{ monthly_total.year }}年{{ monthly_total.month }}月</h1>
+                                <div class="mt-2 w-full mx-auto overflow-auto">
+                                    <h1 class="font-bold text-2xl text-center mb-6">{{ monthly_total.year }}年{{ ChangeMonth(monthly_total.month) }}月</h1>
                                     <div class="table-auto w-full text-left whitespace-no-wrap">
                                         <div class="head flex">
                                             <div class="px-4 py-3 title-font tracking-wider font-medium bg-gray-100 rounded-tl rounded-bl text-center w-1/3">収入
@@ -58,37 +68,52 @@ const $i = 0;
                             </div>
                         </section>
 
-                        <div class="p-6 text-gray-900">
+                        <div class="py-2 text-gray-900">
 
                             <section class="text-gray-600 body-font">
-                                <div class="container px-5 py-4 mx-auto">
-                                    <div class="mt-8 w-full mx-auto overflow-auto">
+                                <div class="container py-4 mx-auto">
+                                    <div class="mt-0 w-full mx-auto overflow-auto">
                                     <div class="table-auto w-full text-left whitespace-no-wrap">
-                                        <div>
-                                            <div class="flex">
-                                                <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl text-center">日付</div>
-                                                <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">相手方</div>
-                                                <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">主品目</div>
-                                                <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">対象者</div>
-                                                <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">金額</div>
-                                            </div>
-                                        </div>
-                                        <div>
+
                                             <div v-for="item in items_formated" :key="item.id">
                                                 <div v-if="item.year + item.month === monthly_total.year + monthly_total.month">
-                                                    <div v-for="data in item.items">
-                                                        <Link :href="route('items.show', { item:data.id })" class="hover:opacity-70 flex">
-                                                            <div class="w-1/5 px-4 py-3 text-center border-t-2 border-gray-100">{{ data.date }}</div>
-                                                            <div class="w-1/5 px-4 py-3 border-t-2 border-gray-100">{{ data.partner.name }}</div>
-                                                            <div class="w-1/5 px-4 py-3 border-t-2 border-gray-100">{{ data.secondary_category.name }}</div>
-                                                            <div class="w-1/5 px-4 py-3 border-t-2 border-gray-100"><span v-if="data.subject">{{ data.subject.name }}</span><span v-else>なし</span></div>
-                                                            <div v-if="data.primary_category.name === '収入'" class="w-1/5 text-right px-4 py-3 text-lg text-blue-500 border-t-2 border-gray-100">￥{{ data.price.toLocaleString() }}</div>
-                                                            <div v-if="data.primary_category.name === '支出'" class="w-1/5 text-right px-4 py-3 text-lg text-red-500 border-t-2 border-gray-100">￥{{ data.price.toLocaleString() }}</div>
-                                                        </Link>
+                                                    <div v-for="daily_budget in item.daily_budget" class="my-8 py-4 px-8 bg-white">
+
+                                                        <div class="flex flex-wrap">
+                                                            <div class="w-1/5 px-4 py-3 text-center text-2xl font-bold border-gray-100">{{ changeDate(daily_budget.date) }}<span class="text-sm">日</span></div>
+                                                            <div class="w-1/5 px-4 py-3 border-gray-100"></div>
+                                                            <div class="w-1/5 px-4 py-3 border-gray-100"></div>
+                                                            <div class="w-1/5 text-right px-4 py-3 text-lg text-blue-500 border-gray-100">￥{{ daily_budget.income }}</div>
+                                                            <div class="w-1/5 text-right px-4 py-3 text-lg text-red-500 border-gray-100">￥{{ daily_budget.outgo }}</div>
+                                                        </div>
+
+                                                        <div class="table-auto w-full text-left whitespace-no-wrap">
+                                                            <div class="thead flex">
+                                                                <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl text-center"></div>
+                                                                <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">相手方</div>
+                                                                <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">大カテゴリ</div>
+                                                                <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">対象者</div>
+                                                                <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">金額</div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div v-for="data in item.items" class="tbody table-auto w-full text-left whitespace-no-wrap">
+                                                            <div v-if="data.date === daily_budget.date">
+                                                                <Link :href="route('items.show', { item:data.id })" class="hover:opacity-70 flex">
+                                                                    <div class="w-1/5 px-4 py-3 border-t-2 border-gray-100"></div>
+                                                                    <div class="w-1/5 px-4 py-3 border-t-2 border-gray-100">{{ data.partner.name }}</div>
+                                                                    <div class="w-1/5 px-4 py-3 border-t-2 border-gray-100">{{ data.secondary_category.name }}</div>
+                                                                    <div class="w-1/5 px-4 py-3 border-t-2 border-gray-100"><span v-if="data.subject">{{ data.subject.name }}</span><span v-else>なし</span></div>
+                                                                    <div v-if="data.primary_category.name === '収入'" class="w-1/5 text-right px-4 py-3 text-lg text-blue-500 border-t-2 border-gray-100">￥{{ data.price.toLocaleString() }}</div>
+                                                                    <div v-if="data.primary_category.name === '支出'" class="w-1/5 text-right px-4 py-3 text-lg text-red-500 border-t-2 border-gray-100">￥{{ data.price.toLocaleString() }}</div>
+                                                                </Link>
+                                                            </div>
+                                                        </div>
+
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+
                                     </div>
                                     </div>
                                 </div>

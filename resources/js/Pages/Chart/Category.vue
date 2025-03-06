@@ -16,6 +16,11 @@ const target = reactive({
 
 const $i = 0;
 
+const ChangeMonth = month => {
+    let monthObject = new Date(month);
+    return monthObject.getMonth() + 1;
+}
+
 </script>
 
 <template>
@@ -37,7 +42,7 @@ const $i = 0;
                             <div class="container mx-auto">
                                 <FlashMessage />
                                 <div class="mt-8 w-full mx-auto overflow-auto">
-                                    <h1 class="font-bold text-2xl text-center mb-6">{{ monthly_total.year }}年{{ monthly_total.month }}月</h1>
+                                    <h1 class="font-bold text-2xl text-center mb-6">{{ monthly_total.year }}年{{ ChangeMonth(monthly_total.month) }}月</h1>
                                     <div class="table-auto w-full text-left whitespace-no-wrap">
                                         <div class="head flex">
                                             <div class="px-4 py-3 title-font tracking-wider font-medium bg-gray-100 rounded-tl rounded-bl text-center w-1/3">収入
