@@ -30,7 +30,7 @@ const showingNavigationDropdown = ref(false);
                             <div class="shrink-0 flex items-center">
                                 <Link :href="route('dashboard')">
                                     <ApplicationLogo
-                                        class="block w-16 fill-current text-gray-800"
+                                        class="block w-12 fill-current text-gray-800"
                                     />
                                 </Link>
                             </div>
@@ -57,10 +57,10 @@ const showingNavigationDropdown = ref(false);
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
                             <div class="ml-3 mr-12">
-                                <Link as="button" :href="route('items.create')" class="flex ml-auto text-white bg-indigo-400 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-500 rounded">仕訳入力</Link>
+                                <Link as="button" :href="route('items.create')" class="flex ml-auto text-white bg-indigo-400 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-500 rounded font-semibold">仕訳入力</Link>
                             </div>
                             <div class="ml-3 mr-12">
-                                <Link id="cat_btn" as="button" :href="route('categories.index')" class="flex ml-auto text-white bg-gray-400 border-0 py-2 px-6 focus:outline-none hover:bg-gray-500 rounded">カテゴリ管理</Link>
+                                <Link id="cat_btn" as="button" :href="route('categories.index')" class="flex ml-auto text-white bg-gray-400 border-0 py-2 px-6 focus:outline-none hover:bg-gray-500 rounded font-semibold">カテゴリ管理</Link>
                             </div>
                             <!-- Settings Dropdown -->
                             <div class="ml-3 relative">

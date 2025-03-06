@@ -68,23 +68,23 @@ const isNotEmpty = obj => {
 
                         <ValidationErrors :errors="errors" />
                         <section class="text-gray-600 body-font relative">
-                            <div class="container px-5 py-24 mx-auto">
+                            <div class="container px-5 py-8 mx-auto">
 
                                 <form @submit.prevent="storeItem">
-                                <div class="lg:w-1/2 md:w-2/3 mx-auto">
+                                <div class="lg:w-2/3 md:w-4/5 mx-auto">
                                 <div class="flex flex-wrap -m-2">
 
                                         <div class="p-2 w-full">
                                         <div class="relative">
-                                            <label for="date" class="leading-7 text-sm text-gray-600">日付</label>
-                                            <input type="date" id="date" name="date" v-model="form.date" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                            <label for="date" class="leading-7 text-sm text-gray-500">日付<span class="text-red-500">※</span></label>
+                                            <input type="date" id="date" name="date" v-model="form.date" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                                         </div>
 
                                         </div>
                                         <div class="p-2 w-full">
                                         <div class="relative">
-                                            <label for="partner" class="leading-7 text-sm text-gray-600">相手先</label>
-                                            <select id="partner" name="partner" v-model="form.partner_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                            <label for="partner" class="leading-7 text-sm text-gray-500">相手先<span class="text-red-500">※</span></label>
+                                            <select id="partner" name="partner" v-model="form.partner_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                                                 <option :value="null" disabled>選択してください</option>
                                                 <option v-for="partner in partners" :value="partner.id" :key="partner.id">{{ partner.name }}</option>
                                             </select>
@@ -93,8 +93,8 @@ const isNotEmpty = obj => {
 
                                         <div class="p-2 w-full">
                                         <div class="relative">
-                                            <label for="primary_category" class="leading-7 text-sm text-gray-600">収支</label>
-                                            <select id="primary_category" name="primary_category" v-model="form.primary_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                            <label for="primary_category" class="leading-7 text-sm text-gray-500">収支区分<span class="text-red-500">※</span></label>
+                                            <select id="primary_category" name="primary_category" v-model="form.primary_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                                                 <option :value="null" disabled>選択してください</option>
                                                 <option v-for="primary_category in primary_categories" :value="primary_category.id" :key="primary_category.id">{{ primary_category.name }}</option>
                                             </select>
@@ -105,8 +105,8 @@ const isNotEmpty = obj => {
                                         <div v-for="primary_category in primary_categories">
                                             <div class="p-2 w-full" v-if="primary_category.id === form.primary_category_id">
                                                 <div class="relative">
-                                                    <label for="secondary_category" class="leading-7 text-sm text-gray-600">大カテゴリ</label>
-                                                    <select id="secondary_category" name="secondary_category" v-model="form.secondary_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                                    <label for="secondary_category" class="leading-7 text-sm text-gray-500">大カテゴリ<span class="text-red-500">※</span></label>
+                                                    <select id="secondary_category" name="secondary_category" v-model="form.secondary_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                                                         <option :value="null">選択してください</option>
                                                         <option v-for="secondary_category in  primary_category.secondary_category" :value="secondary_category.id" :key="secondary_category.id">{{ secondary_category.name }}</option>
                                                     </select>
@@ -119,8 +119,8 @@ const isNotEmpty = obj => {
                                             <div v-if="isNotEmpty(secondary_category.thirdry_category)">
                                                 <div class="p-2 w-full" v-if="secondary_category.id === form.secondary_category_id">
                                                     <div class="relative">
-                                                        <label for="thirdry_category" class="leading-7 text-sm text-gray-600">小カテゴリ</label>
-                                                        <select id="thirdry_category" name="thirdry_category" v-model="form.thirdry_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                                        <label for="thirdry_category" class="leading-7 text-sm text-gray-500">小カテゴリ</label>
+                                                        <select id="thirdry_category" name="thirdry_category" v-model="form.thirdry_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                                                             <option :value="null">選択してください／空白にする</option>
                                                             <option v-for="thirdry_category in secondary_category.thirdry_category" :value="thirdry_category.id" :key="thirdry_category.id">{{ thirdry_category.name }}</option>
                                                         </select>
@@ -131,8 +131,8 @@ const isNotEmpty = obj => {
 
                                         <div class="p-2 w-full">
                                         <div class="relative">
-                                            <label for="subject" class="leading-7 text-sm text-gray-600">対象者</label>
-                                            <select id="subject" name="subject" v-model="form.subject_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                            <label for="subject" class="leading-7 text-sm text-gray-500">対象者</label>
+                                            <select id="subject" name="subject" v-model="form.subject_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                                                 <option :value="null">選択してください</option>
                                                 <option v-for="subject in subjects" :value="subject.id" :key="subject.id">{{ subject.name }}</option>
                                             </select>
@@ -140,14 +140,14 @@ const isNotEmpty = obj => {
                                         </div>
                                         <div class="p-2 w-full">
                                         <div class="relative">
-                                            <label for="price" class="leading-7 text-sm text-gray-600">金額</label>
-                                            <input type="number" placeholder="金額を入力してください" id="price" name="price" v-model="form.price" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                            <label for="price" class="leading-7 text-sm text-gray-500">金額<span class="text-red-500">※</span></label>
+                                            <input type="number" placeholder="金額を入力してください" id="price" name="price" v-model="form.price" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                                         </div>
                                         </div>
                                         <div class="p-2 w-full">
                                         <div class="relative">
-                                            <label for="memo" class="leading-7 text-sm text-gray-600">メモ</label>
-                                            <textarea id="memo" name="memo" v-model="form.memo" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"></textarea>
+                                            <label for="memo" class="leading-7 text-sm text-gray-500">メモ</label>
+                                            <textarea id="memo" name="memo" v-model="form.memo" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-500 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"></textarea>
                                         </div>
                                         </div>
 

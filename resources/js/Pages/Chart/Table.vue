@@ -45,17 +45,17 @@ const showMonthly = (year) => {
                         <div class="table-auto w-full text-left whitespace-no-wrap">
                             <div class="thead">
                                 <div class="flex">
-                                    <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl text-center">年</div>
-                                    <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">収入</div>
-                                    <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">支出</div>
-                                    <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">合計</div>
-                                    <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center"></div>
+                                    <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-500 text-sm bg-gray-100 rounded-tl rounded-bl text-center">年</div>
+                                    <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-500 text-sm bg-gray-100 text-center">収入</div>
+                                    <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-500 text-sm bg-gray-100 text-center">支出</div>
+                                    <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-500 text-sm bg-gray-100 text-center">合計</div>
+                                    <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-500 text-sm bg-gray-100 text-center"></div>
                                 </div>
                             </div>
 
                             <div class="tbody">
                                 <div v-for="total_budget in total_budgets" :key="total_budget.id" class="flex flex-wrap">
-                                    <div class="w-1/5 px-4 py-3 text-center border-t-2 border-gray-100">{{ total_budget.year }}年</div>
+                                    <div class="w-1/5 px-4 py-3 text-center border-t-2 border-gray-100 text-gray-500 font-bold">{{ total_budget.year }}年</div>
                                     <div class="w-1/5 text-right px-4 py-3 text-lg text-blue-500 border-t-2 border-gray-100">￥{{ total_budget.income }}</div>
                                     <div class="w-1/5 text-right px-4 py-3 text-lg text-red-500 border-t-2 border-gray-100">￥{{ total_budget.outgo }}</div>
                                     <div v-if="total_budget.income - total_budget.outgo > 0" class="w-1/5 px-4 py-3 text-right text-lg text-blue-500 border-t-2 border-gray-100">￥{{ total_budget.income - total_budget.outgo }}</div>
@@ -68,17 +68,17 @@ const showMonthly = (year) => {
                                         <div v-if="total_budget.year === Number(props.year)">
                                             <div class="thead">
                                                 <div class="flex">
-                                                    <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm rounded-tl rounded-bl text-center"></div>
-                                                    <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl text-center">月</div>
-                                                    <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">収入</div>
-                                                    <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">支出</div>
-                                                    <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 text-center">小計</div>
+                                                    <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-500 text-sm rounded-tl rounded-bl text-center"></div>
+                                                    <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-500 text-sm bg-gray-100 rounded-tl rounded-bl text-center">月</div>
+                                                    <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-500 text-sm bg-gray-100 text-center">収入</div>
+                                                    <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-500 text-sm bg-gray-100 text-center">支出</div>
+                                                    <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-500 text-sm bg-gray-100 text-center">小計</div>
                                                 </div>
                                             </div>
                                             <div class="tbody">
                                                 <div v-for="monthly_total_budget in monthly_total_budgets" class="flex">
-                                                    <div class="w-1/5 px-4 py-3 text-center"></div>
-                                                    <div class="w-1/5 px-4 py-3 text-center border-t-2 border-gray-100">{{ monthly_total_budget.month }}月</div>
+                                                    <div class="w-1/5 px-4 py-3 text-center text-gray-500"></div>
+                                                    <div class="w-1/5 px-4 py-3 text-center border-t-2 border-gray-100 text-gray-500 font-semibold">{{ monthly_total_budget.month }}月</div>
                                                     <div class="w-1/5 text-right px-4 py-3 text-lg text-blue-500 border-t-2 border-gray-100">￥{{ monthly_total_budget.income }}</div>
                                                     <div class="w-1/5 text-right px-4 py-3 text-lg text-red-500 border-t-2 border-gray-100">￥{{ monthly_total_budget.outgo }}</div>
                                                     <div v-if="monthly_total_budget.income - monthly_total_budget.outgo > 0" class="w-1/5 px-4 py-3 text-right text-lg text-blue-500 border-t-2 border-gray-100">￥{{ monthly_total_budget.income - monthly_total_budget.outgo }}</div>

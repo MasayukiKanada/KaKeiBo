@@ -33,15 +33,15 @@ const ChangeMonth = month => {
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="overflow-hidden shadow-sm sm:rounded-lg">
 
                     <div class="swiper">
                     <div class="swiper-wrapper">
                         <div class="swiper-slide" v-for="monthly_total in monthly_totals">
-                        <section class="text-gray-500 body-font">
+                        <section class="text-gray-500 body-font bg-white py-8">
                             <div class="container mx-auto">
                                 <FlashMessage />
-                                <div class="mt-8 w-full mx-auto overflow-auto">
+                                <div class="mt-2 w-full mx-auto overflow-auto">
                                     <h1 class="font-bold text-2xl text-center mb-6">{{ monthly_total.year }}年{{ ChangeMonth(monthly_total.month) }}月</h1>
                                     <div class="table-auto w-full text-left whitespace-no-wrap">
                                         <div class="head flex">
@@ -65,11 +65,11 @@ const ChangeMonth = month => {
                             </div>
                         </section>
 
-                        <div class="p-6 text-gray-900">
+                        <div class="py-4 text-gray-900">
 
-                            <section class="text-gray-600 body-font">
-                                <div class="container px-5 py-4 mx-auto">
-                                    <div class="mt-8 w-full mx-auto overflow-auto">
+                            <section class="text-gray-600 body-font my-8 py-4 px-8 bg-white">
+                                <div class="container py-4 mx-auto">
+                                    <div class="mt-0 w-full mx-auto overflow-auto">
                                     <div class="table-auto w-full text-left whitespace-no-wrap">
                                         <div>
                                             <div class="flex">
@@ -82,8 +82,8 @@ const ChangeMonth = month => {
                                             <div v-for="item in category_totals" :key="item.id">
                                                 <div v-if="item.year + item.month === monthly_total.year + monthly_total.month">
                                                     <div v-for="data in item.budget" class="flex flex-wrap">
-                                                        <div class="w-1/3 px-4 py-3 border-t-2 border-gray-100">{{ data.secondary_category.name }}</div>
-                                                        <div class="w-1/3 px-4 py-3 border-t-2 border-gray-100"></div>
+                                                        <div class="w-1/3 px-4 py-3 border-t-2 border-gray-100 font-bold text-gray-500">{{ data.secondary_category.name }}</div>
+                                                        <div class="w-1/3 px-4 py-3 border-t-2 border-gray-100 text-gray-500"></div>
                                                         <div v-if="data.secondary_category.primary_category_id === 1" class="w-1/3 text-right px-4 py-3 text-lg text-blue-500 border-t-2 border-gray-100">￥{{ data.price.toLocaleString() }}</div>
                                                         <div v-if="data.secondary_category.primary_category_id === 2" class="w-1/3 text-right px-4 py-3 text-lg text-red-500 border-t-2 border-gray-100">￥{{ data.price.toLocaleString() }}</div>
 
