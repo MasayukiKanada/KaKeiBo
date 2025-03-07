@@ -73,7 +73,7 @@ const separateNum = num => {
                                         </div>
                                         <div class="body">
                                             <div v-for="monthly_total_budget in monthly_total['budget']" class="row flex">
-                                                <div class="text-right px-4 py-3 text-lg text-blue-500 w-1/3">￥{{ monthly_total_budget.income }}</div>
+                                                <div class="text-right px-4 py-3 text-lg text-blue-500 w-1/3">￥{{ separateNum(monthly_total_budget.income) }}</div>
                                                 <div class="text-right px-4 py-3 text-lg text-red-500 w-1/3">￥{{ separateNum(monthly_total_budget.outgo) }}</div>
                                                 <div v-if="monthly_total_budget.income - monthly_total_budget.outgo > 0" class="text-right px-4 py-3 text-lg text-blue-500 w-1/3">￥{{ separateNum(monthly_total_budget.income - monthly_total_budget.outgo) }}</div>
                                                 <div v-if="monthly_total_budget.income - monthly_total_budget.outgo < 0" class="text-right px-4 py-3 text-lg text-red-500 w-1/3">￥{{ separateNum(Math.abs(monthly_total_budget.income - monthly_total_budget.outgo)) }}</div>
