@@ -18,11 +18,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\User::factory()->create([
-            'name' => 'user',
-            'email' => 'test@test.com',
-            'password' => Hash::make('password123'),
-        ]);
+        \App\Models\User::factory()->create(
+            [
+                [
+                    'name' => 'ユーザー',
+                    'email' => 'test@test.com',
+                    'password' => Hash::make('password123'),
+                ],
+                [
+                    'name' => 'デモユーザー',
+                    'email' => 'demo@demo.com',
+                    'password' => Hash::make('demo12345'),
+                ]
+            ]
+        );
 
         $this->call([
             SubjectSeeder::class,
