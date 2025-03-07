@@ -20,12 +20,12 @@ const props = defineProps({
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900">
+                    <div class="py-6 px-2 md:p-6 text-gray-900">
 
-                        <Link as="button" :href="route('categories.create')" class="flex ml-auto mr-6 text-white bg-orange-300 border-0 py-2 px-6 focus:outline-none hover:bg-orange-400 rounded font-semibold">カテゴリ作成</Link>
+                        <Link as="button" :href="route('categories.create')" class="hidden sm:flex ml-auto mr-6 text-white bg-orange-300 border-0 py-2 px-6 focus:outline-none hover:bg-orange-400 rounded font-semibold">カテゴリ作成</Link>
 
                         <section class="text-gray-600 body-font">
-                            <div class="container px-5 py-2 mx-auto">
+                            <div class="container px-0 md:px-5 py-2 mx-auto">
                                 <FlashMessage />
                                 <div class="mt-8 w-full mx-auto overflow-auto">
                                 <div class="table-auto w-full text-left whitespace-no-wrap">

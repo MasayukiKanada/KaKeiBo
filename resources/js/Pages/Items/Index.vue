@@ -13,6 +13,10 @@ const props = defineProps({
     secondary_category: Array,
 });
 
+const separateNum = num => {
+    return String(num).replace( /(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+}
+
 </script>
 
 <template>
@@ -23,10 +27,10 @@ const props = defineProps({
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-8 text-gray-900">
+                    <div class="md:p-8 py-4 px-2 text-gray-900">
 
                         <section class="text-gray-600 body-font">
-                            <div class="container px-5 pt-0 mb-6 mx-auto">
+                            <div class="container md:px-5 px-0 pt-0 md:mb-6 mb-10 mx-auto">
                                 <FlashMessage />
                                 <div class="mt-8 w-full mx-auto overflow-auto">
                                 <div class="table-auto w-full text-left whitespace-no-wrap">
@@ -46,15 +50,15 @@ const props = defineProps({
                                             <div class="w-1/5 px-4 py-3 border-t-2 border-gray-100 text-gray-500">{{ item.partner.name }}</div>
                                             <div class="w-1/5 px-4 py-3 border-t-2 border-gray-100 text-gray-500">{{ item.secondary_category.name }}</div>
                                             <div class="w-1/5 px-4 py-3 border-t-2 border-gray-100 text-gray-500"><span v-if="item.subject">{{ item.subject.name }}</span><span v-else>なし</span></div>
-                                            <div v-if="item.primary_category.name === '収入'" class="w-1/5 text-right px-4 py-3 text-lg text-blue-500 border-t-2 border-gray-100">￥{{ item.price.toLocaleString() }}</div>
-                                            <div v-if="item.primary_category.name === '支出'" class="w-1/5 text-right px-4 py-3 text-lg text-red-500 border-t-2 border-gray-100">￥{{ item.price.toLocaleString() }}</div>
+                                            <div v-if="item.primary_category.id === 1" class="w-1/5 text-right px-4 py-3 text-lg text-blue-500 border-t-2 border-gray-100">￥{{ separateNum(item.price) }}</div>
+                                            <div v-if="item.primary_category.id === 2" class="w-1/5 text-right px-4 py-3 text-lg text-red-500 border-t-2 border-gray-100">￥{{ separateNum(item.price) }}</div>
                                         </Link>
                                     </div>
                                     </div>
                                 </div>
                                 </div>
                             </div>
-                            <Pagination :links="items.links"></Pagination>
+                            <Pagination :links="items.links" class="mb-6 md:mb-0"></Pagination>
                         </section>
 
                     </div>

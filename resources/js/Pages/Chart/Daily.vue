@@ -39,6 +39,10 @@ const changeDay = day => {
     return days[dayObject.getDay()];
 }
 
+const separateNum = num => {
+    return String(num).replace( /(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+}
+
 </script>
 
 <template>
@@ -70,9 +74,9 @@ const changeDay = day => {
                                         <div class="body">
                                             <div v-for="monthly_total_budget in monthly_total['budget']" class="row flex">
                                                 <div class="text-right px-4 py-3 text-lg text-blue-500 w-1/3">￥{{ monthly_total_budget.income }}</div>
-                                                <div class="text-right px-4 py-3 text-lg text-red-500 w-1/3">￥{{ monthly_total_budget.outgo }}</div>
-                                                <div v-if="monthly_total_budget.income - monthly_total_budget.outgo > 0" class="text-right px-4 py-3 text-lg text-blue-500 w-1/3">￥{{ monthly_total_budget.income - monthly_total_budget.outgo }}</div>
-                                                <div v-if="monthly_total_budget.income - monthly_total_budget.outgo < 0" class="text-right px-4 py-3 text-lg text-red-500 w-1/3">￥{{ Math.abs(monthly_total_budget.income - monthly_total_budget.outgo) }}</div>
+                                                <div class="text-right px-4 py-3 text-lg text-red-500 w-1/3">￥{{ separateNum(monthly_total_budget.outgo) }}</div>
+                                                <div v-if="monthly_total_budget.income - monthly_total_budget.outgo > 0" class="text-right px-4 py-3 text-lg text-blue-500 w-1/3">￥{{ separateNum(monthly_total_budget.income - monthly_total_budget.outgo) }}</div>
+                                                <div v-if="monthly_total_budget.income - monthly_total_budget.outgo < 0" class="text-right px-4 py-3 text-lg text-red-500 w-1/3">￥{{ separateNum(Math.abs(monthly_total_budget.income - monthly_total_budget.outgo)) }}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -89,12 +93,12 @@ const changeDay = day => {
 
                                             <div v-for="item in items_formated" :key="item.id">
                                                 <div v-if="item.year + item.month === monthly_total.year + monthly_total.month">
-                                                    <div v-for="daily_budget in item.daily_budget" class="my-8 py-4 px-8 bg-white">
+                                                    <div v-for="daily_budget in item.daily_budget" class="my-8 py-4 bg-white md:px-8 px-4">
 
                                                         <div class="flex flex-wrap">
                                                             <div class="w-3/5 px-4 py-3 text-center text-2xl font-bold border-gray-100 flex items-center">{{ changeDate(daily_budget.date) }}<span class="text-sm block mt-2">日</span><span class="px-2 py-1 bg-gray-300 rounded-md text-white font-normal text-sm ml-6 block">{{ changeDay(daily_budget.date) }}</span></div>
-                                                            <div class="w-1/5 text-right px-4 py-3 text-lg text-blue-500 border-gray-100">￥{{ daily_budget.income }}</div>
-                                                            <div class="w-1/5 text-right px-4 py-3 text-lg text-red-500 border-gray-100">￥{{ daily_budget.outgo }}</div>
+                                                            <div class="w-1/5 text-right px-4 py-3 text-lg text-blue-500 border-gray-100">￥{{ separateNum(daily_budget.income) }}</div>
+                                                            <div class="w-1/5 text-right px-4 py-3 text-lg text-red-500 border-gray-100">￥{{ separateNum(daily_budget.outgo) }}</div>
                                                         </div>
 
                                                         <div class="table-auto w-full text-left whitespace-no-wrap">
@@ -114,8 +118,8 @@ const changeDay = day => {
                                                                     <div class="w-1/5 px-4 py-3 border-t-2 text-gray-500 border-gray-100">{{ data.partner.name }}</div>
                                                                     <div class="w-1/5 px-4 py-3 border-t-2 text-gray-500 border-gray-100">{{ data.secondary_category.name }}</div>
                                                                     <div class="w-1/5 px-4 py-3 border-t-2 text-gray-500 border-gray-100"><span v-if="data.subject">{{ data.subject.name }}</span><span v-else>なし</span></div>
-                                                                    <div v-if="data.primary_category.name === '収入'" class="w-1/5 text-right px-4 py-3 text-lg text-blue-500 border-t-2 border-gray-100">￥{{ data.price.toLocaleString() }}</div>
-                                                                    <div v-if="data.primary_category.name === '支出'" class="w-1/5 text-right px-4 py-3 text-lg text-red-500 border-t-2 border-gray-100">￥{{ data.price.toLocaleString() }}</div>
+                                                                    <div v-if="data.primary_category.name === '収入'" class="w-1/5 text-right px-4 py-3 text-lg text-blue-500 border-t-2 border-gray-100">￥{{ separateNum(data.price) }}</div>
+                                                                    <div v-if="data.primary_category.name === '支出'" class="w-1/5 text-right px-4 py-3 text-lg text-red-500 border-t-2 border-gray-100">￥{{ separateNum(data.price) }}</div>
                                                                 </Link>
                                                             </div>
                                                         </div>

@@ -155,8 +155,8 @@ const isNotEmpty = obj => {
 
 
                                         <div class="p-2 w-full flex mt-10">
-                                            <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">登録する</button>
-                                            <button @click="deleteData" as="button" class="flex mx-auto text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg">入力の取消</button>
+                                            <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 sm:px-8 px-5 focus:outline-none hover:bg-indigo-600 rounded text-lg">登録する</button>
+                                            <button @click="deleteData" as="button" class="flex mx-auto text-white bg-green-500 border-0 py-2 sm:px-8 px-5 focus:outline-none hover:bg-green-600 rounded text-lg">入力の取消</button>
                                         </div>
                                     </div>
                                 </div>

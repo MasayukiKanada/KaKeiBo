@@ -13,6 +13,18 @@ onMounted(() => {
     if(route().current('categories.index')) {
         btn.classList.add('active');
     }
+
+    const create_btn = window.document.querySelector('#create_btn');
+    if(route().current('items.create') || route().current('items.show')
+    || route().current('items.edit') || route().current('categories.edit')
+    || route().current('categories.create') || route().current('categories.index') ) {
+        create_btn.classList.add('hidden');
+    }
+
+    const category_btn = window.document.querySelector('#category_btn');
+    if(route().current('categories.index') === false) {
+        category_btn.classList.add('hidden');
+    }
 })
 
 const showingNavigationDropdown = ref(false);
@@ -23,8 +35,8 @@ const showingNavigationDropdown = ref(false);
     <div>
         <div class="min-h-screen bg-gray-100">
             <!-- Logo -->
-            <div id="logo" class="shrink-0 md:flex items-center hidden">
-                <Link :href="route('dashboard')">
+            <div id="logo" class="shrink-0 sm:flex items-center hidden">
+                <Link :href="route('chart.daily')">
                     <ApplicationLogo
                         class="block w-24 fill-current text-gray-800 ml-12"
                     />
@@ -36,8 +48,8 @@ const showingNavigationDropdown = ref(false);
                     <div class="flex justify-between h-16">
                         <div class="flex">
                             <!-- Logo -->
-                            <div class="shrink-0 flex items-center md:hidden">
-                                <Link :href="route('dashboard')">
+                            <div class="shrink-0 flex items-center sm:hidden">
+                                <Link :href="route('chart.daily')">
                                     <ApplicationLogoS
                                         class="block w-12 fill-current text-gray-800"
                                     />
@@ -61,10 +73,10 @@ const showingNavigationDropdown = ref(false);
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
-                            <div class="ml-3 mr-12">
+                            <div class="ml-3 md:mr-12 mr-3">
                                 <Link as="button" :href="route('items.create')" class="flex ml-auto text-white bg-indigo-400 border-0 md:py-1 px-6 focus:outline-none hover:bg-indigo-500 rounded font-semibold">仕訳入力</Link>
                             </div>
-                            <div class="ml-3 mr-12">
+                            <div class="ml-3 md:mr-12 mr-3">
                                 <Link id="cat_btn" as="button" :href="route('categories.index')" class="flex ml-auto text-white bg-gray-400 border-0 md:py-1 px-6 focus:outline-none hover:bg-gray-500 rounded font-semibold">カテゴリ管理</Link>
                             </div>
                             <!-- Settings Dropdown -->
@@ -190,6 +202,14 @@ const showingNavigationDropdown = ref(false);
             <main>
                 <slot />
             </main>
+
+            <!-- Responsive Buttons -->
+            <div class="sm:hidden flex fixed bottom-0 sm:items-center sm:ml-6 w-full z-50">
+                <div class="w-full">
+                    <Link id="create_btn" as="button" :href="route('items.create')" class="block w-full ml-auto text-white bg-indigo-400 border-0 py-1 px-6 focus:outline-none hover:bg-indigo-500 font-semibold">仕訳入力</Link>
+                    <Link id="category_btn" as="button" :href="route('categories.create')" class="block w-full ml-auto mr-6 text-white bg-orange-300 border-0 py-2 px-6 focus:outline-none hover:bg-orange-400 rounded font-semibold">カテゴリ作成</Link>
+                </div>
+            </div>
         </div>
     </div>
 </template>
