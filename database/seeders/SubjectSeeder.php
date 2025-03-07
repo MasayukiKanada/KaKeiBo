@@ -17,13 +17,22 @@ class SubjectSeeder extends Seeder
     {
         DB::table('subjects')->insert([
             [
-                'name' => '等',
+                'name' => 'しんのすけ',
             ],
             [
-                'name' => '敦子',
+                'name' => 'みさえ',
             ],
             [
-                'name' => '八重子',
+                'name' => 'ひろし',
+            ],
+            [
+                'name' => 'ひまわり',
+            ],
+            [
+                'name' => 'シロ',
+            ],
+            [
+                'name' => 'むさえ',
             ],
         ]);
     }

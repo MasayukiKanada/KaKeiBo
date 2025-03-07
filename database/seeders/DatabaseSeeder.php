@@ -18,22 +18,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\User::factory()->create(
-            [
-                [
-                    'name' => 'ユーザー',
-                    'email' => 'test@test.com',
-                    'password' => Hash::make('password123'),
-                ],
-                [
-                    'name' => 'デモユーザー',
-                    'email' => 'demo@demo.com',
-                    'password' => Hash::make('demo12345'),
-                ]
-            ]
-        );
+        // \App\Models\User::factory()->create([]);
 
         $this->call([
+            UserSeeder::class,
             SubjectSeeder::class,
             PrimaryCategorySeeder::class,
             SecondaryCategorySeeder::class,
@@ -41,7 +29,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // \App\Models\User::factory(10)->create();
-        \App\Models\Item::factory(10)->create();
+        \App\Models\Item::factory(100)->create();
         \App\Models\Partner::factory(10)->create();
         // \App\Models\Subject::factory(10)->create();
     }

@@ -18,7 +18,7 @@ class SubjectFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
-            'sort_order' => $this->faker->numberBetween(0, 10),
+            'sort_order' => $this->faker->numberBetween(0, 5),
         ];
     }
 }
