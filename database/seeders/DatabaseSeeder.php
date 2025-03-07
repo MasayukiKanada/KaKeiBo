@@ -3,7 +3,11 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\PrimaryCategory;
+use App\Models\ThirdryCategory;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,11 +18,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        // \App\Models\User::factory()->create([]);
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $this->call([
+            UserSeeder::class,
+            SubjectSeeder::class,
+            PrimaryCategorySeeder::class,
+            SecondaryCategorySeeder::class,
+            ThirdryCategorySeeder::class,
+        ]);
+
+        // \App\Models\User::factory(10)->create();
+        \App\Models\Item::factory(100)->create();
+        \App\Models\Partner::factory(10)->create();
+        // \App\Models\Subject::factory(10)->create();
     }
 }
