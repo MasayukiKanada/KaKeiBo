@@ -41,14 +41,14 @@ Route::get('daily', [ChartController::class, 'daily'])
 Route::get('category', [ChartController::class, 'category'])
 ->middleware(['auth', 'verified'])->name('chart.category');
 
-//直接ダッシュボードページにアクセス
+// //直接ダッシュボードページにアクセス
 Route::get('/', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-// Route::get('/dashboard', function () {
-//     return Inertia::render('Dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

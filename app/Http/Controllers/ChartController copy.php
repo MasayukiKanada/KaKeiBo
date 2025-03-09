@@ -29,11 +29,8 @@ class ChartController extends Controller
 
     public function daily(Request $request)
     {
-        $page = 0;
-
-        if($request->page !== null){
-            $page = intval($request->page);
-        }
+        // $key = $request->key;
+        $key = 0;
 
         //１，Itemモデルからフォーマット化した日付を取得
         $date_list = Item::query()
@@ -43,29 +40,21 @@ class ChartController extends Controller
         ->get();
 
         //２以降サービスへ切り離した配列を受け取り、変数に代入
-        list($date_newArry, $monthly_totals, $items_formated) = ChartService::dailyBudgets($date_list, $page);
+        list($monthly_totals, $items_formated) = ChartService::dailyBudgets($date_list);
 
         //items詳細ページへのリンク用
         $items = Item::with('partner', 'primary_category', 'secondary_category' ,'subject')
         ->select(DB::raw('id'))
         ->get();
 
-
         return Inertia::render('Chart/Daily', [
-            'page' => $page,
-            'date_newArry' => $date_newArry,
             'items' => $items,
             'monthly_totals' => $monthly_totals,
             'items_formated' => $items_formated,
         ]);
     }
 
-    public function category(Request $request){
-        $page = 0;
-
-        if($request->page !== null){
-            $page = intval($request->page);
-        }
+    public function category(){
 
         //１，Itemモデルからフォーマット化した日付を取得
         $date_list = Item::query()
@@ -75,11 +64,9 @@ class ChartController extends Controller
         ->get();
 
         //２以降サービスへ切り離した配列を受け取り、変数に代入
-        list($date_newArry, $monthly_totals, $category_totals) = ChartService::categoryBudgets($date_list, $page);
+        list($monthly_totals, $category_totals) = ChartService::categoryBudgets($date_list);
 
         return Inertia::render('Chart/Category', [
-            'page' => $page,
-            'date_newArry' => $date_newArry,
             'monthly_totals' => $monthly_totals,
             'category_totals' => $category_totals,
         ]);
