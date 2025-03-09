@@ -8,13 +8,16 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
   // configure Swiper to use modules
-//  Swiper.use([Navigation, Pagination]);
+ Swiper.use([Navigation]);
 
 window.addEventListener('load', function() {
     const swiper = new Swiper('.swiper', {
         // Optional parameters
         // direction: 'vertical',
         loop: false,
+
+        freeMode: true,
+        watchSlidesProgress: true,
 
         //  // If we need pagination
         // pagination: {

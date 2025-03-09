@@ -37,7 +37,7 @@ const showingNavigationDropdown = ref(false);
             <!-- Logo -->
              <div id="site_header">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="shrink-0 sm:flex items-center hidden">
+                    <div id="logo" class="shrink-0 sm:flex items-center hidden">
                         <Link :href="route('chart.daily')">
                             <ApplicationLogo
                                 class="block w-24 fill-current text-gray-800 ml-12"
@@ -45,7 +45,7 @@ const showingNavigationDropdown = ref(false);
                         </Link>
                     </div>
                 </div>
-            </div>
+             </div>
             <nav class="bg-white border-b border-gray-100">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

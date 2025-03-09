@@ -6,15 +6,11 @@ import FlashMessage from '@/Components/FlashMessage.vue';
 import { Inertia } from '@inertiajs/inertia';
 
 const props = defineProps({
+    page: Number,
+    date_newArry: Array,
     category_totals: Object,
     monthly_totals: Object,
 });
-
-const target = reactive({
-    id: null,
-})
-
-const $i = 0;
 
 const ChangeMonth = month => {
     let monthObject = new Date(month);
@@ -23,6 +19,20 @@ const ChangeMonth = month => {
 
 const separateNum = num => {
     return String(num).replace( /(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+}
+
+const target = reactive({
+    page: props.page,
+})
+
+const nextPage = page => {
+    target.page = page + 1;
+    Inertia.get('/category', target);
+}
+
+const prevPage = page => {
+    target.page = page - 1;
+    Inertia.get('/category', target);
 }
 
 </script>
@@ -36,14 +46,12 @@ const separateNum = num => {
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="overflow-hidden shadow-sm sm:rounded-lg">
 
-                    <div class="swiper">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide" v-for="monthly_total in monthly_totals">
-                        <section class="text-gray-500 body-font bg-white py-8">
+                        <div v-for="monthly_total in monthly_totals">
+                            <section class="total_table text-gray-500 body-font bg-white py-8">
                             <div class="container mx-auto">
                                 <FlashMessage />
                                 <div class="mt-2 w-full mx-auto overflow-auto">
-                                    <h1 class="font-bold text-2xl text-center mb-6">{{ monthly_total.year }}年{{ ChangeMonth(monthly_total.month) }}月</h1>
+                                    <h1 class="font-bold text-2xl text-center mb-6">{{ date_newArry[props.page]['year'] }}年{{ ChangeMonth(date_newArry[props.page]['month']) }}月</h1>
                                     <div class="table-auto w-full text-left whitespace-no-wrap">
                                         <div class="head flex">
                                             <div class="px-4 py-3 title-font tracking-wider font-medium bg-gray-100 rounded-tl rounded-bl text-center w-1/3">収入
@@ -53,16 +61,26 @@ const separateNum = num => {
                                             <div class="px-4 py-3 title-font tracking-wider font-medium bg-gray-100 rounded-tl rounded-bl text-center w-1/3">合計
                                             </div>
                                         </div>
-                                        <div class="body">
-                                            <div v-for="monthly_total_budget in monthly_total['budget']" class="row flex">
-                                                <div class="text-right px-4 py-3 text-lg text-blue-500 w-1/3">￥{{ separateNum(monthly_total_budget.income) }}</div>
-                                                <div class="text-right px-4 py-3 text-lg text-red-500 w-1/3">￥{{ separateNum(monthly_total_budget.outgo) }}</div>
-                                                <div v-if="monthly_total_budget.income - monthly_total_budget.outgo > 0" class="text-right px-4 py-3 text-lg text-blue-500 w-1/3">￥{{ separateNum(monthly_total_budget.income - monthly_total_budget.outgo) }}</div>
-                                                <div v-if="monthly_total_budget.income - monthly_total_budget.outgo < 0" class="text-right px-4 py-3 text-lg text-red-500 w-1/3">￥{{ separateNum(Math.abs(monthly_total_budget.income - monthly_total_budget.outgo)) }}</div>
-                                            </div>
+                                        <div class="body flex">
+                                            <div class="text-right px-4 py-3 text-lg text-blue-500 w-1/3">￥{{ separateNum(monthly_total.income) }}</div>
+                                            <div class="text-right px-4 py-3 text-lg text-red-500 w-1/3">￥{{ separateNum(monthly_total.outgo) }}</div>
+                                            <div v-if="monthly_total.income - monthly_total.outgo > 0" class="text-right px-4 py-3 text-lg text-blue-500 w-1/3">￥{{ separateNum(monthly_total.income - monthly_total.outgo) }}</div>
+                                            <div v-if="monthly_total.income - monthly_total.outgo < 0" class="text-right px-4 py-3 text-lg text-red-500 w-1/3">￥{{ separateNum(Math.abs(monthly_total.income - monthly_total.outgo)) }}</div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="page_nav_btn next" v-if="(props.page + 1) === date_newArry.length">
+                                <button disabled class="arrow next disabled" as="button" @click="nextPage(props.page)"></button>
+                            </div>
+                            <div class="page_nav_btn next" v-else>
+                                <button class="arrow next" as="button" @click="nextPage(props.page)"></button>
+                            </div>
+                            <div class="page_nav_btn prev" v-if="props.page == 0">
+                                <button disabled class="arrow prev disabled" as="button" @click="prevPage(props.page)"></button>
+                            </div>
+                            <div class="page_nav_btn prev" v-else>
+                                <button class="arrow prev" as="button" @click="prevPage(props.page)"></button>
                             </div>
                         </section>
 
@@ -80,28 +98,26 @@ const separateNum = num => {
                                             </div>
                                         </div>
                                         <div>
-                                            <div v-for="item in category_totals" :key="item.id">
-                                                <div v-if="item.year + item.month === monthly_total.year + monthly_total.month">
-                                                    <div v-for="data in item.budget" class="flex flex-wrap">
-                                                        <div class="w-1/3 px-4 py-3 border-t-2 border-gray-100 font-bold text-gray-500">{{ data.secondary_category.name }}</div>
-                                                        <div class="w-1/3 px-4 py-3 border-t-2 border-gray-100 text-gray-500"></div>
-                                                        <div v-if="data.secondary_category.primary_category_id === 1" class="w-1/3 text-right px-4 py-3 text-lg text-blue-500 border-t-2 border-gray-100">￥{{ separateNum(data.price) }}</div>
-                                                        <div v-if="data.secondary_category.primary_category_id === 2" class="w-1/3 text-right px-4 py-3 text-lg text-red-500 border-t-2 border-gray-100">￥{{ separateNum(data.price) }}</div>
+                                            <div v-for="budget in category_totals['budget']">
+                                                <div class="flex flex-wrap">
+                                                    <div class="w-1/3 px-4 py-3 border-t-2 border-gray-100 font-bold text-gray-500">{{ budget["secondary_category"].name }}</div>
+                                                    <div class="w-1/3 px-4 py-3 border-t-2 border-gray-100 text-gray-500"></div>
+                                                    <div v-if="budget['secondary_category'].primary_category_id === 1" class="w-1/3 text-right px-4 py-3 text-lg text-blue-500 border-t-2 border-gray-100">￥{{ separateNum(budget.price) }}</div>
+                                                    <div v-if="budget['secondary_category'].primary_category_id === 2" class="w-1/3 text-right px-4 py-3 text-lg text-red-500 border-t-2 border-gray-100">￥{{ separateNum(budget.price) }}</div>
+                                                </div>
 
-                                                        <div class="table-auto w-full text-left whitespace-no-wrap">
-                                                        <div v-for="value in item.thirdry_category">
-                                                            <div v-if="value.thirdry_category">
-                                                                <div v-if="value.thirdry_category['secondary_category_id'] == data.secondary_category.id" class="flex">
-                                                                    <div class="w-1/3 px-4 py-3"></div>
-                                                                    <div class="w-1/3 px-4 py-3 border-t-2 border-gray-100">{{ value.thirdry_category.name }}</div>
-                                                                    <div v-if="data.secondary_category.primary_category_id === 1" class="w-1/3 text-right px-4 py-3 text-lg text-blue-500 border-t-2 border-gray-100">￥{{ separateNum(value.price) }}</div>
-                                                                    <div v-if="data.secondary_category.primary_category_id === 2" class="w-1/3 text-right px-4 py-3 text-lg text-red-500 border-t-2 border-gray-100">￥{{ separateNum(value.price) }}</div>
-                                                                </div>
+                                                    <div class="table-auto w-full text-left whitespace-no-wrap">
+                                                    <div v-for="value in category_totals['thirdry_category']">
+                                                        <div v-if="value.thirdry_category">
+                                                            <div v-if="value.thirdry_category['secondary_category_id'] == budget['secondary_category'].id" class="flex">
+                                                                <div class="w-1/3 px-4 py-3"></div>
+                                                                <div class="w-1/3 px-4 py-3 border-t-2 border-gray-100">{{ value.thirdry_category.name }}</div>
+                                                                <div v-if="budget['secondary_category'].primary_category_id === 1" class="w-1/3 text-right px-4 py-3 text-lg text-blue-500 border-t-2 border-gray-100">￥{{ separateNum(value.price) }}</div>
+                                                                <div v-if="budget['secondary_category'].primary_category_id === 2" class="w-1/3 text-right px-4 py-3 text-lg text-red-500 border-t-2 border-gray-100">￥{{ separateNum(value.price) }}</div>
                                                             </div>
                                                         </div>
-                                                        </div>
                                                     </div>
-                                                </div>
+                                                    </div>
                                             </div>
                                         </div>
                                     </div>
@@ -112,14 +128,7 @@ const separateNum = num => {
                         </div>
                         </div>
                     </div>
-                    <div class="swiper-pagination"></div>
 
-                    <div class="swiper-button-prev"></div>
-                    <div class="swiper-button-next"></div>
-                    <div class="swiper-scrollbar"></div>
-                </div>
-
-                </div>
             </div>
         </div>
     </AuthenticatedLayout>
