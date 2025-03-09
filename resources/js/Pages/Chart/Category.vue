@@ -27,12 +27,14 @@ const target = reactive({
 
 const nextPage = page => {
     target.page = page + 1;
-    Inertia.get('/category', target);
+    Inertia.get('/demo/category', target);
+    // Inertia.get('/category', target);
 }
 
 const prevPage = page => {
     target.page = page - 1;
-    Inertia.get('/category', target);
+    Inertia.get('/demo/category', target);
+    // Inertia.get('/category', target);
 }
 
 </script>

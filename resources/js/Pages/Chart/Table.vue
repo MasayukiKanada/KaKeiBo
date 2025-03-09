@@ -25,7 +25,8 @@ const isNotEmpty = obj => {
 
 const showMonthly = (year) => {
     target.total_budget_year = year;
-    Inertia.get('/table', target)
+    // Inertia.get('/table', target)
+    Inertia.get('/demo/table', target)
 }
 
 const separateNum = num => {

@@ -28,32 +28,32 @@ use App\Http\Controllers\CategoryController;
 //     ]);
 // });
 
-Route::resource('demo/items', ItemController::class)
+Route::resource('items', ItemController::class)
 ->middleware(['auth', 'verified']);
 
-Route::resource('demo/categories', CategoryController::class)
+Route::resource('categories', CategoryController::class)
 ->middleware(['auth', 'verified']);
 
-Route::get('demo/table', [ChartController::class, 'table'])
+Route::get('table', [ChartController::class, 'table'])
 ->middleware(['auth', 'verified'])->name('chart.table');
-Route::get('demo/daily', [ChartController::class, 'daily'])
+Route::get('daily', [ChartController::class, 'daily'])
 ->middleware(['auth', 'verified'])->name('chart.daily');
-Route::get('demo/category', [ChartController::class, 'category'])
+Route::get('category', [ChartController::class, 'category'])
 ->middleware(['auth', 'verified'])->name('chart.category');
 
 // //直接ダッシュボードページにアクセス
-Route::get('/demo', function () {
+Route::get('/', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/demo/dashboard', function () {
+Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/demo/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/demo/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/demo/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__.'/auth.php';
