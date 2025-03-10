@@ -6,7 +6,7 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, Head } from '@inertiajs/vue3';
 
 onMounted(() => {
     const btn = window.document.querySelector('#cat_btn');
@@ -32,6 +32,12 @@ const showingNavigationDropdown = ref(false);
 </script>
 
 <template>
+<Head>
+    <link rel="icon" href="/favicon.ico">
+    <link rel="icon" href="/android-chrome-192×192.png" type="image/png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+</Head>
+
     <div>
         <div class="min-h-screen bg-gray-100">
             <!-- Logo -->
