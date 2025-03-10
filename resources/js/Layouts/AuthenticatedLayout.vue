@@ -40,7 +40,7 @@ const showingNavigationDropdown = ref(false);
                     <div id="logo" class="shrink-0 sm:flex items-center hidden">
                         <Link :href="route('chart.daily')">
                             <ApplicationLogo
-                                class="block w-24 fill-current text-gray-800 ml-12"
+                                class="logo block fill-current text-gray-800 ml-12"
                             />
                         </Link>
                     </div>
