@@ -112,33 +112,29 @@ const prevPage = page => {
                                     <div class="mt-0 w-full mx-auto overflow-auto">
                                     <div class="table-auto w-full text-left whitespace-no-wrap">
 
-                                        <div v-for="daily_budget in items_formated['daily_budget']" class="my-8 py-4 bg-white md:px-8 px-4">
+                                        <div v-for="daily_budget in items_formated['daily_budget']" class="my-8 py-4 bg-white md:px-8 px-0">
 
-                                            <div class="flex flex-wrap">
-                                                <div class="w-3/5 px-4 py-3 text-center text-2xl font-bold border-gray-100 flex items-center">{{ changeDate(daily_budget.date) }}<span class="text-sm block mt-2">日</span><span class="px-2 py-1 bg-gray-300 rounded-md text-white font-normal text-sm ml-6 block">{{ changeDay(daily_budget.date) }}</span></div>
-                                                <div class="w-1/5 text-right px-4 py-3 text-lg text-blue-500 border-gray-100">￥{{ separateNum(daily_budget.income) }}</div>
-                                                <div class="w-1/5 text-right px-4 py-3 text-lg text-red-500 border-gray-100">￥{{ separateNum(daily_budget.outgo) }}</div>
+                                            <div class="flex">
+                                                <div class="w-4/8 px-4 py-3 text-center text-2xl font-bold border-gray-100 flex items-center">{{ changeDate(daily_budget.date) }}<span class="text-sm block mt-2">日</span><span class="px-2 py-1 bg-gray-300 rounded-md text-white font-normal text-sm ml-3 block">{{ changeDay(daily_budget.date) }}</span></div>
+                                                <div class="w-2/8 text-right px-4 py-3 text-lg text-blue-500 border-gray-100">￥{{ separateNum(daily_budget.income) }}</div>
+                                                <div class="w-2/8 text-right px-4 py-3 text-lg text-red-500 border-gray-100">￥{{ separateNum(daily_budget.outgo) }}</div>
                                             </div>
 
                                             <div class="table-auto w-full text-left whitespace-no-wrap">
                                                 <div class="thead flex">
-                                                    <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-500 text-sm bg-gray-100 rounded-tl rounded-bl text-center"></div>
-                                                    <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-500 text-sm bg-gray-100 text-center">相手方</div>
-                                                    <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-500 text-sm bg-gray-100 text-center">大カテゴリ</div>
-                                                    <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-500 text-sm bg-gray-100 text-center">対象者</div>
-                                                    <div class="w-1/5 px-4 py-3 title-font tracking-wider font-medium text-gray-500 text-sm bg-gray-100 text-center">金額</div>
+                                                    <div class="w-1/3 px-4 py-3 title-font tracking-wider font-medium text-gray-500 text-sm bg-gray-100 text-left">相手方</div>
+                                                    <div class="w-1/3 px-4 py-3 title-font tracking-wider font-medium text-gray-500 text-sm bg-gray-100 text-left">大カテゴリ</div>
+                                                    <div class="w-1/3 px-4 py-3 title-font tracking-wider font-medium text-gray-500 text-sm bg-gray-100 text-center">金額</div>
                                                 </div>
                                             </div>
 
                                             <div v-for="data in items_formated['items']" class="tbody table-auto w-full text-left whitespace-no-wrap">
                                                 <div v-if="data.date === daily_budget.date">
                                                     <Link :href="route('items.show', { item:data.id })" class="hover:opacity-70 flex">
-                                                        <div class="w-1/5 px-4 py-3 border-t-2 text-gray-500 border-gray-100"></div>
-                                                        <div class="w-1/5 px-4 py-3 border-t-2 text-gray-500 border-gray-100">{{ data.partner.name }}</div>
-                                                        <div class="w-1/5 px-4 py-3 border-t-2 text-gray-500 border-gray-100">{{ data.secondary_category.name }}</div>
-                                                        <div class="w-1/5 px-4 py-3 border-t-2 text-gray-500 border-gray-100"><span v-if="data.subject">{{ data.subject.name }}</span><span v-else>なし</span></div>
-                                                        <div v-if="data.primary_category.name === '収入'" class="w-1/5 text-right px-4 py-3 text-lg text-blue-500 border-t-2 border-gray-100">￥{{ separateNum(data.price) }}</div>
-                                                        <div v-if="data.primary_category.name === '支出'" class="w-1/5 text-right px-4 py-3 text-lg text-red-500 border-t-2 border-gray-100">￥{{ separateNum(data.price) }}</div>
+                                                        <div class="w-1/3 px-4 py-3 border-t-2 text-gray-500 border-gray-100">{{ data.partner.name }}</div>
+                                                        <div class="w-1/3 px-4 py-3 border-t-2 text-gray-500 border-gray-100">{{ data.secondary_category.name }}</div>
+                                                        <div v-if="data.primary_category.name === '収入'" class="w-1/3 text-right px-4 py-3 text-lg text-blue-500 border-t-2 border-gray-100">￥{{ separateNum(data.price) }}</div>
+                                                        <div v-if="data.primary_category.name === '支出'" class="w-1/3 text-right px-4 py-3 text-lg text-red-500 border-t-2 border-gray-100">￥{{ separateNum(data.price) }}</div>
                                                     </Link>
                                                 </div>
                                             </div>

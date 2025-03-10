@@ -34,7 +34,6 @@ const showingNavigationDropdown = ref(false);
 <template>
 <Head>
     <link rel="icon" href="/favicon.ico">
-    <link rel="icon" href="/android-chrome-192×192.png" type="image/png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 </Head>
 
@@ -83,10 +82,10 @@ const showingNavigationDropdown = ref(false);
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
-                            <div class="ml-3 md:mr-12 mr-3">
+                            <div class="ml-3 mr-1 md:mr-5">
                                 <Link as="button" :href="route('items.create')" class="flex ml-auto text-white bg-indigo-400 border-0 md:py-1 px-6 focus:outline-none hover:bg-indigo-500 rounded font-semibold">仕訳入力</Link>
                             </div>
-                            <div class="ml-3 md:mr-12 mr-3">
+                            <div class="ml-3 mr-1 md:mr-3">
                                 <Link id="cat_btn" as="button" :href="route('categories.index')" class="flex ml-auto text-white bg-gray-400 border-0 md:py-1 px-6 focus:outline-none hover:bg-gray-500 rounded font-semibold">カテゴリ管理</Link>
                             </div>
                             <!-- Settings Dropdown -->

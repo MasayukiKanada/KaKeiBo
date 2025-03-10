@@ -76,3 +76,8 @@
     -webkit-transform: rotate(-135deg);
 	transform: rotate(-135deg);
 }
+
+.table_header:hover {
+    cursor: pointer;
+    opacity: 0.7;
+}

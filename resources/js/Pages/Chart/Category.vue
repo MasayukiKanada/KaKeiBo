@@ -86,7 +86,7 @@ const prevPage = page => {
 
                         <div class="py-4 text-gray-900">
 
-                            <section class="text-gray-600 body-font my-8 py-4 md:px-8 px-4 bg-white">
+                            <section class="text-gray-600 body-font my-8 py-4 md:px-8 px-0 bg-white">
                                 <div class="container py-4 mx-auto">
                                     <div class="mt-0 w-full mx-auto overflow-auto">
                                     <div class="table-auto w-full text-left whitespace-no-wrap">
@@ -100,7 +100,7 @@ const prevPage = page => {
                                         <div>
                                             <div v-for="budget in category_totals['budget']">
                                                 <div class="flex flex-wrap">
-                                                    <div class="w-1/3 px-4 py-3 border-t-2 border-gray-100 font-bold text-gray-500">{{ budget["secondary_category"].name }}</div>
+                                                    <div class="w-1/3 px-4 py-3 border-t-2 border-gray-100 font-semibold text-gray-500">{{ budget["secondary_category"].name }}</div>
                                                     <div class="w-1/3 px-4 py-3 border-t-2 border-gray-100 text-gray-500"></div>
                                                     <div v-if="budget['secondary_category'].primary_category_id === 1" class="w-1/3 text-right px-4 py-3 text-lg text-blue-500 border-t-2 border-gray-100">￥{{ separateNum(budget.price) }}</div>
                                                     <div v-if="budget['secondary_category'].primary_category_id === 2" class="w-1/3 text-right px-4 py-3 text-lg text-red-500 border-t-2 border-gray-100">￥{{ separateNum(budget.price) }}</div>
