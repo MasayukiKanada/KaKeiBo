@@ -1,7 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
-import { reactive } from 'vue';
+import { onMounted, reactive } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import ValidationErrors from '@/Components/ValidationErrors.vue';
 
@@ -10,6 +10,10 @@ const props = defineProps({
     secondary_categories: Object,
     errors: Object,
 });
+
+onMounted(() => {
+    form.primary_category_id = 1;
+})
 
 const form = reactive({
     primary_category_id: null,
@@ -54,10 +58,12 @@ const deleteData = () => {
                                     <div class="p-2 w-full">
                                         <div class="relative">
                                             <label for="primary_category" class="leading-7 text-sm text-gray-500">収支区分<span class="text-red-500">※</span></label>
-                                            <select id="primary_category" name="primary_category" v-model="form.primary_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                                <option :value="null" disabled>選択してください</option>
-                                                <option v-for="primary_category in primary_categories" :value="primary_category.id" :key="primary_category.id">{{ primary_category.name }}</option>
-                                            </select>
+                                            <div class="multi_choice">
+                                                <input type="radio" id="primary_category1" name="primary_category" :value="1" v-model="form.primary_category_id">
+                                                <label for="primary_category1">収入</label>
+                                                <input type="radio" id="primary_category2" name="primary_category" :value="2" v-model="form.primary_category_id">
+                                                <label for="primary_category2">支出</label>
+                                            </div>
                                         </div>
                                         </div>
 
@@ -77,8 +83,8 @@ const deleteData = () => {
                                         <!-- 大カテゴリ新規作成の場合 -->
                                         <div class="p-2 w-full" v-if="form.secondary_category_id == null">
                                         <div class="relative">
-                                            <label for="secondary_category" class="leading-7 text-sm text-gray-500">大カテゴリの新規作成</label>
-                                            <input placeholder="作成する大カテゴリ名を入力してください" type="text" id="secondary_category" name="secondary_category" v-model="form.secondary_category_name" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                            <label for="secondary_category_name" class="leading-7 text-sm text-gray-500">大カテゴリの新規作成</label>
+                                            <input placeholder="作成する大カテゴリ名を入力してください" type="text" id="secondary_category_name" name="secondary_category_name" v-model="form.secondary_category_name" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                                         </div>
                                         </div>
 

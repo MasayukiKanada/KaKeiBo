@@ -64,17 +64,42 @@ class ItemController extends Controller
      */
     public function store(StoreItemRequest $request)
     {
-        Item::create([
-            'primary_category_id' => $request->primary_category_id,
-            'date' => $request->date,
-            'partner_id' => $request->partner_id,
-            'secondary_category_id' => $request->secondary_category_id,
-            'thirdry_category_id' => $request->thirdry_category_id,
-            'subject_id' => $request->subject_id,
-            'price' => $request->price,
-            'memo' => $request->memo,
-            'user_id' => $request->user_id,
-        ]);
+        if($request->partner_name) {
+            Partner::create([
+                'name' => $request->partner_name,
+            ]);
+
+            $partner = Partner::select('id')
+            ->where('name', $request->partner_name)
+            ->first();
+
+            Item::create([
+                'primary_category_id' => $request->primary_category_id,
+                'date' => $request->date,
+                'partner_id' => $partner['id'],
+                'secondary_category_id' => $request->secondary_category_id,
+                'thirdry_category_id' => $request->thirdry_category_id,
+                'subject_id' => $request->subject_id,
+                'price' => $request->price,
+                'memo' => $request->memo,
+                'user_id' => $request->user_id,
+            ]);
+
+        } else {
+
+            Item::create([
+                'primary_category_id' => $request->primary_category_id,
+                'date' => $request->date,
+                'partner_id' => $request->partner_id,
+                'secondary_category_id' => $request->secondary_category_id,
+                'thirdry_category_id' => $request->thirdry_category_id,
+                'subject_id' => $request->subject_id,
+                'price' => $request->price,
+                'memo' => $request->memo,
+                'user_id' => $request->user_id,
+            ]);
+
+        }
 
         return to_route('items.index')
         ->with([

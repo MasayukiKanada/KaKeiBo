@@ -19,12 +19,14 @@ const props = defineProps({
 onMounted(() => {
     form.date = getToday();
     form.user_id = props.user_id;
+    form.primary_category_id = 1;
 })
 
 const form = reactive({
     primary_category_id: null,
     date: null,
     partner_id: null,
+    partner_name: null,
     secondary_category_id: null,
     subject_id: null,
     price: null,
@@ -40,6 +42,7 @@ const storeItem = () => {
 const deleteData = () => {
     form.primary_category_id = null;
     form.partner_id = null;
+    form.partner_name = null;
     form.secondary_category_id = null;
     form.subject_id = null;
     form.price = null;
@@ -54,7 +57,7 @@ const isNotEmpty = obj => {
 </script>
 
 <template>
-    <Head title="Dashboard" />
+    <Head title="仕訳入力" />
 
     <AuthenticatedLayout>
         <template #header>
@@ -79,25 +82,34 @@ const isNotEmpty = obj => {
                                             <label for="date" class="leading-7 text-sm text-gray-500">日付<span class="text-red-500">※</span></label>
                                             <input type="date" id="date" name="date" v-model="form.date" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                                         </div>
-
                                         </div>
-                                        <div class="p-2 w-full">
+
+                                        <div class="p-2 w-full" v-if="form.partner_name === null">
                                         <div class="relative">
-                                            <label for="partner" class="leading-7 text-sm text-gray-500">相手先<span class="text-red-500">※</span></label>
+                                            <label for="partner" class="leading-7 text-sm text-gray-500">相手先<span class="text-red-500">※</span><span class="text-red-500 text-xs">新規作成の場合は不要</span></label>
                                             <select id="partner" name="partner" v-model="form.partner_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                                <option :value="null" disabled>選択してください</option>
+                                                <option :value="null">選択してください／空白にする</option>
                                                 <option v-for="partner in partners" :value="partner.id" :key="partner.id">{{ partner.name }}</option>
                                             </select>
+                                        </div>
+                                        </div>
+
+                                        <div class="p-2 w-full" v-if="form.partner_id === null">
+                                        <div class="relative">
+                                            <label for="partner_name" class="leading-7 text-sm text-gray-500">新規相手先</label>
+                                            <input id="partner_name" name="partner_name" v-model="form.partner_name" placeholder="追加する相手先を入力してください" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                                         </div>
                                         </div>
 
                                         <div class="p-2 w-full">
                                         <div class="relative">
                                             <label for="primary_category" class="leading-7 text-sm text-gray-500">収支区分<span class="text-red-500">※</span></label>
-                                            <select id="primary_category" name="primary_category" v-model="form.primary_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                                <option :value="null" disabled>選択してください</option>
-                                                <option v-for="primary_category in primary_categories" :value="primary_category.id" :key="primary_category.id">{{ primary_category.name }}</option>
-                                            </select>
+                                            <div class="multi_choice">
+                                                <input type="radio" id="primary_category1" name="primary_category" :value="1" v-model="form.primary_category_id">
+                                                <label for="primary_category1">収入</label>
+                                                <input type="radio" id="primary_category2" name="primary_category" :value="2" v-model="form.primary_category_id">
+                                                <label for="primary_category2">支出</label>
+                                            </div>
                                         </div>
                                         </div>
 
