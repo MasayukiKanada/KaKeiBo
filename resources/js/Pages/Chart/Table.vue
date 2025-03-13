@@ -2,8 +2,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import { reactive, onMounted } from 'vue'
-import { getToday } from '@/common'
-import Checkbox from '@/Components/Checkbox.vue';
 import { Inertia } from '@inertiajs/inertia';
 
 const props = defineProps({
@@ -73,7 +71,7 @@ const separateNum = num => {
                                                     <div class="w-1/4 px-4 py-3 title-font tracking-wider font-medium text-gray-500 text-sm bg-gray-100 text-center">小計</div>
                                                 </div>
                                             </div>
-                                            <div class="tbody overflow-x-scroll">
+                                            <div class="tbody overflow-x-scroll border-b-8 border-gray-100">
                                                 <div v-for="monthly_total_budget in monthly_total_budgets" class="flex">
                                                     <div class="w-1/4 px-4 py-3 text-center border-t-2 border-gray-100 text-gray-500 font-semibold">{{ monthly_total_budget.month }}月</div>
                                                     <div class="w-1/4 text-right px-4 py-3 text-lg text-blue-500 border-t-2 border-gray-100">￥{{ separateNum(monthly_total_budget.income) }}</div>
