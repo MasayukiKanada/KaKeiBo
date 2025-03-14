@@ -1,8 +1,9 @@
 import './swiper';
 import './bootstrap';
+// import './autoComplete';
 import '../css/app.css';
 import '../css/swiper.css';
-import '../css/style.css'
+import '../css/style.css';
 
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/inertia-vue3';

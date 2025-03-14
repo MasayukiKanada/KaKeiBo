@@ -11,6 +11,7 @@ use App\Models\Subject;
 use App\Models\PrimaryCategory;
 use App\Models\SecondaryCategory;
 use App\Models\ThirdryCategory;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 // use App\Models\User;
 // use Illuminate\Support\Facades\DB;
@@ -64,6 +65,7 @@ class ItemController extends Controller
      */
     public function store(StoreItemRequest $request)
     {
+
         if($request->partner_name) {
             Partner::create([
                 'name' => $request->partner_name,

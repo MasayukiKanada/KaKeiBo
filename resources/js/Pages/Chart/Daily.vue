@@ -3,7 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { onMounted, reactive } from 'vue';
 import FlashMessage from '@/Components/FlashMessage.vue';
-import { Inertia } from '@inertiajs/inertia';
+import { Inertia, useInertia } from '@inertiajs/inertia';
 
 const props = defineProps({
     page: Number,
