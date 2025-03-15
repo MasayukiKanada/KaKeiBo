@@ -1,6 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
+import '@/accordion';
 
 const props = defineProps({
     total_budgets : Object,
@@ -10,28 +11,6 @@ const props = defineProps({
 const separateNum = num => {
     return String(num).replace( /(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
 }
-
-window.addEventListener('load', function() {
-    const buttons = document.querySelectorAll('.accordion_button');
-
-    buttons.forEach((button) => {
-    button.addEventListener('click', (e) => {
-        const body = e.currentTarget.nextElementSibling;
-        const thead = body.children[0];
-        const theadHeight = thead.offsetHeight;
-        const menu = e.currentTarget.parentNode;
-        menu.classList.toggle('open');
-
-        //条件分岐で開閉を切り替える
-        if(menu.classList.contains('open')) {
-        body.style.height = theadHeight + 'px';
-        } else {
-        body.style.height = 0;
-        }
-    });
-    });
-
-});
 
 </script>
 
