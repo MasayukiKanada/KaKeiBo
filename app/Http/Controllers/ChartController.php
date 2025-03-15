@@ -7,23 +7,24 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
 use App\Models\Item;
 use App\Services\ChartService;
-use PHPUnit\Framework\Constraint\Count;
-use SebastianBergmann\CodeCoverage\Report\Xml\Totals;
 
 class ChartController extends Controller
 {
-    public function table(Request $request)
+    public function table()
     {
-        //１，URLパラメータから詳細表示させる年を取得
-        $year = $request->total_budget_year;
+        //１，Itemモデルからフォーマット化した日付を取得
+        $date_list = Item::query()
+        ->select(DB::raw('DATE_FORMAT(date, "%Y%m") as date'))
+        ->groupBy(DB::raw('DATE_FORMAT(date, "%Y%m")'))
+        ->orderBy('date', 'desc')
+        ->get();
 
         //２以降サービスへ切り離した配列を受け取り、変数に代入
-        list($total_budgets, $monthly_total_budgets) = ChartService::totalBudgets($year);
+        list($total_budgets, $monthly_total_budgets) = ChartService::totalBudgets($date_list);
 
         return Inertia::render('Chart/Table', [
             'total_budgets' => $total_budgets,
             'monthly_total_budgets' => $monthly_total_budgets,
-            'year' => $year,
         ]);
     }
 

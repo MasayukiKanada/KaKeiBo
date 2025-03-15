@@ -96,6 +96,19 @@
     opacity: 0.7;
 }
 
+.accordion_button {
+    appearance: none;
+    text-align: inherit;
+    width: 100%;
+}
+
+.accordion_body {
+    height: 0;
+    overflow: hidden;
+    transition: all 0.5s;
+}
+
+
 /**収支表**/
 
 

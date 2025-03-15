@@ -6,9 +6,15 @@ use App\Models\Item;
 
 class ChartService
 {
-    public static function totalBudgets($year)
+    public static function totalBudgets($date_list)
     {
-        //２，各年の収入と支出の合計を取得
+        //２，１の日付を更に['year']['month']に分割して新しい配列に代入
+        for($i=0; $i < count($date_list); $i++) {
+            $date_newArry[$i]['year'] = substr($date_list[$i]->date, 0, 4);
+            $date_newArry[$i]['month'] = substr($date_list[$i]->date, 4);
+        }
+
+        //３，各年の収入と支出の合計を取得
         $total_budgets = Item::query()
         ->select(DB::raw("
         SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS income,
@@ -18,16 +24,21 @@ class ChartService
         ->orderBy('year', 'desc')
         ->get();
 
-        //３，１で取得した年に含まれる各月の収入と支出の合計を取得
-        $monthly_total_budgets = Item::query()
-        ->select(DB::raw("
-        SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS income,
-        SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgo"),
-        DB::raw('MONTH(date) as month'))
-        ->whereYear('date', $year)
-        ->groupBy(DB::raw('MONTH(date)'))
-        ->orderBy('month', 'desc')
-        ->get();
+        //４，月毎の収入と支出の合計を取得、更にその月に対応する日付を['year']['month']に代入
+        for($i=0; $i < count($date_newArry); $i++) {
+            $monthly_total_budgets[$i]['total'] = Item::query()
+            ->select(DB::raw("
+            SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS income,
+            SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgo"),
+            DB::raw('DATE_FORMAT(date, "%Y%m") as date'))
+            ->whereYear('date', $date_newArry[$i]['year'])
+            ->whereMonth('date', $date_newArry[$i]['month'])
+            ->groupBy(DB::raw('DATE_FORMAT(date, "%Y%m")'))
+            ->orderBy('date', 'desc')
+            ->get();
+            $monthly_total_budgets[$i]['year'] = $date_newArry[$i]['year'];
+            $monthly_total_budgets[$i]['month'] = $date_newArry[$i]['month'];
+        }
 
         return [$total_budgets, $monthly_total_budgets];
     }
