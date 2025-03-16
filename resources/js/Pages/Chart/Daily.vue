@@ -65,10 +65,10 @@ const prevPage = page => {
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="overflow-hidden sm:rounded-lg">
 
                         <div v-for="monthly_total in monthly_totals">
-                        <section class="total_table text-gray-500 body-font bg-white py-8">
+                        <section class="total_table text-gray-500 body-font shadow-sm bg-white py-8">
                             <div class="container mx-auto">
                                 <FlashMessage />
                                 <div class="mt-2 w-full mx-auto overflow-auto">
@@ -112,7 +112,7 @@ const prevPage = page => {
                                     <div class="mt-0 w-full mx-auto overflow-auto">
                                     <div class="table-auto w-full text-left whitespace-no-wrap">
 
-                                        <div v-for="daily_budget in items_formated['daily_budget']" class="my-8 py-4 bg-white md:px-8 px-0">
+                                        <div v-for="daily_budget in items_formated['daily_budget']" class="my-8 py-4 bg-white md:px-8 px-0 shadow-sm">
 
                                             <div class="flex">
                                                 <div class="w-4/8 px-4 py-3 text-center text-2xl font-bold border-gray-100 flex items-center">{{ changeDate(daily_budget.date) }}<span class="text-sm block mt-2">日</span><span class="px-2 py-1 bg-gray-300 rounded-md text-white font-normal text-sm ml-3 block">{{ changeDay(daily_budget.date) }}</span></div>

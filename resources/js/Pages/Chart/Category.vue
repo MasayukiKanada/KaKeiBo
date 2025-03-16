@@ -44,10 +44,10 @@ const prevPage = page => {
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="overflow-hidden sm:rounded-lg">
 
                         <div v-for="monthly_total in monthly_totals">
-                            <section class="total_table text-gray-500 body-font bg-white py-8">
+                            <section class="total_table text-gray-500 body-font shadow-sm bg-white py-8">
                             <div class="container mx-auto">
                                 <FlashMessage />
                                 <div class="mt-2 w-full mx-auto overflow-auto">
@@ -86,7 +86,7 @@ const prevPage = page => {
 
                         <div class="py-4 text-gray-900">
 
-                            <section class="text-gray-600 body-font my-8 py-4 md:px-8 px-0 bg-white">
+                            <section class="text-gray-600 body-font my-8 py-4 md:px-8 px-0 bg-white shadow-sm">
                                 <div class="container py-4 mx-auto">
                                     <div class="mt-0 w-full mx-auto overflow-auto">
                                     <div class="table-auto w-full text-left whitespace-no-wrap">
