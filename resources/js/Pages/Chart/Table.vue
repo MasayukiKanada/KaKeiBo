@@ -38,7 +38,7 @@ const ChangeMonth = month => {
                                 </div>
                             </div>
 
-                            <div class="tbody">
+                            <div class="tbody hidden md:block">
                                 <div v-for="total_budget in total_budgets" :key="total_budget.id">
                                     <div class="table_header flex flex-wrap accordion_button">
                                         <div class="w-1/4 px-4 py-3 text-center border-t-2 border-gray-100 text-gray-500 font-bold">{{ total_budget.year }}年</div>
@@ -64,6 +64,34 @@ const ChangeMonth = month => {
 
                                 </div>
                             </div>
+
+                            <div class="tbody md:hidden">
+                                <details v-for="total_budget in total_budgets" :key="total_budget.id" class="details">
+                                    <summary class="table_header flex flex-wrap details-summary">
+                                        <div class="w-1/4 px-4 py-3 text-center border-t-2 border-gray-100 text-gray-500 font-bold">{{ total_budget.year }}年</div>
+                                        <div class="w-1/4 text-right px-4 py-3 text-lg text-blue-500 border-t-2 border-gray-100">￥{{ separateNum(total_budget.income) }}</div>
+                                        <div class="w-1/4 text-right px-4 py-3 text-lg text-red-500 border-t-2 border-gray-100">￥{{ separateNum(total_budget.outgo) }}</div>
+                                        <div v-if="total_budget.income - total_budget.outgo > 0" class="w-1/4 px-4 py-3 text-right text-lg text-blue-500 border-t-2 border-gray-100">￥{{ separateNum(total_budget.income - total_budget.outgo) }}</div>
+                                        <div v-if="total_budget.income - total_budget.outgo < 0" class="w-1/4 px-4 py-3 text-right text-lg text-red-500 border-t-2 border-gray-100">￥{{ separateNum(Math.abs(total_budget.income - total_budget.outgo)) }}</div>
+                                    </summary>
+
+                                    <div class="table_body details-content">
+                                        <div class="tbody monthly_table sm:overflow-x-auto overflow-x-scroll border-gray-100 bg-gray-100">
+                                            <div v-for="monthly_total_budget in monthly_total_budgets">
+                                                <div v-if="total_budget.year == monthly_total_budget.year" class="flex">
+                                                    <div class="w-1/4 px-4 py-3 text-center border-t-2 border-gray-100 text-gray-500 font-semibold">{{ ChangeMonth(monthly_total_budget.month) }}月</div>
+                                                    <div class="w-1/4 text-right px-4 py-3 text-lg text-blue-500 border-t-2 border-gray-100">￥{{ separateNum(monthly_total_budget.total[0].income) }}</div>
+                                                    <div class="w-1/4 text-right px-4 py-3 text-lg text-red-500 border-t-2 border-gray-100">￥{{ separateNum(monthly_total_budget.total[0].outgo) }}</div>
+                                                    <div v-if="monthly_total_budget.total[0].income - monthly_total_budget.total[0].outgo > 0" class="w-1/4 px-4 py-3 text-right text-lg text-blue-500 border-t-2 border-gray-100">￥{{ separateNum(monthly_total_budget.total[0].income - monthly_total_budget.total[0].outgo) }}</div>
+                                                    <div v-if="monthly_total_budget.total[0].income - monthly_total_budget.total[0].outgo < 0" class="w-1/4 px-4 py-3 text-right text-lg text-red-500 border-t-2 border-gray-100">￥{{ separateNum(Math.abs(monthly_total_budget.total[0].income - monthly_total_budget.total[0].outgo)) }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </details>
+                            </div>
+
                         </div>
                     </div>
                 </div>
