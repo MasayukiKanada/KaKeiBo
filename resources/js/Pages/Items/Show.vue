@@ -14,6 +14,11 @@ const deleteItem = id => {
     });
 }
 
+const changeDay = date => {
+    return new Date(date).toLocaleDateString("ja-JP", {year: "numeric",month: "2-digit",
+    day: "2-digit"}).replace('-', '/');
+}
+
 </script>
 
 <template>
@@ -39,7 +44,7 @@ const deleteItem = id => {
                                         <div class="relative">
                                             <label for="date" class="leading-7 text-sm text-gray-500">日付</label>
                                             <div type="date" id="date" name="date" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                                {{ props.item[0].date }}
+                                                {{ changeDay(props.item[0].date) }}
                                             </div>
                                         </div>
                                         </div>
