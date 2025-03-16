@@ -1,5 +1,5 @@
+@import '/node_modules/@tarekraafat/autocomplete.js/dist/css/autoComplete.02.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-

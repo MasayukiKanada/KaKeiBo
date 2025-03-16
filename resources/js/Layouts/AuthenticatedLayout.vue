@@ -6,7 +6,7 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, Head } from '@inertiajs/vue3';
 
 onMounted(() => {
     const btn = window.document.querySelector('#cat_btn');
@@ -32,6 +32,11 @@ const showingNavigationDropdown = ref(false);
 </script>
 
 <template>
+<Head>
+    <link rel="icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+</Head>
+
     <div>
         <div class="min-h-screen bg-gray-100">
             <!-- Logo -->
@@ -40,7 +45,7 @@ const showingNavigationDropdown = ref(false);
                     <div id="logo" class="shrink-0 sm:flex items-center hidden">
                         <Link :href="route('chart.daily')">
                             <ApplicationLogo
-                                class="block w-24 fill-current text-gray-800 ml-12"
+                                class="logo block fill-current text-gray-800 ml-12"
                             />
                         </Link>
                     </div>
@@ -77,10 +82,10 @@ const showingNavigationDropdown = ref(false);
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
-                            <div class="ml-3 md:mr-12 mr-3">
+                            <div class="ml-3 mr-1 md:mr-5">
                                 <Link as="button" :href="route('items.create')" class="flex ml-auto text-white bg-indigo-400 border-0 md:py-1 px-6 focus:outline-none hover:bg-indigo-500 rounded font-semibold">仕訳入力</Link>
                             </div>
-                            <div class="ml-3 md:mr-12 mr-3">
+                            <div class="ml-3 mr-1 md:mr-3">
                                 <Link id="cat_btn" as="button" :href="route('categories.index')" class="flex ml-auto text-white bg-gray-400 border-0 md:py-1 px-6 focus:outline-none hover:bg-gray-500 rounded font-semibold">カテゴリ管理</Link>
                             </div>
                             <!-- Settings Dropdown -->

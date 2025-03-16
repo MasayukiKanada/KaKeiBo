@@ -26,7 +26,7 @@ class StoreItemRequest extends FormRequest
         return [
             'primary_category_id' => ['required'],
             'date' => ['required'],
-            'partner_id' => ['required'],
+            'partner_name' => ['max:100'],
             'secondary_category_id' => ['required'],
             'price' => ['required', 'numeric'],
             'user_id' => ['required'],

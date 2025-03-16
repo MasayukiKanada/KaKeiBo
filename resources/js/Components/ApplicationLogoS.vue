@@ -1,5 +1,5 @@
 <template>
     <div>
-        <img src="/images/logo.png" alt="KaKeiBoのロゴ">
+        <img src="/images/logo_sm.png" alt="KaKeiBoのロゴ">
     </div>
 </template>

@@ -1,7 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
-import '@/accordion';
 
 const props = defineProps({
     total_budgets : Object,
@@ -11,6 +10,30 @@ const props = defineProps({
 const separateNum = num => {
     return String(num).replace( /(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
 }
+
+window.addEventListener('load', function() {
+    const buttons = document.querySelectorAll('.accordion_button');
+
+    buttons.forEach((button) => {
+    button.addEventListener('click', (e) => {
+        const body = e.currentTarget.nextElementSibling;
+        const thead = body.children[0];
+        const theadHeight = thead.offsetHeight;
+        const tbody = body.children[1];
+        const tbodyHeight = tbody.offsetHeight;
+        const menu = e.currentTarget.parentNode;
+        menu.classList.toggle('open');
+
+        //条件分岐で開閉を切り替える
+        if(menu.classList.contains('open')) {
+        body.style.height = theadHeight + tbodyHeight + 'px';
+        } else {
+        body.style.height = 0;
+        }
+    });
+    });
+
+});
 
 </script>
 
@@ -44,6 +67,14 @@ const separateNum = num => {
                                     </div>
 
                                     <div class="table_body accordion_body">
+                                        <div class="thead">
+                                            <div class="flex">
+                                                <div class="w-1/4 px-4 py-3 title-font tracking-wider font-medium text-gray-500 text-sm bg-gray-100 rounded-tl rounded-bl text-center">月</div>
+                                                <div class="w-1/4 px-4 py-3 title-font tracking-wider font-medium text-gray-500 text-sm bg-gray-100 text-center">収入</div>
+                                                <div class="w-1/4 px-4 py-3 title-font tracking-wider font-medium text-gray-500 text-sm bg-gray-100 text-center">支出</div>
+                                                <div class="w-1/4 px-4 py-3 title-font tracking-wider font-medium text-gray-500 text-sm bg-gray-100 text-center">小計</div>
+                                            </div>
+                                        </div>
                                         <div class="tbody monthly_table sm:overflow-x-auto overflow-x-scroll border-gray-100 bg-gray-100">
                                             <div v-for="monthly_total_budget in monthly_total_budgets">
                                                 <div v-if="total_budget.year == monthly_total_budget.year" class="flex">

@@ -14,6 +14,17 @@ class Partner extends Model
         'name',
     ];
 
+    public function scopeSearchPartners($query, $input = null)
+    {
+        if(!empty($input)) {
+            if(Partner::where('name', 'like', $input . '%')
+            ->exists())
+            {
+                return $query->where('name', 'like', $input . '%');
+            }
+        }
+    }
+
     public function item() {
         return $this->hasMany(Item::class);
     }
