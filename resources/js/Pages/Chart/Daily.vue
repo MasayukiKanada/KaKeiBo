@@ -48,12 +48,12 @@ const target = reactive({
 
 const nextPage = page => {
     target.page = page + 1;
-    Inertia.get('/daily', target);
+    Inertia.get(route('chart.daily'), target);
 }
 
 const prevPage = page => {
     target.page = page - 1;
-    Inertia.get('/daily', target);
+    Inertia.get(route('chart.daily'), target);
 }
 
 </script>

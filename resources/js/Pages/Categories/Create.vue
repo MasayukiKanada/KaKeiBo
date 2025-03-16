@@ -23,7 +23,7 @@ const form = reactive({
 })
 
 const storeCategory = () => {
- Inertia.post('/categories', form)
+ Inertia.post(route('categories.index'), form)
 }
 
 const deleteData = () => {

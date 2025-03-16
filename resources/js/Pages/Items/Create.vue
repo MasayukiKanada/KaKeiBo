@@ -37,7 +37,7 @@ const form = reactive({
 })
 
 const storeItem = () => {
- Inertia.post('/items', form)
+ Inertia.post(route('items.index'), form)
 }
 
 const deleteData = () => {
