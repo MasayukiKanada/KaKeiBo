@@ -64,7 +64,7 @@ const getData = async() => {
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg md:p-8 p-0">
                     <form @submit.prevent="getData">
-                        <div class="flex items-center w-fit mx-auto">
+                        <div class="flex items-center w-fit mx-auto mt-8 md:mt-2">
                             <select id="year" name="year" v-model="form.year" class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-8 leading-8 transition-colors duration-200 ease-in-out mr-1">
                                 <option :value="null">全期間</option>
                                 <option v-for="year in year_list" :value="year['year']" :key="year['year']">{{ year['year'] }}</option>
