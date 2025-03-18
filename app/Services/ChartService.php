@@ -30,10 +30,10 @@ class ChartService
             ->select(DB::raw("
             SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS income,
             SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgo"),
-            DB::raw('DATE_FORMAT(date, "%Y%m") as date'))
+            DB::raw('DATE_FORMAT(date, "%Y%c") as date'))
             ->whereYear('date', $date_newArry[$i]['year'])
             ->whereMonth('date', $date_newArry[$i]['month'])
-            ->groupBy(DB::raw('DATE_FORMAT(date, "%Y%m")'))
+            ->groupBy(DB::raw('DATE_FORMAT(date, "%Y%c")'))
             ->orderBy('date', 'desc')
             ->get();
             $monthly_total_budgets[$i]['year'] = $date_newArry[$i]['year'];
@@ -93,7 +93,7 @@ class ChartService
         DB::raw('subject_id'),
         DB::raw('price')
         )
-        ->where(DB::raw('DATE_FORMAT(date, "%Y%m")'), $date_newArry[$page]['year'].$date_newArry[$page]['month'])
+        ->where(DB::raw('DATE_FORMAT(date, "%Y%c")'), $date_newArry[$page]['year'].$date_newArry[$page]['month'])
         ->orderBy('id','desc','date_format', 'desc')
         ->get();
         $items_formated['daily_budget'] = Item::query()

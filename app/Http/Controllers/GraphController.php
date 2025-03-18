@@ -60,13 +60,13 @@ class GraphController extends Controller
         if(isset($category_id)) {
             $data = Item::with('secondary_category')
             ->yearMonth($year, $month)
-            ->select('name')
+            ->select('secondary_category_id')
             ->where('secondary_category_id', $category_id)
-            ->selectRaw('SUM(price) as price')
+            ->selectRaw('SUM(price) as total')
             ->groupBy('secondary_category_id')
             ->get();
 
-            dd($data);
+            dd($data, $data->pluck('total'));
         }
 
         // dd($labels, $totals);
