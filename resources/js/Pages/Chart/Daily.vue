@@ -18,11 +18,6 @@ const changeDate = date => {
    return dateObject.getDate();
 }
 
-const ChangeMonth = month => {
-    let monthObject = new Date(month);
-    return monthObject.getMonth() + 1;
-}
-
 const days = [
     "日曜日",
     "月曜日",

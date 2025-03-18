@@ -72,11 +72,14 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink :href="route('chart.category')" :active="route().current('chart.category')">
                                     カテゴリ別
                                 </NavLink>
-                                <NavLink :href="route('chart.table')" :active="route().current('chart.table')">
-                                    収支表
+                                <NavLink :href="route('chart.index')" :active="route().current('chart.index')">
+                                    チャート
                                 </NavLink>
                                 <NavLink :href="route('items.index')" :active="route().current('items.index')">
                                     仕訳一覧
+                                </NavLink>
+                                <NavLink :href="route('graph')" :active="route().current('graph')">
+                                    グラフ
                                 </NavLink>
                             </div>
                         </div>
@@ -170,8 +173,8 @@ const showingNavigationDropdown = ref(false);
                         <ResponsiveNavLink :href="route('chart.category')" :active="route().current('chart.category')">
                             カテゴリ別
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('chart.table')" :active="route().current('chart.table')">
-                            収支表
+                        <ResponsiveNavLink :href="route('chart.index')" :active="route().current('chart.index')">
+                            チャート
                         </ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('items.index')" :active="route().current('items.index')">
                             仕訳一覧

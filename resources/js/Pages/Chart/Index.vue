@@ -1,33 +1,93 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
+import { reactive, onMounted } from 'vue'
+import { getThisYear } from '@/common';
+import { getThisMonth } from '@/common';
+import axios from 'axios';
+import Chart from '@/Components/Chart.vue';
 import '@/accordion';
 
 const props = defineProps({
     total_budgets : Object,
     monthly_total_budgets : Object,
+    year_list: Object,
+    month_list: Object,
 });
 
 const separateNum = num => {
     return String(num).replace( /(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
 }
 
-const ChangeMonth = month => {
-    let monthObject = new Date(month);
-    return monthObject.getMonth() + 1;
+onMounted(() => {
+    form.year = getThisYear();
+    form.month = getThisMonth();
+})
+
+const form = reactive({
+    year: null,
+    month: null,
+})
+
+const data = reactive({})
+
+const getData = async() => {
+    try {
+        await axios.get('/api/chart', {
+            params: {
+                year: form.year,
+                month: form.month,
+            }
+        })
+        .then( res => {
+            data.data = res.data.data
+            data.labels = res.data.labels
+            data.totals = res.data.totals
+            data.incomes = res.data.incomes
+            data.outgoes = res.data.outgoes
+            // console.log(res.data);
+        })
+    } catch (e) {
+        console.log(e.message)
+    }
 }
+
 
 </script>
 
 <template>
-    <Head title="収支表" />
+    <Head title="チャート" />
 
     <AuthenticatedLayout>
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg md:p-8 p-0">
-                    <div class="mt-8 w-full mx-auto overflow-auto">
+                    <form @submit.prevent="getData">
+                        <div class="flex items-center w-fit mx-auto">
+                            <select id="year" name="year" v-model="form.year" class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-8 leading-8 transition-colors duration-200 ease-in-out mr-1">
+                                <option :value="null">全期間</option>
+                                <option v-for="year in year_list" :value="year['year']" :key="year['year']">{{ year['year'] }}</option>
+                            </select>
+                            <label for="year" class="leading-7 font-semibold text-sm text-gray-500 mr-5">年</label>
+
+                            <div v-for="year in year_list">
+                                <div v-if="year['year'] === form.year">
+                                    <select id="month" name="month" v-model="form.month" class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-8 leading-8 transition-colors duration-200 ease-in-out mr-1">
+                                        <option :value="null">全期間</option>
+                                        <option v-for="month in year['month']" :value="month['month']" :key="month['month']">{{ month['month'] }}</option>
+                                    </select>
+                                    <label for="month" class="leading-7 font-semibold text-sm text-gray-500">月</label>
+                                </div>
+                            </div>
+                        </div>
+
+                    <button class="mt-4 mb-8 flex mx-auto text-white bg-indigo-400 border-0 py-2 sm:px-5 px-5 focus:outline-none hover:bg-indigo-500 rounded text-md">グラフを表示する</button>
+                    </form>
+
+                    <Chart :data="data"/>
+
+                    <div class="mt-12 w-full mx-auto overflow-auto">
                         <div class="table-auto w-full text-left whitespace-no-wrap">
                             <div class="thead">
                                 <div class="flex">

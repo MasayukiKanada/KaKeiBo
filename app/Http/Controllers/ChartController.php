@@ -10,21 +10,23 @@ use App\Services\ChartService;
 
 class ChartController extends Controller
 {
-    public function table()
+    public function index()
     {
         //１，Itemモデルからフォーマット化した日付を取得
         $date_list = Item::query()
-        ->select(DB::raw('DATE_FORMAT(date, "%Y%m") as date'))
-        ->groupBy(DB::raw('DATE_FORMAT(date, "%Y%m")'))
+        ->select(DB::raw('DATE_FORMAT(date, "%Y%c") as date'))
+        ->groupBy(DB::raw('DATE_FORMAT(date, "%Y%c")'))
         ->orderBy('date', 'desc')
         ->get();
 
         //２以降サービスへ切り離した配列を受け取り、変数に代入
-        list($total_budgets, $monthly_total_budgets) = ChartService::totalBudgets($date_list);
+        list($total_budgets, $monthly_total_budgets, $year_list, $month_list) = ChartService::totalBudgets($date_list);
 
-        return Inertia::render('Chart/Table', [
+        return Inertia::render('Chart/Index', [
             'total_budgets' => $total_budgets,
             'monthly_total_budgets' => $monthly_total_budgets,
+            'year_list' => $year_list,
+            'month_list' => $month_list,
         ]);
     }
 
@@ -38,8 +40,8 @@ class ChartController extends Controller
 
         //１，Itemモデルからフォーマット化した日付を取得
         $date_list = Item::query()
-        ->select(DB::raw('DATE_FORMAT(date, "%Y%m") as date'))
-        ->groupBy(DB::raw('DATE_FORMAT(date, "%Y%m")'))
+        ->select(DB::raw('DATE_FORMAT(date, "%Y%c") as date'))
+        ->groupBy(DB::raw('DATE_FORMAT(date, "%Y%c")'))
         ->orderBy('date', 'desc')
         ->get();
 
@@ -70,8 +72,8 @@ class ChartController extends Controller
 
         //１，Itemモデルからフォーマット化した日付を取得
         $date_list = Item::query()
-        ->select(DB::raw('DATE_FORMAT(date, "%Y%m") as date'))
-        ->groupBy(DB::raw('DATE_FORMAT(date, "%Y%m")'))
+        ->select(DB::raw('DATE_FORMAT(date, "%Y%c") as date'))
+        ->groupBy(DB::raw('DATE_FORMAT(date, "%Y%c")'))
         ->orderBy('date', 'desc')
         ->get();
 

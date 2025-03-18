@@ -8,6 +8,22 @@ const getToday = () => {
 
 export { getToday }
 
+const getThisYear = () => {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    return yyyy;
+}
+
+export { getThisYear }
+
+const getThisMonth = () => {
+    const today = new Date();
+    const mm = today.getMonth() + 1;
+    return mm;
+}
+
+export { getThisMonth }
+
 const nl2br = (str) => {
     var res = str.replace(/\r\n/g, "<br>");
     res = res.replace(/(\n|\r)/g, "<br>");

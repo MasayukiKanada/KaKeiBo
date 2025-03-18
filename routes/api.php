@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Partner;
+use App\Http\Controllers\Api\ChartController;
+use App\Http\Controllers\ChartController as ControllersChartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,3 +26,6 @@ Route::middleware('auth:sanctum')
     return Partner::searchPartners($request->search)
     ->select('id', 'name')->get();
 });
+
+Route::middleware('auth:sanctum')->get('/chart', [ChartController::class, 'chart'])
+->name('api.chart');
