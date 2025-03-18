@@ -14,8 +14,8 @@ class GraphController extends Controller
     public function graph ()
     {
         $year = 2025;
-        // $month = 03;
-        $month = null;
+        $month = 03;
+        // $month = null;
         $category_id = 1;
 
         if(is_null($month) && isset($year)) {
@@ -54,19 +54,45 @@ class GraphController extends Controller
             ->get();
         }
 
-        $labels = $data->pluck('date');
-        $totals = $data->pluck('total');
+        // $labels = $data->pluck('date');
+        // $totals = $data->pluck('total');
 
+        $date_list = Item::query()
+        ->select(DB::raw('DATE_FORMAT(date, "%Y%c") as date'))
+        ->groupBy(DB::raw('DATE_FORMAT(date, "%Y%c")'))
+        ->whereYear('date', $year)
+        ->orderBy('date', 'desc')
+        ->get();
+
+        for($i=0; $i < count($date_list); $i++) {
+            $date_newArry[$i]['year'] = substr($date_list[$i]->date, 0, 4);
+            $date_newArry[$i]['month'] = substr($date_list[$i]->date, 4);
+        }
+
+        //カテゴリ毎の該当期間のグラフ
         if(isset($category_id)) {
-            $data = Item::with('secondary_category')
-            ->yearMonth($year, $month)
-            ->select('secondary_category_id')
-            ->where('secondary_category_id', $category_id)
-            ->selectRaw('SUM(price) as total')
-            ->groupBy('secondary_category_id')
-            ->get();
+            //月の合計金額を取得
+            for($i=0; $i < count($date_newArry); $i++) {
+                $categories[$i]['month'] = $date_newArry[$i]['month'];
+                $categories[$i]['obj'] =  Item::with('secondary_category')
+                ->select('secondary_category_id')
+                ->where('secondary_category_id', $category_id)
+                ->whereMonth('date', $date_newArry[$i]['month'])
+                ->selectRaw('SUM(price) as total')
+                ->groupBy('secondary_category_id')
+                ->get();
+            }
 
-            dd($data, $data->pluck('total'));
+            $categories_collect = collect($categories);
+
+            for($i=0; $i < count($date_newArry); $i++) {
+                $totals[$i] =  $categories[$i]['obj']->pluck('total');
+            }
+
+            $totals_collect = collect($totals);
+
+            dd($categories_collect->pluck('month'),$totals_collect);
+
         }
 
         // dd($labels, $totals);

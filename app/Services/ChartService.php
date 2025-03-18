@@ -44,7 +44,7 @@ class ChartService
         $year_list = Item::query()
         ->select(DB::raw('YEAR(date) as year'))
         ->groupBy(DB::raw('YEAR(date)'))
-        ->orderBy('year', 'asc')
+        ->orderBy('year', 'desc')
         ->get();
 
         for($i=0; $i<count($year_list); $i++) {
@@ -52,7 +52,7 @@ class ChartService
             ->select(DB::raw('MONTH(date) as month'))
             ->whereYear('date', $year_list[$i]['year'])
             ->groupBy(DB::raw('MONTH(date)'))
-            ->orderBy('month', 'asc')
+            ->orderBy('month', 'desc')
             ->get();
         }
 
@@ -60,7 +60,7 @@ class ChartService
         $month_list = Item::query()
         ->select(DB::raw('MONTH(date) as month'))
         ->groupBy(DB::raw('MONTH(date)'))
-        ->orderBy('month', 'asc')
+        ->orderBy('month', 'desc')
         ->get();
 
         return [$total_budgets, $monthly_total_budgets, $year_list, $month_list];
@@ -157,7 +157,7 @@ class ChartService
         SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) - SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) as totals"),
         DB::raw('DATE_FORMAT(date, "%c月%e日") as date'))
         ->groupBy(DB::raw('date'))
-        ->orderBy('date', 'asc')
+        ->orderBy('date', 'desc')
         ->get();
 
         $labels = $data->pluck('date');
