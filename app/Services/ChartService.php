@@ -157,7 +157,7 @@ class ChartService
         SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) - SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) as totals"),
         DB::raw('DATE_FORMAT(date, "%c月%e日") as date'))
         ->groupBy(DB::raw('date'))
-        ->orderBy('date', 'desc')
+        ->orderByRaw('CAST(date as SIGNED) asc')
         ->get();
 
         $labels = $data->pluck('date');

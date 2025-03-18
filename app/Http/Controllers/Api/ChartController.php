@@ -29,8 +29,8 @@ class ChartController extends Controller
             SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS incomes,
             SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgoes,
             SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) - SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) as totals"),
-            DB::raw('YEAR(date) as date'))
-            ->groupBy(DB::raw('YEAR(date)'))
+            DB::raw('DATE_FORMAT(date, "%Y年") as date'))
+            ->groupBy(DB::raw('DATE_FORMAT(date, "%Y年")'))
             ->orderBy('date', 'asc')
             ->get();
 
