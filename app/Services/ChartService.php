@@ -147,45 +147,4 @@ class ChartService
         return [$date_newArry, $monthly_totals, $category_totals];
     }
 
-    public static function dailyGraphs($subQuery)
-    {
-        //日別の表示
-        $data = $subQuery
-        ->select(DB::raw("
-        SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS incomes,
-        SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgoes,
-        SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) - SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) as totals"),
-        DB::raw('DATE_FORMAT(date, "%c月%e日") as date'))
-        ->groupBy(DB::raw('date'))
-        ->orderByRaw('CAST(date as SIGNED) asc')
-        ->get();
-
-        $labels = $data->pluck('date');
-        $totals = $data->pluck('totals');
-        $incomes = $data->pluck('incomes');
-        $outgoes = $data->pluck('outgoes');
-
-        return [$data ,$labels, $totals, $incomes, $outgoes];
-    }
-
-    public static function monthlyGraphs($subQuery)
-    {
-        //２，月別の表示
-        $data = $subQuery
-        ->groupBy(DB::raw('DATE_FORMAT(date, "%Y年%c月")'))
-        ->select(DB::raw("
-        SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS incomes,
-        SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgoes,
-        SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) - SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) as totals"),
-        DB::raw('DATE_FORMAT(date, "%Y年%c月") as date'))
-        ->orderBy('date', 'asc')
-        ->get();
-
-        $labels = $data->pluck('date');
-        $totals = $data->pluck('totals');
-        $incomes = $data->pluck('incomes');
-        $outgoes = $data->pluck('outgoes');
-
-        return [$data ,$labels, $totals, $incomes, $outgoes];
-    }
 }

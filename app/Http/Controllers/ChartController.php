@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
 use App\Models\Item;
+use App\Models\SecondaryCategory;
 use App\Services\ChartService;
 
 class ChartController extends Controller
@@ -22,11 +23,16 @@ class ChartController extends Controller
         //２以降サービスへ切り離した配列を受け取り、変数に代入
         list($total_budgets, $monthly_total_budgets, $year_list, $month_list) = ChartService::totalBudgets($date_list);
 
+        //大カテゴリの取得
+        $categories = SecondaryCategory::select('id', 'name')
+        ->get();
+
         return Inertia::render('Chart/Index', [
             'total_budgets' => $total_budgets,
             'monthly_total_budgets' => $monthly_total_budgets,
             'year_list' => $year_list,
             'month_list' => $month_list,
+            'categories' => $categories,
         ]);
     }
 

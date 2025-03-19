@@ -1,7 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
-import { reactive, onMounted } from 'vue'
+import { reactive, onMounted, computed } from 'vue'
 import { getThisYear } from '@/common';
 import { getThisMonth } from '@/common';
 import axios from 'axios';
@@ -13,6 +13,7 @@ const props = defineProps({
     monthly_total_budgets : Object,
     year_list: Object,
     month_list: Object,
+    categories: Object,
 });
 
 const separateNum = num => {
@@ -27,16 +28,22 @@ onMounted(() => {
 const form = reactive({
     year: null,
     month: null,
+    category_id: null,
 })
 
 const data = reactive({})
 
 const getData = async() => {
+    if(form.year === null) {
+        form.month = null
+    }
+
     try {
         await axios.get('/api/chart', {
             params: {
                 year: form.year,
                 month: form.month,
+                category_id: form.category_id,
             }
         })
         .then( res => {
@@ -45,7 +52,7 @@ const getData = async() => {
             data.totals = res.data.totals
             data.incomes = res.data.incomes
             data.outgoes = res.data.outgoes
-            // console.log(res.data);
+            console.log(res.data);
         })
     } catch (e) {
         console.log(e.message)
@@ -80,9 +87,18 @@ const getData = async() => {
                                     <label for="month" class="leading-7 font-semibold text-sm text-gray-500">月</label>
                                 </div>
                             </div>
+
+                        </div>
+                        <div class="flex items-center w-fit mx-auto mt-8 md:mt-5">
+                            <label for="category_id" class="leading-7 font-semibold text-sm text-gray-500 mr-2">カテゴリ</label>
+                            <select id="category_id" name="category_id" v-model="form.category_id" class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-8 leading-8 transition-colors duration-200 ease-in-out mr-1">
+                                <option :value="null">選択しない</option>
+                                <option value="0">全てのカテゴリ</option>
+                                <option v-for="category in categories" :value="category['id']" :key="category['id']">{{ category['name'] }}</option>
+                            </select>
                         </div>
 
-                    <button class="mt-4 mb-8 flex mx-auto text-white bg-indigo-400 border-0 py-2 sm:px-5 px-5 focus:outline-none hover:bg-indigo-500 rounded text-md">グラフを表示する</button>
+                    <button class="mt-6 mb-8 flex mx-auto text-white bg-indigo-400 border-0 py-2 sm:px-5 px-5 focus:outline-none hover:bg-indigo-500 rounded text-md">グラフを表示する</button>
                     </form>
 
                     <Chart :data="data"/>

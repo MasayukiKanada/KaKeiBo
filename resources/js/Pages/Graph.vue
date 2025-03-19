@@ -21,7 +21,7 @@ const data = reactive({})
 
 const getData = async() => {
     try {
-        await axios.get('/api/daily', {
+        await axios.get('/api/chart', {
             params: {
                 year: form.year,
                 month: form.month,
