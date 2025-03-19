@@ -17,6 +17,11 @@ const separateNum = num => {
     return String(num).replace( /(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
 }
 
+const changeDay = date => {
+    return new Date(date).toLocaleDateString("ja-JP", {year: "numeric",month: "2-digit",
+    day: "2-digit"}).replace('-', '/');
+}
+
 </script>
 
 <template>
@@ -45,7 +50,7 @@ const separateNum = num => {
                                     <div>
                                     <div v-for="item in items.data" :key="item.id">
                                         <Link :href="route('items.show', { item:item.id })" class="hover:opacity-70 flex">
-                                            <div class="w-1/4 px-4 py-3 text-center border-t-2 border-gray-100 text-gray-500">{{ item.date }}</div>
+                                            <div class="w-1/4 px-4 py-3 text-center border-t-2 border-gray-100 text-gray-500">{{ changeDay(item.date) }}</div>
                                             <div class="w-1/4 px-4 py-3 border-t-2 border-gray-100 text-gray-500">{{ item.partner.name }}</div>
                                             <div class="w-1/4 px-4 py-3 border-t-2 border-gray-100 text-gray-500">{{ item.secondary_category.name }}</div>
                                             <div v-if="item.primary_category.id === 1" class="w-1/4 text-right px-4 py-3 text-lg text-blue-500 border-t-2 border-gray-100">￥{{ separateNum(item.price) }}</div>

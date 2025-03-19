@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ChartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\GraphController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,12 +35,16 @@ Route::resource('items', ItemController::class)
 Route::resource('categories', CategoryController::class)
 ->middleware(['auth', 'verified']);
 
-Route::get('table', [ChartController::class, 'table'])
-->middleware(['auth', 'verified'])->name('chart.table');
+Route::get('chart', [ChartController::class, 'index'])
+->middleware(['auth', 'verified'])->name('chart.index');
 Route::get('daily', [ChartController::class, 'daily'])
 ->middleware(['auth', 'verified'])->name('chart.daily');
 Route::get('category', [ChartController::class, 'category'])
 ->middleware(['auth', 'verified'])->name('chart.category');
+
+//クエリテストコントローラ
+Route::get('graph', [GraphController::class, 'graph'])
+->middleware(['auth', 'verified'])->name('graph');
 
 // //直接ダッシュボードページにアクセス
 Route::get('/', function () {

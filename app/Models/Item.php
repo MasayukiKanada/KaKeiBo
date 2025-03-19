@@ -33,16 +33,12 @@ class Item extends Model
             return $query;
         }
 
-        if(!is_null($year) && is_null($month)) {
-            return $query->whereYear($year);
+        if(isset($year) && is_null($month)) {
+            return $query->whereYear('date', $year);
         }
 
-        if(is_null($year) && is_null($month)) {
-            return $query->whereMonth($month);
-        }
-
-        if(!is_null($year) && !is_null($month)) {
-            return $query->whereYear($year)->whereMonth($month);
+        if(isset($year) && isset($month)) {
+            return $query->whereYear('date', $year)->whereMonth('date', $month);
         }
     }
 

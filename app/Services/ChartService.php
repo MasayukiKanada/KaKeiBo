@@ -30,17 +30,40 @@ class ChartService
             ->select(DB::raw("
             SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS income,
             SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgo"),
-            DB::raw('DATE_FORMAT(date, "%Y%m") as date'))
+            DB::raw('DATE_FORMAT(date, "%Y%c") as date'))
             ->whereYear('date', $date_newArry[$i]['year'])
             ->whereMonth('date', $date_newArry[$i]['month'])
-            ->groupBy(DB::raw('DATE_FORMAT(date, "%Y%m")'))
+            ->groupBy(DB::raw('DATE_FORMAT(date, "%Y%c")'))
             ->orderBy('date', 'desc')
             ->get();
             $monthly_total_budgets[$i]['year'] = $date_newArry[$i]['year'];
             $monthly_total_budgets[$i]['month'] = $date_newArry[$i]['month'];
         }
 
-        return [$total_budgets, $monthly_total_budgets];
+        //5，Itemモデルから年のリストを取得
+        $year_list = Item::query()
+        ->select(DB::raw('YEAR(date) as year'))
+        ->groupBy(DB::raw('YEAR(date)'))
+        ->orderBy('year', 'desc')
+        ->get();
+
+        for($i=0; $i<count($year_list); $i++) {
+            $year_list[$i]['month'] = Item::query()
+            ->select(DB::raw('MONTH(date) as month'))
+            ->whereYear('date', $year_list[$i]['year'])
+            ->groupBy(DB::raw('MONTH(date)'))
+            ->orderBy('month', 'desc')
+            ->get();
+        }
+
+        //6，Itemモデルから月のリストを取得
+        $month_list = Item::query()
+        ->select(DB::raw('MONTH(date) as month'))
+        ->groupBy(DB::raw('MONTH(date)'))
+        ->orderBy('month', 'desc')
+        ->get();
+
+        return [$total_budgets, $monthly_total_budgets, $year_list, $month_list];
     }
 
     public static function dailyBudgets($date_list, $page)
@@ -70,7 +93,7 @@ class ChartService
         DB::raw('subject_id'),
         DB::raw('price')
         )
-        ->where(DB::raw('DATE_FORMAT(date, "%Y%m")'), $date_newArry[$page]['year'].$date_newArry[$page]['month'])
+        ->where(DB::raw('DATE_FORMAT(date, "%Y%c")'), $date_newArry[$page]['year'].$date_newArry[$page]['month'])
         ->orderBy('id','desc','date_format', 'desc')
         ->get();
         $items_formated['daily_budget'] = Item::query()
@@ -123,4 +146,5 @@ class ChartService
 
         return [$date_newArry, $monthly_totals, $category_totals];
     }
+
 }

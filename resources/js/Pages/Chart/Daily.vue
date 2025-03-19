@@ -18,11 +18,6 @@ const changeDate = date => {
    return dateObject.getDate();
 }
 
-const ChangeMonth = month => {
-    let monthObject = new Date(month);
-    return monthObject.getMonth() + 1;
-}
-
 const days = [
     "日曜日",
     "月曜日",
@@ -72,7 +67,7 @@ const prevPage = page => {
                             <div class="container mx-auto">
                                 <FlashMessage />
                                 <div class="mt-2 w-full mx-auto overflow-auto">
-                                    <h1 class="font-bold text-2xl text-center mb-6">{{ date_newArry[props.page]['year'] }}年{{ ChangeMonth(date_newArry[props.page]['month']) }}月</h1>
+                                    <h1 class="font-bold text-2xl text-center mb-6">{{ date_newArry[props.page]['year'] }}年{{ date_newArry[props.page]['month'] }}月</h1>
                                     <div class="table-auto w-full text-left whitespace-no-wrap">
                                         <div class="head flex">
                                             <div class="px-4 py-3 title-font tracking-wider font-medium bg-gray-100 rounded-tl rounded-bl text-center w-1/3">収入
