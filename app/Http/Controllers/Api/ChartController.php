@@ -17,9 +17,9 @@ class ChartController extends Controller
         $subQuery = Item::yearMonth($request->year, $request->month);
 
         if (isset($request->year) && isset($request->month)) {
+             //日別の表示
 
             if(isset($request->category_id)) {
-                //日別の表示
 
                 if($request->category_id == 0) {
                     //全てのカテゴリ
@@ -49,15 +49,47 @@ class ChartController extends Controller
 
             if(is_null($request->category_id)) {
 
-                list($data ,$labels, $totals, $incomes, $outgoes) = ChartService::dailyGraphs($subQuery);
+                if(isset($request->partner_id)) {
 
-                return response()->json([
-                    'data' => $data,
-                    'labels' => $labels,
-                    'totals' => $totals,
-                    'incomes' => $incomes,
-                    'outgoes' => $outgoes,
-                ], Response::HTTP_OK);
+                    if($request->partner_id == 0) {
+                        //全ての相手先
+
+                        list($data ,$labels, $incomes, $outgoes) = ChartService::dailyAllPartnerGraphs($request->year, $request->month);
+
+                        return response()->json([
+                            'data' => $data,
+                            'labels' => $labels,
+                            'incomes' => $incomes,
+                            'outgoes' => $outgoes,
+                        ], Response::HTTP_OK);
+
+                    } else {
+                        //個別の相手先
+
+                        list($data ,$labels, $incomes, $outgoes) = ChartService::dailyPartnerGraphs($request->year, $request->month, $request->partner_id);
+
+                        return response()->json([
+                            'data' => $data,
+                            'labels' => $labels,
+                            'incomes' => $incomes,
+                            'outgoes' => $outgoes,
+                        ], Response::HTTP_OK);
+
+                    }
+                }
+
+                if(is_null($request->partner_id)) {
+
+                    list($data ,$labels, $totals, $incomes, $outgoes) = ChartService::dailyGraphs($subQuery);
+
+                    return response()->json([
+                        'data' => $data,
+                        'labels' => $labels,
+                        'totals' => $totals,
+                        'incomes' => $incomes,
+                        'outgoes' => $outgoes,
+                    ], Response::HTTP_OK);
+                }
 
             }
 
@@ -80,7 +112,7 @@ class ChartController extends Controller
                 } else {
                     //個別のカテゴリ
 
-                    list($data ,$labels, $incomes, $outgoes) = ChartService::monthlyCategoryGraphs($request->year, $request->month, $request->category_id);
+                    list($data ,$labels, $incomes, $outgoes) = ChartService::monthlyCategoryGraphs($request->year, $request->category_id);
 
                     return response()->json([
                         'data' => $data,
@@ -93,18 +125,50 @@ class ChartController extends Controller
 
             }
 
-
             if(is_null($request->category_id)) {
 
-                list($data ,$labels, $totals, $incomes, $outgoes) = ChartService::monthlyGraphs($subQuery);
+                if(isset($request->partner_id)) {
 
-                return response()->json([
-                    'data' => $data,
-                    'labels' => $labels,
-                    'totals' => $totals,
-                    'incomes' => $incomes,
-                    'outgoes' => $outgoes,
-                ], Response::HTTP_OK);
+                    if($request->partner_id == 0) {
+                        //全ての相手先
+
+                        list($data ,$labels, $incomes, $outgoes) = ChartService::monthlyAllPartnerGraphs($request->year);
+
+                        return response()->json([
+                            'data' => $data,
+                            'labels' => $labels,
+                            'incomes' => $incomes,
+                            'outgoes' => $outgoes,
+                        ], Response::HTTP_OK);
+
+                    } else {
+                        //個別の相手先
+
+                        list($data ,$labels, $incomes, $outgoes) = ChartService::monthlyPartnerGraphs($request->year, $request->partner_id);
+
+                        return response()->json([
+                            'data' => $data,
+                            'labels' => $labels,
+                            'incomes' => $incomes,
+                            'outgoes' => $outgoes,
+                        ], Response::HTTP_OK);
+
+                    }
+                }
+
+                if(is_null($request->partner_id)) {
+
+                    list($data ,$labels, $totals, $incomes, $outgoes) = ChartService::monthlyGraphs($subQuery);
+
+                    return response()->json([
+                        'data' => $data,
+                        'labels' => $labels,
+                        'totals' => $totals,
+                        'incomes' => $incomes,
+                        'outgoes' => $outgoes,
+                    ], Response::HTTP_OK);
+
+                }
             }
 
 
@@ -155,27 +219,76 @@ class ChartController extends Controller
 
             if(is_null($request->category_id)) {
 
-                $data = Item::select(DB::raw("
-                SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS incomes,
-                SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgoes,
-                SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) - SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) as totals"),
-                DB::raw('DATE_FORMAT(date, "%Y年") as date'))
-                ->groupBy(DB::raw('DATE_FORMAT(date, "%Y年")'))
-                ->orderBy('date', 'asc')
-                ->get();
+                if(isset($request->partner_id)) {
 
-                $labels = $data->pluck('date');
-                $totals = $data->pluck('totals');
-                $incomes = $data->pluck('incomes');
-                $outgoes = $data->pluck('outgoes');
+                    if($request->partner_id == 0) {
+                        //全ての相手先
+                        $data = DB::table('items')
+                        ->select(DB::raw('partner_id'), DB::raw("
+                        SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS incomes,
+                        SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgoes"), DB::raw('partners.name as name'))
+                        ->join('partners', 'items.partner_id', '=', 'partners.id')
+                        ->groupBy('partner_id')
+                        ->get();
 
-                return response()->json([
-                    'data' => $data,
-                    'labels' => $labels,
-                    'totals' => $totals,
-                    'incomes' => $incomes,
-                    'outgoes' => $outgoes,
-                ], Response::HTTP_OK);
+                        $labels = $data->pluck('name');
+                        $incomes = $data->pluck('incomes');
+                        $outgoes = $data->pluck('outgoes');
+
+                        return response()->json([
+                            'data' => $data,
+                            'labels' => $labels,
+                            'incomes' => $incomes,
+                            'outgoes' => $outgoes,
+                        ], Response::HTTP_OK);
+
+                    } else {
+                        //個別の相手先
+                        $data = DB::table('items')
+                        ->select(DB::raw('DATE_FORMAT(date, "%Y年") as year'),'partner_id', DB::raw('SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS incomes,SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgoes'))
+                        ->groupBy(DB::raw('DATE_FORMAT(date, "%Y年")'), 'partner_id')
+                        ->where('partner_id', $request->partner_id)
+                        ->orderBy('year', 'asc')
+                        ->get();
+
+                        $labels = $data->pluck('year');
+                        $incomes = $data->pluck('incomes');
+                        $outgoes = $data->pluck('outgoes');
+
+                        return response()->json([
+                            'data' => $data,
+                            'labels' => $labels,
+                            'incomes' => $incomes,
+                            'outgoes' => $outgoes,
+                        ], Response::HTTP_OK);
+
+                    }
+                }
+
+                if(is_null($request->partner_id)) {
+
+                    $data = Item::select(DB::raw("
+                    SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS incomes,
+                    SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgoes,
+                    SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) - SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) as totals"),
+                    DB::raw('DATE_FORMAT(date, "%Y年") as date'))
+                    ->groupBy(DB::raw('DATE_FORMAT(date, "%Y年")'))
+                    ->orderBy('date', 'asc')
+                    ->get();
+
+                    $labels = $data->pluck('date');
+                    $totals = $data->pluck('totals');
+                    $incomes = $data->pluck('incomes');
+                    $outgoes = $data->pluck('outgoes');
+
+                    return response()->json([
+                        'data' => $data,
+                        'labels' => $labels,
+                        'totals' => $totals,
+                        'incomes' => $incomes,
+                        'outgoes' => $outgoes,
+                    ], Response::HTTP_OK);
+                }
 
             }
         }

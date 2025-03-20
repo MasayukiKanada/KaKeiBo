@@ -13,20 +13,71 @@ class GraphController extends Controller
 {
     public function graph ()
     {
-        $year = 2025;
+        $year = 202;
         $month = 03;
         // $month = null;
-        $category_id = 0;
+        // $category_id = 0;
+        $partner_id = 3;
+
+        //パートナー
+        //日毎
+        // $data = DB::table('items')
+        // ->select(DB::raw('partner_id'), DB::raw("SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS incomes,SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgoes"), DB::raw('partners.name as name'))
+        // ->join('partners', 'items.partner_id', '=', 'partners.id')
+        // ->where('partner_id', $partner_id)
+        // ->groupBy('partner_id')
+        // ->whereYear('date', $year)
+        // ->whereMonth('date', $month)
+        // ->get();
+
+        $data = DB::table('items')
+        ->select(DB::raw('DATE_FORMAT(date, "%c月%e日") as date'),'partner_id', DB::raw('SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS incomes,SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgoes'))
+        ->groupBy(DB::raw('date'), 'partner_id')
+        ->whereYear('date', $year)
+        ->whereMonth('date', $month)
+        ->where('partner_id', $partner_id)
+        ->orderByRaw('CAST(date as SIGNED) asc')
+        ->get();
+
+
+        dd($data);
+
+        //月毎
+        $data = DB::table('items')
+        ->select(DB::raw('partner_id'), DB::raw("
+        SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS incomes,
+        SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgoes"), DB::raw('partners.name as name'))
+        ->join('partners', 'items.partner_id', '=', 'partners.id')
+        ->where('partner_id', $partner_id)
+        ->groupBy('partner_id')
+        ->whereYear('date', $year)
+        ->get();
+
+        //年毎
+        $data = DB::table('items')
+        ->select(DB::raw('partner_id'), DB::raw("
+        SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS incomes,
+        SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgoes"), DB::raw('partners.name as name'))
+        ->join('partners', 'items.partner_id', '=', 'partners.id')
+        ->where('partner_id', $partner_id)
+        ->groupBy('partner_id')
+        ->get();
+
+        // dd($data);
 
         //月毎
         // if($category_id == 0) {
         //     $data = DB::table('items')
-        //     ->select(DB::raw('secondary_category_id'), DB::raw('SUM(price) as totals'), DB::raw('secondary_categories.name as name'))
+        //     ->select(DB::raw('secondary_category_id'), DB::raw("
+        //     SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS income,
+        //     SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgo"), DB::raw('secondary_categories.name as name'))
         //     ->join('secondary_categories', 'items.secondary_category_id', '=', 'secondary_categories.id')
         //     ->groupBy('secondary_category_id')
         //     ->whereYear('date', $year)
         //     ->get();
         // }
+
+        // dd($data);
 
         //日毎
         // if($category_id == 0) {
@@ -48,7 +99,6 @@ class GraphController extends Controller
             ->get();
         }
 
-        dd($data);
 
         if(is_null($month) && isset($year)) {
             //月別の表示

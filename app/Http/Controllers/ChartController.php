@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
 use App\Models\Item;
 use App\Models\SecondaryCategory;
+use App\Models\Partner;
 use App\Services\ChartService;
 
 class ChartController extends Controller
@@ -27,12 +28,16 @@ class ChartController extends Controller
         $categories = SecondaryCategory::select('id', 'name')
         ->get();
 
+        $partners = Partner::select('id', 'name')
+        ->get();
+
         return Inertia::render('Chart/Index', [
             'total_budgets' => $total_budgets,
             'monthly_total_budgets' => $monthly_total_budgets,
             'year_list' => $year_list,
             'month_list' => $month_list,
             'categories' => $categories,
+            'partners' => $partners,
         ]);
     }
 
