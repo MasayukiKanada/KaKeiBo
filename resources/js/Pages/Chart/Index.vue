@@ -14,6 +14,7 @@ const props = defineProps({
     year_list: Object,
     month_list: Object,
     categories: Object,
+    partners: Object,
 });
 
 const separateNum = num => {
@@ -29,6 +30,7 @@ const form = reactive({
     year: null,
     month: null,
     category_id: null,
+    partner_id: null,
 })
 
 const data = reactive({})
@@ -44,6 +46,7 @@ const getData = async() => {
                 year: form.year,
                 month: form.month,
                 category_id: form.category_id,
+                partner_id: form.partner_id,
             }
         })
         .then( res => {
@@ -76,26 +79,37 @@ const getData = async() => {
                                 <option :value="null">全期間</option>
                                 <option v-for="year in year_list" :value="year['year']" :key="year['year']">{{ year['year'] }}</option>
                             </select>
-                            <label for="year" class="leading-7 font-semibold text-sm text-gray-500 mr-5">年</label>
+                            <label for="year" class="leading-7 font-md text-sm text-gray-500 mr-5">年</label>
 
                             <div v-for="year in year_list">
                                 <div v-if="year['year'] === form.year">
                                     <select id="month" name="month" v-model="form.month" class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-8 leading-8 transition-colors duration-200 ease-in-out mr-1">
-                                        <option :value="null">全期間</option>
+                                        <option :value="null">指定なし</option>
                                         <option v-for="month in year['month']" :value="month['month']" :key="month['month']">{{ month['month'] }}</option>
                                     </select>
-                                    <label for="month" class="leading-7 font-semibold text-sm text-gray-500">月</label>
+                                    <label for="month" class="leading-7 font-md text-sm text-gray-500">月</label>
                                 </div>
                             </div>
 
                         </div>
                         <div class="flex items-center w-fit mx-auto mt-8 md:mt-5">
-                            <label for="category_id" class="leading-7 font-semibold text-sm text-gray-500 mr-2">カテゴリ</label>
-                            <select id="category_id" name="category_id" v-model="form.category_id" class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-8 leading-8 transition-colors duration-200 ease-in-out mr-1">
-                                <option :value="null">選択しない</option>
-                                <option value="0">全てのカテゴリ</option>
-                                <option v-for="category in categories" :value="category['id']" :key="category['id']">{{ category['name'] }}</option>
-                            </select>
+                            <div v-show="form.partner_id === null" class="mr-3">
+                                <label for="category_id" class="leading-7 font-md text-sm text-gray-500 mr-2">カテゴリ</label>
+                                <select id="category_id" name="category_id" v-model="form.category_id" class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-8 leading-8 transition-colors duration-200 ease-in-out mr-1">
+                                    <option :value="null">指定なし</option>
+                                    <option value="0">全てのカテゴリ</option>
+                                    <option v-for="category in categories" :value="category['id']" :key="category['id']">{{ category['name'] }}</option>
+                                </select>
+                            </div>
+
+                            <div v-show="form.category_id === null">
+                                <label for="partner_id" class="leading-7 font-md text-sm text-gray-500 mr-2">相手先</label>
+                                <select id="partner_id" name="partner_id" v-model="form.partner_id" class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-8 leading-8 transition-colors duration-200 ease-in-out mr-1">
+                                    <option :value="null">指定なし</option>
+                                    <option value="0">全ての相手先</option>
+                                    <option v-for="partner in partners" :value="partner['id']" :key="partner['id']">{{ partner['name'] }}</option>
+                                </select>
+                            </div>
                         </div>
 
                     <button class="mt-6 mb-8 flex mx-auto text-white bg-indigo-400 border-0 py-2 sm:px-5 px-5 focus:outline-none hover:bg-indigo-500 rounded text-md">グラフを表示する</button>
@@ -103,7 +117,7 @@ const getData = async() => {
 
                     <Chart :data="data"/>
 
-                    <div class="mt-12 w-full mx-auto overflow-auto">
+                    <div class="mt-16 w-full mx-auto overflow-auto">
                         <div class="table-auto w-full text-left whitespace-no-wrap">
                             <div class="thead">
                                 <div class="flex">

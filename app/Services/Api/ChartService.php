@@ -30,7 +30,7 @@ class ChartService
 
     public static function monthlyGraphs($subQuery)
     {
-        //２，月別の表示
+        //月別の表示
         $data = $subQuery
         ->groupBy(DB::raw('DATE_FORMAT(date, "%Y年%c月")'))
         ->select(DB::raw("
@@ -99,7 +99,7 @@ class ChartService
         return [$data ,$labels, $incomes, $outgoes];
      }
 
-     public static function monthlyCategoryGraphs($year, $month, $category_id)
+     public static function monthlyCategoryGraphs($year, $category_id)
      {
 
         $data = DB::table('items')
@@ -107,6 +107,79 @@ class ChartService
         ->groupBy('secondary_category_id', DB::raw('DATE_FORMAT(date, "%Y年%c月")'))
         ->where('secondary_category_id', $category_id)
         ->whereYear('date', $year)
+        ->orderBy('month', 'asc')
+        ->get();
+
+        $labels = $data->pluck('month');
+        $incomes = $data->pluck('incomes');
+        $outgoes = $data->pluck('outgoes');
+
+        return [$data ,$labels, $incomes, $outgoes];
+     }
+
+     public static function dailyAllPartnerGraphs($year, $month)
+     {
+        $data = DB::table('items')
+        ->select(DB::raw('partner_id'), DB::raw("
+        SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS incomes,
+        SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgoes"), DB::raw('partners.name as name'))
+        ->join('partners', 'items.partner_id', '=', 'partners.id')
+        ->groupBy('partner_id')
+        ->whereYear('date', $year)
+        ->whereMonth('date', $month)
+        ->get();
+
+        $labels = $data->pluck('name');
+        $incomes = $data->pluck('incomes');
+        $outgoes = $data->pluck('outgoes');
+
+        return [$data ,$labels, $incomes, $outgoes];
+     }
+
+     public static function monthlyAllPartnerGraphs($year)
+     {
+        $data = DB::table('items')
+        ->select(DB::raw('partner_id'), DB::raw("
+        SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS incomes,
+        SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgoes"), DB::raw('partners.name as name'))
+        ->join('partners', 'items.partner_id', '=', 'partners.id')
+        ->groupBy('partner_id')
+        ->whereYear('date', $year)
+        ->get();
+
+        $labels = $data->pluck('name');
+        $incomes = $data->pluck('incomes');
+        $outgoes = $data->pluck('outgoes');
+
+        return [$data ,$labels, $incomes, $outgoes];
+     }
+
+     public static function dailyPartnerGraphs($year, $month, $partner_id)
+     {
+        $data = DB::table('items')
+        ->select(DB::raw('DATE_FORMAT(date, "%c月%e日") as date'),'partner_id', DB::raw('SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS incomes,SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgoes'))
+        ->groupBy(DB::raw('date'), 'partner_id')
+        ->whereYear('date', $year)
+        ->whereMonth('date', $month)
+        ->where('partner_id', $partner_id)
+        ->orderByRaw('CAST(date as SIGNED) asc')
+        ->get();
+
+        $labels = $data->pluck('date');
+        $incomes = $data->pluck('incomes');
+        $outgoes = $data->pluck('outgoes');
+
+
+        return [$data ,$labels, $incomes, $outgoes];
+     }
+
+     public static function monthlyPartnerGraphs($year, $partner_id)
+     {
+        $data = DB::table('items')
+        ->select(DB::raw('DATE_FORMAT(date, "%Y年%c月") as month'),'partner_id', DB::raw('SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS incomes,SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgoes'))
+        ->groupBy(DB::raw('DATE_FORMAT(date, "%Y年%c月")'), 'partner_id')
+        ->whereYear('date', $year)
+        ->where('partner_id', $partner_id)
         ->orderBy('month', 'asc')
         ->get();
 
