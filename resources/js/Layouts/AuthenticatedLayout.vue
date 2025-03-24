@@ -8,25 +8,6 @@ import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link, Head } from '@inertiajs/vue3';
 
-onMounted(() => {
-    const btn = window.document.querySelector('#cat_btn');
-    if(route().current('categories.index')) {
-        btn.classList.add('active');
-    }
-
-    const create_btn = window.document.querySelector('#create_btn');
-    if(route().current('items.create') || route().current('items.show')
-    || route().current('items.edit') || route().current('categories.edit')
-    || route().current('categories.create') || route().current('categories.index') ) {
-        create_btn.classList.add('hidden');
-    }
-
-    const category_btn = window.document.querySelector('#category_btn');
-    if(route().current('categories.index') === false) {
-        category_btn.classList.add('hidden');
-    }
-})
-
 const showingNavigationDropdown = ref(false);
 
 </script>
@@ -40,10 +21,10 @@ const showingNavigationDropdown = ref(false);
     <div>
         <div class="min-h-screen bg-gray-100">
             <!-- Logo -->
-             <div id="site_header">
+             <div id="site_header" >
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div id="logo" class="shrink-0 sm:flex items-center hidden">
-                        <Link :href="route('chart.daily')">
+                        <Link :href="route('chart.daily')" class="active:opacity-60">
                             <ApplicationLogo
                                 class="logo block fill-current text-gray-800 ml-12"
                             />
@@ -52,18 +33,25 @@ const showingNavigationDropdown = ref(false);
                 </div>
              </div>
             <nav class="bg-white border-b border-gray-100">
+
+                <div id="sp_header" class="sm:hidden block px-4">
+                    <div class="flex justify-between h-16">
+                        <!-- Logo -->
+                        <div class="shrink-0 flex items-center sm:hidden">
+                            <Link :href="route('chart.daily')" class="active:opacity-60">
+                                <ApplicationLogo
+                                    class="block w-36 fill-current text-gray-800"
+                                />
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Primary Navigation Menu -->
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 sm:block hidden">
                     <div class="flex justify-between h-16">
                         <div class="flex">
-                            <!-- Logo -->
-                            <div class="shrink-0 flex items-center sm:hidden">
-                                <Link :href="route('chart.daily')">
-                                    <ApplicationLogoS
-                                        class="block w-12 fill-current text-gray-800"
-                                    />
-                                </Link>
-                            </div>
+
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <NavLink :href="route('chart.daily')" :active="route().current('chart.daily')">
@@ -77,9 +65,6 @@ const showingNavigationDropdown = ref(false);
                                 </NavLink>
                                 <NavLink :href="route('items.index')" :active="route().current('items.index')">
                                     仕訳一覧
-                                </NavLink>
-                                <NavLink :href="route('graph')" :active="route().current('graph')">
-                                    グラフ
                                 </NavLink>
                             </div>
                         </div>
@@ -128,8 +113,49 @@ const showingNavigationDropdown = ref(false);
                             </div>
                         </div>
 
-                        <!-- Hamburger -->
-                        <div class="-mr-2 flex items-center sm:hidden">
+                    </div>
+                </div>
+
+            </nav>
+
+            <!-- Page Heading -->
+            <header class="bg-white shadow" v-if="$slots.header">
+                <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+                    <slot name="header" />
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <main class="pb-16">
+                <slot />
+            </main>
+
+            <!-- Responsive Navigation Links-->
+            <div class="sp_nav sm:hidden fixed bottom-0 bg-white w-full">
+                <div class="pt-2 pb-3 flex items-center justify-around h-20">
+                    <div :class="{ block: !showingNavigationDropdown, hidden: showingNavigationDropdown }"
+                    class="sm:hidden">
+                        <Link as="button" :href="route('categories.create')" class="w-20 px-5 active:opacity-60" v-if="route().current('categories.index')">
+                                <img src="/images/icon/add-folder.png" alt="カテゴリ作成">
+                        </Link>
+                        <Link as="button" :href="route('categories.create')" class="w-20 px-5 active:opacity-60" v-else-if="route().current('categories.edit')">
+                                <img src="/images/icon/add-folder.png" alt="カテゴリ作成">
+                        </Link>
+                        <Link as="button" :href="route('items.create')" class="w-20 px-5 active:opacity-60" v-else>
+                            <img src="/images/icon/create.png" alt="仕訳入力">
+                        </Link>
+                        <Link as="button" :href="route('chart.daily')" :active="route().current('chart.daily')" class="w-20 px-5 active:opacity-60">
+                            <img src="/images/icon/daily.png" alt="日別">
+                        </Link>
+                        <Link as="button" :href="route('chart.category')" :active="route().current('chart.category')" class="w-20 px-5 active:opacity-60">
+                            <img src="/images/icon/category.png" alt="カテゴリ別">
+                        </Link>
+                        <Link as="button" :href="route('chart.index')" :active="route().current('chart.index')" class="w-20 px-5 active:opacity-60">
+                            <img src="/images/icon/chart.png" alt="チャート">
+                        </Link>
+                    </div>
+                    <!-- Hamburger -->
+                    <div class="mr-2 flex items-center sm:hidden">
                             <button
                                 @click="showingNavigationDropdown = !showingNavigationDropdown"
                                 class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
@@ -158,24 +184,13 @@ const showingNavigationDropdown = ref(false);
                                 </svg>
                             </button>
                         </div>
-                    </div>
-                </div>
 
-                <!-- Responsive Navigation Menu -->
-                <div
+                    </div>
+
+                    <div
                     :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }"
-                    class="sm:hidden"
-                >
+                    class="sm:hidden">
                     <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('chart.daily')" :active="route().current('chart.daily')">
-                            日別
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('chart.category')" :active="route().current('chart.category')">
-                            カテゴリ別
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('chart.index')" :active="route().current('chart.index')">
-                            チャート
-                        </ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('items.index')" :active="route().current('items.index')">
                             仕訳一覧
                         </ResponsiveNavLink>
@@ -201,27 +216,8 @@ const showingNavigationDropdown = ref(false);
                         </div>
                     </div>
                 </div>
-            </nav>
-
-            <!-- Page Heading -->
-            <header class="bg-white shadow" v-if="$slots.header">
-                <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-                    <slot name="header" />
-                </div>
-            </header>
-
-            <!-- Page Content -->
-            <main>
-                <slot />
-            </main>
-
-            <!-- Responsive Buttons -->
-            <div class="sm:hidden flex fixed bottom-0 sm:items-center sm:ml-6 w-full z-50">
-                <div class="w-full">
-                    <Link id="create_btn" as="button" :href="route('items.create')" class="block w-full ml-auto text-white bg-indigo-400 border-0 py-1 px-6 focus:outline-none hover:bg-indigo-500 font-semibold">仕訳入力</Link>
-                    <Link id="category_btn" as="button" :href="route('categories.create')" class="block w-full ml-auto mr-6 text-white bg-orange-300 border-0 py-2 px-6 focus:outline-none hover:bg-orange-400 rounded font-semibold">カテゴリ作成</Link>
-                </div>
             </div>
+
         </div>
     </div>
 </template>

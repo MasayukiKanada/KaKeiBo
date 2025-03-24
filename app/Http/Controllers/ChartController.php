@@ -28,10 +28,19 @@ class ChartController extends Controller
         $categories = SecondaryCategory::select('id', 'name')
         ->get();
 
+        //相手先の取得
         $partners = Partner::select('id', 'name')
         ->get();
 
+        //収支金額の全期間累計を取得
+        $all_total = Item::select(DB::raw("
+        SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS income,
+        SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgo,
+        SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) - SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) as total"))
+        ->first();
+
         return Inertia::render('Chart/Index', [
+            'all_total' => $all_total,
             'total_budgets' => $total_budgets,
             'monthly_total_budgets' => $monthly_total_budgets,
             'year_list' => $year_list,

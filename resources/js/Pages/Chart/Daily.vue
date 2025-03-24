@@ -78,7 +78,6 @@ const prevPage = page => {
                                             </div>
                                         </div>
                                         <div class="body flex">
-                                            {{ monthly_total }}
                                             <div class="text-right px-4 py-3 text-lg text-blue-500 w-1/3">￥{{ separateNum(monthly_total.income) }}</div>
                                             <div class="text-right px-4 py-3 text-lg text-red-500 w-1/3">￥{{ separateNum(monthly_total.outgo) }}</div>
                                             <div v-if="monthly_total.income - monthly_total.outgo > 0" class="text-right px-4 py-3 text-lg text-blue-500 w-1/3">￥{{ separateNum(monthly_total.income - monthly_total.outgo) }}</div>

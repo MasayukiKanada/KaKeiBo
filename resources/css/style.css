@@ -4,6 +4,10 @@
     background-color: rgb(1 171 118);;
 }
 
+#sp_header {
+    background-color: rgb(1 171 118);;
+}
+
 .logo {
     width: 10rem;
 }
@@ -15,6 +19,10 @@
 
 .autoComplete_wrapper {
     display: block;
+}
+
+.sp_nav {
+    box-shadow: 0 0 8px 1px #dddddd;
 }
 /**共通**/
 
