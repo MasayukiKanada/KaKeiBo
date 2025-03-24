@@ -13,6 +13,7 @@ const incomes = computed(() => props.data.incomes)
 const outgoes = computed(() => props.data.outgoes)
 
 Chart.register(...registerables);
+
 const barData = reactive({
     labels: labels,
     datasets: [

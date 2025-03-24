@@ -7,6 +7,7 @@ import { getThisMonth } from '@/common';
 import axios from 'axios';
 import Chart from '@/Components/Chart.vue';
 import '@/accordion';
+import { Inertia } from '@inertiajs/inertia';
 
 const props = defineProps({
     total_budgets : Object,
@@ -50,12 +51,11 @@ const getData = async() => {
             }
         })
         .then( res => {
-            data.data = res.data.data
-            data.labels = res.data.labels
-            data.totals = res.data.totals
-            data.incomes = res.data.incomes
-            data.outgoes = res.data.outgoes
-            console.log(res.data);
+                data.data = res.data.data
+                data.labels = res.data.labels
+                data.totals = res.data.totals
+                data.incomes = res.data.incomes
+                data.outgoes = res.data.outgoes
         })
     } catch (e) {
         console.log(e.message)
@@ -92,7 +92,7 @@ const getData = async() => {
                             </div>
 
                         </div>
-                        <div class="flex items-center w-fit mx-auto mt-8 md:mt-5">
+                        <div class="sm:flex items-center w-fit mx-auto mt-8 md:mt-5">
                             <div v-show="form.partner_id === null" class="mr-3">
                                 <label for="category_id" class="leading-7 font-md text-sm text-gray-500 mr-2">カテゴリ</label>
                                 <select id="category_id" name="category_id" v-model="form.category_id" class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-8 leading-8 transition-colors duration-200 ease-in-out mr-1">
@@ -102,7 +102,7 @@ const getData = async() => {
                                 </select>
                             </div>
 
-                            <div v-show="form.category_id === null">
+                            <div v-show="form.category_id === null" class="sm:mt-0 mt-6">
                                 <label for="partner_id" class="leading-7 font-md text-sm text-gray-500 mr-2">相手先</label>
                                 <select id="partner_id" name="partner_id" v-model="form.partner_id" class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-8 leading-8 transition-colors duration-200 ease-in-out mr-1">
                                     <option :value="null">指定なし</option>
@@ -112,7 +112,11 @@ const getData = async() => {
                             </div>
                         </div>
 
-                    <button class="mt-6 mb-8 flex mx-auto text-white bg-indigo-400 border-0 py-2 sm:px-5 px-5 focus:outline-none hover:bg-indigo-500 rounded text-md">グラフを表示する</button>
+                        <div class="attention mt-4">
+                            <p class="font-md text-xs text-red-500 text-center">※カテゴリまたは相手先を指定する際は、<br class="sm:hidden">他方は「指定なし」を選択してください</p>
+                        </div>
+
+                    <button id="chart-button" class="mt-6 mb-8 flex mx-auto text-white bg-indigo-400 border-0 py-2 sm:px-5 px-5 focus:outline-none hover:bg-indigo-500 rounded text-md">グラフを表示する</button>
                     </form>
 
                     <Chart :data="data"/>
