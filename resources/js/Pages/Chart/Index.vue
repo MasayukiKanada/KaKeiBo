@@ -10,6 +10,7 @@ import '@/accordion';
 import { Inertia } from '@inertiajs/inertia';
 
 const props = defineProps({
+    all_total: Object,
     total_budgets : Object,
     monthly_total_budgets : Object,
     year_list: Object,
@@ -129,6 +130,13 @@ const getData = async() => {
                                     <div class="w-1/4 px-4 py-3 title-font tracking-wider font-medium text-gray-500 text-sm bg-gray-100 text-center">収入</div>
                                     <div class="w-1/4 px-4 py-3 title-font tracking-wider font-medium text-gray-500 text-sm bg-gray-100 text-center">支出</div>
                                     <div class="w-1/4 px-4 py-3 title-font tracking-wider font-medium text-gray-500 text-sm bg-gray-100 text-center">合計</div>
+                                </div>
+                                <div class="flex bg-gray-50">
+                                    <div class="w-1/4 px-4 py-3 text-center border-t-2 border-gray-100 text-gray-500 font-bold">累計</div>
+                                    <div class="w-1/4 text-right px-4 py-3 text-lg text-blue-500 border-t-2 border-gray-100">￥{{ separateNum(all_total.income) }}</div>
+                                    <div class="w-1/4 text-right px-4 py-3 text-lg text-red-500 border-t-2 border-gray-100">￥{{ separateNum(all_total.outgo) }}</div>
+                                    <div v-if="all_total.total > 0" class="w-1/4 px-4 py-3 text-right text-lg text-blue-500 border-t-2 border-gray-100">￥{{ separateNum(all_total.total) }}</div>
+                                    <div v-if="all_total.total < 0" class="w-1/4 px-4 py-3 text-right text-lg text-red-500 border-t-2 border-gray-100">￥{{ separateNum(Math.abs(all_total.total)) }}</div>
                                 </div>
                             </div>
 
