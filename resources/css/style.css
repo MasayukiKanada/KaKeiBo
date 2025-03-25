@@ -24,6 +24,26 @@
 .sp_nav {
     box-shadow: 0 0 8px 1px #dddddd;
 }
+
+.nav_text{
+    font-size: 9px;
+    margin-top: 3px;
+}
+
+.nav_user {
+    font-size: 12px;
+}
+
+.nav_btn.active {
+    opacity: 0.6;
+}
+
+@media screen and (min-width: 800px) {
+    .nav_text{
+        font-size: 11px;
+        margin-top: 2px;
+    }
+}
 /**共通**/
 
 
