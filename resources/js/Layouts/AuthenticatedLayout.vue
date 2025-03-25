@@ -11,29 +11,51 @@ import { Link, Head } from '@inertiajs/vue3';
 const showingNavigationDropdown = ref(false);
 
 onMounted(() => {
-    const btn_cat = window.document.querySelector('#btn_cat');
+    const btn_cat = window.document.querySelectorAll('.btn_cat');
     if(route().current('chart.category')) {
-        btn_cat.classList.add('nav_btn', 'active');
+        btn_cat.forEach( el => {
+            el.classList.add('nav_btn', 'active');
+        })
     }
 
-    const btn_item_add = window.document.querySelector('#btn_item_add');
+    const btn_item_add = window.document.querySelectorAll('.btn_item_add');
     if(route().current('items.create')) {
-        btn_item_add.classList.add('nav_btn', 'active');
+        btn_item_add.forEach( el => {
+            el.classList.add('nav_btn', 'active');
+        })
     }
 
-    const btn_daily = window.document.querySelector('#btn_daily');
+    const btn_daily = window.document.querySelectorAll('.btn_daily');
     if(route().current('chart.daily')) {
-        btn_daily.classList.add('nav_btn', 'active');
+        btn_daily.forEach( el => {
+            el.classList.add('nav_btn', 'active');
+        })
     }
 
-    const btn_chart = window.document.querySelector('#btn_chart');
+    const btn_chart = window.document.querySelectorAll('.btn_chart');
     if(route().current('chart.index')) {
-        btn_chart.classList.add('nav_btn', 'active');
+        btn_chart.forEach( el => {
+            el.classList.add('nav_btn', 'active');
+        })
     }
 
     const btn_cat_add = window.document.querySelectorAll('.btn_cat_add');
     if(route().current('categories.create')) {
         btn_cat_add.forEach( el => {
+            el.classList.add('nav_btn', 'active');
+        })
+    }
+
+    const btn_cat_index = window.document.querySelectorAll('.btn_cat_index');
+    if(route().current('categories.index')) {
+        btn_cat_index.forEach( el => {
+            el.classList.add('nav_btn', 'active');
+        })
+    }
+
+    const btn_item_index = window.document.querySelectorAll('.btn_item_index');
+    if(route().current('items.index')) {
+        btn_item_index.forEach( el => {
             el.classList.add('nav_btn', 'active');
         })
     }
@@ -83,28 +105,38 @@ onMounted(() => {
                         <div class="flex">
 
                             <!-- Navigation Links -->
-                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('chart.daily')" :class="route().current('chart.daily')">
-                                    日別
-                                </NavLink>
-                                <NavLink :href="route('chart.category')" :class="route().current('chart.category')">
-                                    カテゴリ別
-                                </NavLink>
-                                <NavLink :href="route('chart.index')" :class="route().current('chart.index')">
-                                    チャート
-                                </NavLink>
-                                <NavLink :href="route('items.index')" :class="route().current('items.index')">
-                                    仕訳一覧
-                                </NavLink>
+                            <div class="hidden space-x-3 md:space-x-6 sm:-my-px sm:ml-3 md:ml-10 sm:flex">
+                                <Link as="button" id="btn_daily" :href="route('chart.daily')" :active="route().current('chart.daily')" class="btn_daily w-16 py-2 active:opacity-60">
+                                    <img class="px-4" src="/images/icon/daily.png" alt="日別">
+                                    <p class="nav_text text-gray-500 font-medium">日別</p>
+                                </Link>
+                                <Link as="button" id="btn_cat" :href="route('chart.category')" :active="route().current('chart.category')" class="btn_cat w-16 active:opacity-60">
+                                    <img class="px-4" src="/images/icon/category.png" alt="カテゴリ別">
+                                    <p class="nav_text text-gray-500 font-medium">カテゴリ別</p>
+                                </Link>
+                                <Link as="button" id="btn_chart" :href="route('chart.index')" :active="route().current('chart.index')" class="btn_chart w-16 py-2 active:opacity-60">
+                                    <img class="px-4" src="/images/icon/chart.png" alt="チャート">
+                                    <p class="nav_text text-gray-500 font-medium">チャート</p>
+                                </Link>
+                                <Link as="button" :href="route('items.index')" :active="route().current('items.index')" class="btn_item_index w-16 py-2 active:opacity-60">
+                                    <img class="px-4" src="/images/icon/index.png" alt="仕訳一覧">
+                                    <p class="nav_text text-gray-500 font-medium">仕訳一覧</p>
+                                </Link>
                             </div>
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
                             <div class="ml-3 mr-1 md:mr-5">
-                                <Link as="button" :href="route('items.create')" class="flex ml-auto text-white bg-indigo-400 border-0 md:py-1 px-6 focus:outline-none hover:bg-indigo-500 rounded font-semibold">仕訳入力</Link>
+                                <Link as="button" :href="route('items.create')" :active="route().current('items.create')" class="btn_item_add w-16 py-2 active:opacity-60">
+                                    <img class="px-4" src="/images/icon/create.png" alt="仕訳入力">
+                                    <p class="nav_text text-gray-500 font-medium">仕訳入力</p>
+                                </Link>
                             </div>
                             <div class="ml-3 mr-1 md:mr-3">
-                                <Link id="cat_btn" as="button" :href="route('categories.index')" class="flex ml-auto text-white bg-gray-400 border-0 md:py-1 px-6 focus:outline-none hover:bg-gray-500 rounded font-semibold">カテゴリ管理</Link>
+                                <Link as="button" :href="route('categories.index')" :active="route().current('categories.index')" class="btn_cat_index w-16 py-2 active:opacity-60">
+                                    <img class="px-4" src="/images/icon/categories.png" alt="カテゴリ管理">
+                                    <p class="nav_text text-gray-500 font-medium">カテゴリ管理</p>
+                                </Link>
                             </div>
                             <!-- Settings Dropdown -->
                             <div class="ml-3 relative">
@@ -113,7 +145,7 @@ onMounted(() => {
                                         <span class="inline-flex rounded-md">
                                             <button
                                                 type="button"
-                                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150 nav_user"
                                             >
                                                 {{ $page.props.auth.user.name }}
 
@@ -134,9 +166,9 @@ onMounted(() => {
                                     </template>
 
                                     <template #content>
-                                        <DropdownLink :href="route('profile.edit')"> プロフィール </DropdownLink>
-                                        <DropdownLink :href="route('logout')" method="post" as="button">
-                                            ログアウト
+                                        <DropdownLink :href="route('profile.edit')" class="nav_user flex items-center"><img class="w-8 mr-2" src="/images/icon/profile.png" alt="プロフィール">プロフィール </DropdownLink>
+                                        <DropdownLink :href="route('logout')" method="post" as="button" class="nav_user flex items-center text-red-500">
+                                            <img class="w-8 mr-2" src="/images/icon/logout.png" alt="ログアウト">ログアウト
                                         </DropdownLink>
                                     </template>
                                 </Dropdown>
@@ -167,31 +199,31 @@ onMounted(() => {
                     class="sm:hidden">
                         <Link as="button" :href="route('categories.create')" class="btn_cat_add w-20 px-2 py-2 active:opacity-60" v-if="route().current('categories.index')">
                                 <img class="px-2" src="/images/icon/add-folder.png" alt="カテゴリ作成">
-                                <p class="nav_text">カテゴリ作成</p>
+                                <p class="nav_text text-gray-500 font-medium">カテゴリ作成</p>
                         </Link>
                         <Link as="button" :href="route('categories.create')" class="btn_cat_add w-20 px-2 py-2 active:opacity-60" v-else-if="route().current('categories.edit')">
                                 <img class="px-2" src="/images/icon/add-folder.png" alt="カテゴリ作成">
-                                <p class="nav_text">カテゴリ作成</p>
+                                <p class="nav_text text-gray-500 font-medium">カテゴリ作成</p>
                         </Link>
                         <Link as="button" :href="route('categories.create')" class="btn_cat_add w-20 px-2 py-2 active:opacity-60" v-else-if="route().current('categories.create')">
                                 <img class="px-2" src="/images/icon/add-folder.png" alt="カテゴリ作成">
-                                <p class="nav_text">カテゴリ作成</p>
+                                <p class="nav_text text-gray-500 font-medium">カテゴリ作成</p>
                         </Link>
-                        <Link as="button" id="btn_item_add" :href="route('items.create')" :active="route().current('items.create')" class="w-20 px-2 py-2 active:opacity-60" v-else>
+                        <Link as="button" id="btn_item_add" :href="route('items.create')" :active="route().current('items.create')" class="btn_item_add w-20 px-2 py-2 active:opacity-60" v-else>
                             <img class="px-2" src="/images/icon/create.png" alt="仕訳入力">
-                            <p class="nav_text">仕訳入力</p>
+                            <p class="nav_text text-gray-500 font-medium">仕訳入力</p>
                         </Link>
-                        <Link as="button" id="btn_daily" :href="route('chart.daily')" :active="route().current('chart.daily')" class="w-20 px-2 py-2 active:opacity-60">
+                        <Link as="button" id="btn_daily" :href="route('chart.daily')" :active="route().current('chart.daily')" class="btn_daily w-20 px-2 py-2 active:opacity-60">
                             <img class="px-2" src="/images/icon/daily.png" alt="日別">
-                            <p class="nav_text">日別</p>
+                            <p class="nav_text text-gray-500 font-medium">日別</p>
                         </Link>
-                        <Link as="button" id="btn_cat" :href="route('chart.category')" :active="route().current('chart.category')" class="w-20 px-2 active:opacity-60">
+                        <Link as="button" id="btn_cat" :href="route('chart.category')" :active="route().current('chart.category')" class="btn_cat w-20 px-2 active:opacity-60">
                             <img class="px-2" src="/images/icon/category.png" alt="カテゴリ別">
-                            <p class="nav_text">カテゴリ別</p>
+                            <p class="nav_text text-gray-500 font-medium">カテゴリ別</p>
                         </Link>
-                        <Link as="button" id="btn_chart" :href="route('chart.index')" :active="route().current('chart.index')" class="w-20 px-2 py-2 active:opacity-60">
+                        <Link as="button" id="btn_chart" :href="route('chart.index')" :active="route().current('chart.index')" class="btn_chart w-20 px-2 py-2 active:opacity-60">
                             <img class="px-2" src="/images/icon/chart.png" alt="チャート">
-                            <p class="nav_text">チャート</p>
+                            <p class="nav_text text-gray-500 font-medium">チャート</p>
                         </Link>
                     </div>
                     <!-- Hamburger -->
@@ -231,10 +263,10 @@ onMounted(() => {
                     :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }"
                     class="sm:hidden">
                     <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('items.index')" :active="route().current('items.index')" class="flex items-center">
+                        <ResponsiveNavLink :href="route('items.index')" :active="route().current('items.index')" class="flex items-center text-sm">
                             <img class="w-10 mr-2" src="/images/icon/index.png" alt="仕訳一覧">仕訳一覧
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('categories.index')" :active="route().current('categories.index')" class="flex items-center">
+                        <ResponsiveNavLink :href="route('categories.index')" :active="route().current('categories.index')" class="flex items-center text-sm">
                             <img class="w-10 mr-2" src="/images/icon/categories.png" alt="カテゴリ管理">カテゴリ管理
                         </ResponsiveNavLink>
                     </div>
@@ -244,7 +276,7 @@ onMounted(() => {
                         <div class="px-4 flex items-center">
                             <img class="w-10 mr-2" src="/images/icon/user.png" alt="ユーザー">
                             <div>
-                                <div class="font-medium text-base text-gray-800">
+                                <div class="font-medium text-gray-800 text-sm">
                                     {{ $page.props.auth.user.name }}
                                 </div>
                                 <div class="font-medium text-sm text-gray-500">{{ $page.props.auth.user.email }}</div>
@@ -252,8 +284,8 @@ onMounted(() => {
                         </div>
 
                         <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink :href="route('profile.edit')" class="flex items-center"><img class="w-10 mr-2" src="/images/icon/profile.png" alt="プロフィール">プロフィール </ResponsiveNavLink>
-                            <ResponsiveNavLink :href="route('logout')" method="post" as="button" class="flex items-center text-red-500">
+                            <ResponsiveNavLink :href="route('profile.edit')" class="flex items-center text-sm"><img class="w-10 mr-2" src="/images/icon/profile.png" alt="プロフィール">プロフィール </ResponsiveNavLink>
+                            <ResponsiveNavLink :href="route('logout')" method="post" as="button" class="flex items-center text-red-500 text-sm">
                                 <img class="w-10 mr-2" src="/images/icon/logout.png" alt="ログアウト">ログアウト
                             </ResponsiveNavLink>
                         </div>
