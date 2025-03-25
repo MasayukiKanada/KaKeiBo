@@ -10,6 +10,36 @@ import { Link, Head } from '@inertiajs/vue3';
 
 const showingNavigationDropdown = ref(false);
 
+onMounted(() => {
+    const btn_cat = window.document.querySelector('#btn_cat');
+    if(route().current('chart.category')) {
+        btn_cat.classList.add('nav_btn', 'active');
+    }
+
+    const btn_item_add = window.document.querySelector('#btn_item_add');
+    if(route().current('items.create')) {
+        btn_item_add.classList.add('nav_btn', 'active');
+    }
+
+    const btn_daily = window.document.querySelector('#btn_daily');
+    if(route().current('chart.daily')) {
+        btn_daily.classList.add('nav_btn', 'active');
+    }
+
+    const btn_chart = window.document.querySelector('#btn_chart');
+    if(route().current('chart.index')) {
+        btn_chart.classList.add('nav_btn', 'active');
+    }
+
+    const btn_cat_add = window.document.querySelectorAll('.btn_cat_add');
+    if(route().current('categories.create')) {
+        btn_cat_add.forEach( el => {
+            el.classList.add('nav_btn', 'active');
+        })
+    }
+
+})
+
 </script>
 
 <template>
@@ -54,16 +84,16 @@ const showingNavigationDropdown = ref(false);
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('chart.daily')" :active="route().current('chart.daily')">
+                                <NavLink :href="route('chart.daily')" :class="route().current('chart.daily')">
                                     日別
                                 </NavLink>
-                                <NavLink :href="route('chart.category')" :active="route().current('chart.category')">
+                                <NavLink :href="route('chart.category')" :class="route().current('chart.category')">
                                     カテゴリ別
                                 </NavLink>
-                                <NavLink :href="route('chart.index')" :active="route().current('chart.index')">
+                                <NavLink :href="route('chart.index')" :class="route().current('chart.index')">
                                     チャート
                                 </NavLink>
-                                <NavLink :href="route('items.index')" :active="route().current('items.index')">
+                                <NavLink :href="route('items.index')" :class="route().current('items.index')">
                                     仕訳一覧
                                 </NavLink>
                             </div>
@@ -135,27 +165,37 @@ const showingNavigationDropdown = ref(false);
                 <div class="pt-2 pb-3 flex items-center justify-around h-20">
                     <div :class="{ block: !showingNavigationDropdown, hidden: showingNavigationDropdown }"
                     class="sm:hidden">
-                        <Link as="button" :href="route('categories.create')" class="w-20 px-5 active:opacity-60" v-if="route().current('categories.index')">
-                                <img src="/images/icon/add-folder.png" alt="カテゴリ作成">
+                        <Link as="button" :href="route('categories.create')" class="btn_cat_add w-20 px-2 py-2 active:opacity-60" v-if="route().current('categories.index')">
+                                <img class="px-2" src="/images/icon/add-folder.png" alt="カテゴリ作成">
+                                <p class="nav_text">カテゴリ作成</p>
                         </Link>
-                        <Link as="button" :href="route('categories.create')" class="w-20 px-5 active:opacity-60" v-else-if="route().current('categories.edit')">
-                                <img src="/images/icon/add-folder.png" alt="カテゴリ作成">
+                        <Link as="button" :href="route('categories.create')" class="btn_cat_add w-20 px-2 py-2 active:opacity-60" v-else-if="route().current('categories.edit')">
+                                <img class="px-2" src="/images/icon/add-folder.png" alt="カテゴリ作成">
+                                <p class="nav_text">カテゴリ作成</p>
                         </Link>
-                        <Link as="button" :href="route('items.create')" class="w-20 px-5 active:opacity-60" v-else>
-                            <img src="/images/icon/create.png" alt="仕訳入力">
+                        <Link as="button" :href="route('categories.create')" class="btn_cat_add w-20 px-2 py-2 active:opacity-60" v-else-if="route().current('categories.create')">
+                                <img class="px-2" src="/images/icon/add-folder.png" alt="カテゴリ作成">
+                                <p class="nav_text">カテゴリ作成</p>
                         </Link>
-                        <Link as="button" :href="route('chart.daily')" :active="route().current('chart.daily')" class="w-20 px-5 active:opacity-60">
-                            <img src="/images/icon/daily.png" alt="日別">
+                        <Link as="button" id="btn_item_add" :href="route('items.create')" :active="route().current('items.create')" class="w-20 px-2 py-2 active:opacity-60" v-else>
+                            <img class="px-2" src="/images/icon/create.png" alt="仕訳入力">
+                            <p class="nav_text">仕訳入力</p>
                         </Link>
-                        <Link as="button" :href="route('chart.category')" :active="route().current('chart.category')" class="w-20 px-5 active:opacity-60">
-                            <img src="/images/icon/category.png" alt="カテゴリ別">
+                        <Link as="button" id="btn_daily" :href="route('chart.daily')" :active="route().current('chart.daily')" class="w-20 px-2 py-2 active:opacity-60">
+                            <img class="px-2" src="/images/icon/daily.png" alt="日別">
+                            <p class="nav_text">日別</p>
                         </Link>
-                        <Link as="button" :href="route('chart.index')" :active="route().current('chart.index')" class="w-20 px-5 active:opacity-60">
-                            <img src="/images/icon/chart.png" alt="チャート">
+                        <Link as="button" id="btn_cat" :href="route('chart.category')" :active="route().current('chart.category')" class="w-20 px-2 active:opacity-60">
+                            <img class="px-2" src="/images/icon/category.png" alt="カテゴリ別">
+                            <p class="nav_text">カテゴリ別</p>
+                        </Link>
+                        <Link as="button" id="btn_chart" :href="route('chart.index')" :active="route().current('chart.index')" class="w-20 px-2 py-2 active:opacity-60">
+                            <img class="px-2" src="/images/icon/chart.png" alt="チャート">
+                            <p class="nav_text">チャート</p>
                         </Link>
                     </div>
                     <!-- Hamburger -->
-                    <div class="mr-2 flex items-center sm:hidden">
+                    <div class="mr-1 flex items-center sm:hidden">
                             <button
                                 @click="showingNavigationDropdown = !showingNavigationDropdown"
                                 class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
@@ -191,27 +231,30 @@ const showingNavigationDropdown = ref(false);
                     :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }"
                     class="sm:hidden">
                     <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('items.index')" :active="route().current('items.index')">
-                            仕訳一覧
+                        <ResponsiveNavLink :href="route('items.index')" :active="route().current('items.index')" class="flex items-center">
+                            <img class="w-10 mr-2" src="/images/icon/index.png" alt="仕訳一覧">仕訳一覧
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('categories.index')" :active="route().current('categories.index')">
-                            カテゴリ管理
+                        <ResponsiveNavLink :href="route('categories.index')" :active="route().current('categories.index')" class="flex items-center">
+                            <img class="w-10 mr-2" src="/images/icon/categories.png" alt="カテゴリ管理">カテゴリ管理
                         </ResponsiveNavLink>
                     </div>
 
                     <!-- Responsive Settings Options -->
                     <div class="pt-4 pb-1 border-t border-gray-200">
-                        <div class="px-4">
-                            <div class="font-medium text-base text-gray-800">
-                                {{ $page.props.auth.user.name }}
+                        <div class="px-4 flex items-center">
+                            <img class="w-10 mr-2" src="/images/icon/user.png" alt="ユーザー">
+                            <div>
+                                <div class="font-medium text-base text-gray-800">
+                                    {{ $page.props.auth.user.name }}
+                                </div>
+                                <div class="font-medium text-sm text-gray-500">{{ $page.props.auth.user.email }}</div>
                             </div>
-                            <div class="font-medium text-sm text-gray-500">{{ $page.props.auth.user.email }}</div>
                         </div>
 
                         <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink :href="route('profile.edit')"> プロフィール </ResponsiveNavLink>
-                            <ResponsiveNavLink :href="route('logout')" method="post" as="button">
-                                ログアウト
+                            <ResponsiveNavLink :href="route('profile.edit')" class="flex items-center"><img class="w-10 mr-2" src="/images/icon/profile.png" alt="プロフィール">プロフィール </ResponsiveNavLink>
+                            <ResponsiveNavLink :href="route('logout')" method="post" as="button" class="flex items-center text-red-500">
+                                <img class="w-10 mr-2" src="/images/icon/logout.png" alt="ログアウト">ログアウト
                             </ResponsiveNavLink>
                         </div>
                     </div>
