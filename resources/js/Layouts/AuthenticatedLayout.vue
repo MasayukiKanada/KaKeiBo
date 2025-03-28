@@ -122,6 +122,9 @@ onMounted(() => {
                                     <img class="px-4" src="/images/icon/index.png" alt="仕訳一覧">
                                     <p class="nav_text text-gray-500 font-medium">仕訳一覧</p>
                                 </Link>
+                                <NavLink :href="route('graph')" :active="route().current('graph')">
+                                    グラフ
+                                </NavLink>
                             </div>
                         </div>
 

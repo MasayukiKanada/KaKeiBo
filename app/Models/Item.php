@@ -42,6 +42,21 @@ class Item extends Model
         }
     }
 
+    public function scopeCategoryPartner($query, $category = null, $partner = null)
+    {
+        if(is_null($category) && is_null($partner)) {
+            return $query;
+        }
+
+        if(isset($category) && is_null($partner)) {
+            return $query->where('secondary_category_id', $category);
+        }
+
+        if(is_null($category) && isset($partner)) {
+            return $query->where('partner_id', $partner);
+        }
+    }
+
     public function user() {
         return $this->belongsTo(User::class);
     }

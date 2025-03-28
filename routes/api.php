@@ -29,3 +29,6 @@ Route::middleware('auth:sanctum')
 
 Route::middleware('auth:sanctum')->get('/chart', [ChartController::class, 'chart'])
 ->name('api.chart');
+
+Route::middleware('auth:sanctum')->get('/table', [ChartController::class, 'table'])
+->name('api.table');
