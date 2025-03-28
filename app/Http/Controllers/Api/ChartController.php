@@ -210,4 +210,23 @@ class ChartController extends Controller
             'outgoes' => $outgoes,
         ], Response::HTTP_OK);
     }
+
+    public function table(Request $request)
+    {
+        //１，Itemモデルからフォーマット化した日付を取得
+        $date_list = Item::query()
+        ->select(DB::raw('DATE_FORMAT(date, "%Y%c") as date'))
+        ->groupBy(DB::raw('DATE_FORMAT(date, "%Y%c")'))
+        ->orderBy('date', 'desc')
+        ->get();
+
+        //２以降サービスへ切り離した配列を受け取り、変数に代入
+        list($total_budgets, $monthly_total_budgets, $all_total) = ChartService::chartTable($date_list, $request->category, $request->partner);
+
+        return response()->json([
+            'total_budgets' => $total_budgets,
+            'monthly_total_budgets' => $monthly_total_budgets,
+            'all_total' => $all_total,
+        ], Response::HTTP_OK);
+    }
 }

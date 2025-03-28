@@ -14,6 +14,7 @@ class ChartController extends Controller
 {
     public function index()
     {
+
         //１，Itemモデルからフォーマット化した日付を取得
         $date_list = Item::query()
         ->select(DB::raw('DATE_FORMAT(date, "%Y%c") as date'))
