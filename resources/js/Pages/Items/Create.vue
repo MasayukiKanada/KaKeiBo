@@ -59,7 +59,7 @@ window.addEventListener('load', function() {
     let partnerData = [];
     const autoCompleteJS = new autoComplete({
         selector: "#partner_search",
-        placeHolder: "相手先を検索する",
+        placeHolder: "相手方を検索する",
         resultItem: {
             highlight: true,
         },
@@ -138,7 +138,7 @@ window.addEventListener('load', function() {
 
                                         <div class="p-2 w-full" v-if="form.partner_name === null">
                                         <div class="relative">
-                                            <label for="partner_search" class="leading-7 text-sm text-gray-500">相手先<span class="text-red-500">※</span><span class="text-red-500 text-xs">新規作成の場合は不要</span></label>
+                                            <label for="partner_search" class="leading-7 text-sm text-gray-500">相手方<span class="text-red-500">※</span><span class="text-red-500 text-xs">新規作成の場合は不要</span></label>
                                             <input class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out hidden md:block" id="partner_search" type="text" name="partner_search">
                                             <select id="partner" name="partner" v-model="form.partner_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out md:hidden">
                                                 <option :value="null">選択してください／空白にする</option>
@@ -149,8 +149,8 @@ window.addEventListener('load', function() {
 
                                         <div class="p-2 w-full" v-if="form.partner_id === null">
                                         <div class="relative">
-                                            <label for="partner_name" class="leading-7 text-sm text-gray-500">新規相手先</label>
-                                            <input id="partner_name" name="partner_name" v-model="form.partner_name" placeholder="追加する相手先を入力してください" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                            <label for="partner_name" class="leading-7 text-sm text-gray-500">新規相手方</label>
+                                            <input id="partner_name" name="partner_name" v-model="form.partner_name" placeholder="追加する相手方を入力してください" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                                         </div>
                                         </div>
 
