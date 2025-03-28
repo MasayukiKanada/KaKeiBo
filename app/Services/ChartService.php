@@ -135,6 +135,7 @@ class ChartService
         ->whereMonth('date',$date_newArry[$page]['month'])
         ->whereYear('date', $date_newArry[$page]['year'])
         ->groupBy('secondary_category_id')
+        ->orderby('secondary_category_id', 'asc')
         ->get();
         $category_totals['thirdry_category'] = Item::with('secondary_category' ,'thirdry_category')
         ->select('thirdry_category_id')
@@ -142,6 +143,7 @@ class ChartService
         ->whereMonth('date',$date_newArry[$page]['month'])
         ->whereYear('date', $date_newArry[$page]['year'])
         ->groupBy('thirdry_category_id')
+        ->orderby('thirdry_category_id', 'asc')
         ->get();
 
         return [$date_newArry, $monthly_totals, $category_totals];
