@@ -16,17 +16,33 @@ class ItemFactory extends Factory
      */
     public function definition()
     {
-        return [
-            'primary_category_id' => $this->faker->numberBetween(1, 2),
-            'date' => $this->faker->date,
-            'partner_id' => $this->faker->numberBetween(1, 10),
-            'secondary_category_id' => $this->faker->numberBetween(1, 21),
-            'thirdry_category_id' => $this->faker->numberBetween(1, 15),
-            'subject_id' => $this->faker->numberBetween(1, 6),
-            'price' => $this->faker->numberBetween(300, 10000),
-            'memo' => $this->faker->realText(20),
-            'sort_order' => $this->faker->numberBetween(0, 10),
-            'user_id' => 2,
+        $primary_category_id = $this->faker->numberBetween(1, 2);
+
+        if($primary_category_id == 1) {
+            return [
+                'primary_category_id' => $primary_category_id,
+                'date' => $this->faker->dateTimeBetween('-4year', '-1day'),
+                'partner_id' => $this->faker->numberBetween(1, 5),
+                'secondary_category_id' => $this->faker->numberBetween(1, 5),
+                'subject_id' => $this->faker->numberBetween(1, 6),
+                'price' => $this->faker->numberBetween(300, 10000),
+                'memo' => $this->faker->realText(20),
+                'sort_order' => $this->faker->numberBetween(0, 10),
+                'user_id' => 2,
+            ];
+
+        } else {
+            return [
+                'primary_category_id' => $primary_category_id,
+                'date' => $this->faker->dateTimeBetween('-4year', '-1day'),
+                'partner_id' => $this->faker->numberBetween(6, 10),
+                'secondary_category_id' => $this->faker->numberBetween(6, 22),
+                'subject_id' => $this->faker->numberBetween(1, 6),
+                'price' => $this->faker->numberBetween(300, 10000),
+                'memo' => $this->faker->realText(20),
+                'sort_order' => $this->faker->numberBetween(0, 10),
+                'user_id' => 2,
         ];
+        }
     }
 }
