@@ -104,17 +104,17 @@ const getData = async() => {
                             </div>
 
                             <div v-show="form.category_id === null" class="sm:mt-0 mt-6">
-                                <label for="partner_id" class="leading-7 font-md text-sm text-gray-500 mr-2">相手先</label>
+                                <label for="partner_id" class="leading-7 font-md text-sm text-gray-500 mr-2">相手方</label>
                                 <select id="partner_id" name="partner_id" v-model="form.partner_id" class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-8 leading-8 transition-colors duration-200 ease-in-out mr-1">
                                     <option :value="null">指定なし</option>
-                                    <option value="0">全ての相手先</option>
+                                    <option value="0">全ての相手方</option>
                                     <option v-for="partner in partners" :value="partner['id']" :key="partner['id']">{{ partner['name'] }}</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="attention mt-4">
-                            <p class="font-md text-xs text-red-500 text-center">※カテゴリまたは相手先を指定する際は、<br class="sm:hidden">他方は「指定なし」を選択してください</p>
+                            <p class="font-md text-xs text-red-500 text-center">※カテゴリまたは相手方を指定する際は、<br class="sm:hidden">他方は「指定なし」を選択してください</p>
                         </div>
 
                     <button id="chart-button" class="mt-6 mb-8 flex mx-auto text-white bg-indigo-400 border-0 py-2 sm:px-5 px-5 focus:outline-none hover:bg-indigo-500 rounded text-md">グラフを表示する</button>
