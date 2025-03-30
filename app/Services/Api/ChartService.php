@@ -87,16 +87,31 @@ class ChartService
         return [$data ,$labels, $totals, $incomes, $outgoes];
      }
 
-     public static function dailyCategoryGraphs($year, $month, $category_id)
+     public static function dailyCategoryGraphs($year, $month, $category_id, $thirdry_category)
      {
-        $data = DB::table('items')
-        ->select(DB::raw('DATE_FORMAT(date, "%c月%e日") as date'),'secondary_category_id', DB::raw('SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS incomes,SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgoes'), DB::raw('0 as totals'))
-        ->groupBy(DB::raw('date'), 'secondary_category_id')
-        ->whereYear('date', $year)
-        ->whereMonth('date', $month)
-        ->where('secondary_category_id', $category_id)
-        ->orderByRaw('CAST(date as SIGNED) asc')
-        ->get();
+        if($thirdry_category == true) {
+
+            $data = DB::table('items')
+            ->select(DB::raw('DATE_FORMAT(date, "%c月%e日") as date'),'thirdry_category_id', DB::raw('SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS incomes,SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgoes'), DB::raw('0 as totals'))
+            ->groupBy(DB::raw('date'), 'thirdry_category_id')
+            ->whereYear('date', $year)
+            ->whereMonth('date', $month)
+            ->where('thirdry_category_id', $category_id)
+            ->orderByRaw('CAST(date as SIGNED) asc')
+            ->get();
+
+        } elseif($thirdry_category == false) {
+
+            $data = DB::table('items')
+            ->select(DB::raw('DATE_FORMAT(date, "%c月%e日") as date'),'secondary_category_id', DB::raw('SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS incomes,SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgoes'), DB::raw('0 as totals'))
+            ->groupBy(DB::raw('date'), 'secondary_category_id')
+            ->whereYear('date', $year)
+            ->whereMonth('date', $month)
+            ->where('secondary_category_id', $category_id)
+            ->orderByRaw('CAST(date as SIGNED) asc')
+            ->get();
+
+        }
 
         $labels = $data->pluck('date');
         $totals = $data->pluck('totals');
@@ -106,16 +121,30 @@ class ChartService
         return [$data ,$labels, $totals, $incomes, $outgoes];
      }
 
-     public static function monthlyCategoryGraphs($year, $category_id)
+     public static function monthlyCategoryGraphs($year, $category_id, $thirdry_category)
      {
 
-        $data = DB::table('items')
-        ->select(DB::raw('DATE_FORMAT(date, "%Y年%c月") as month'),'secondary_category_id', DB::raw('SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS incomes,SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgoes'), DB::raw('0 as totals'))
-        ->groupBy('secondary_category_id', DB::raw('DATE_FORMAT(date, "%Y年%c月")'))
-        ->where('secondary_category_id', $category_id)
-        ->whereYear('date', $year)
-        ->orderBy('month', 'asc')
-        ->get();
+        if($thirdry_category == true) {
+
+            $data = DB::table('items')
+            ->select(DB::raw('DATE_FORMAT(date, "%Y年%c月") as month'),'thirdry_category_id', DB::raw('SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS incomes,SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgoes'), DB::raw('0 as totals'))
+            ->groupBy('thirdry_category_id', DB::raw('DATE_FORMAT(date, "%Y年%c月")'))
+            ->where('thirdry_category_id', $category_id)
+            ->whereYear('date', $year)
+            ->orderBy('month', 'asc')
+            ->get();
+
+        } elseif($thirdry_category == false) {
+
+            $data = DB::table('items')
+            ->select(DB::raw('DATE_FORMAT(date, "%Y年%c月") as month'),'secondary_category_id', DB::raw('SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS incomes,SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgoes'), DB::raw('0 as totals'))
+            ->groupBy('secondary_category_id', DB::raw('DATE_FORMAT(date, "%Y年%c月")'))
+            ->where('secondary_category_id', $category_id)
+            ->whereYear('date', $year)
+            ->orderBy('month', 'asc')
+            ->get();
+
+        }
 
         $labels = $data->pluck('month');
         $totals = $data->pluck('totals');
@@ -203,7 +232,7 @@ class ChartService
         return [$data ,$labels, $totals, $incomes, $outgoes];
      }
 
-     public static function chartTable($date_list, $category, $partner)
+     public static function chartTable($date_list, $category, $partner, $thirdry_category)
      {
         //２，１の日付を更に['year']['month']に分割して新しい配列に代入
         for($i=0; $i < count($date_list); $i++) {
@@ -212,41 +241,85 @@ class ChartService
         }
 
         if(isset($category) && is_null($partner)) {
-            //３，各年の収入と支出の合計を取得
-            $total_budgets = DB::table('items')
-            ->select(DB::raw("
-            SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS income,
-            SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgo"),
-            DB::raw('YEAR(date) as year'))
-            ->where('secondary_category_id', $category)
-            ->groupBy(DB::raw('YEAR(date)'))
-            ->orderBy('year', 'desc')
-            ->get();
 
-            //４，月毎の収入と支出の合計を取得、更にその月に対応する日付を['year']['month']に代入
-            for($i=0; $i < count($date_newArry); $i++) {
-                $monthly_total_budgets[$i]['total'] =  DB::table('items')
+            if(isset($thirdry_category)) {
+
+                //３，各年の収入と支出の合計を取得
+                $total_budgets = DB::table('items')
                 ->select(DB::raw("
                 SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS income,
                 SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgo"),
-                DB::raw('DATE_FORMAT(date, "%Y%c") as date'))
-                ->where('secondary_category_id', $category)
-                ->whereYear('date', $date_newArry[$i]['year'])
-                ->whereMonth('date', $date_newArry[$i]['month'])
-                ->groupBy(DB::raw('DATE_FORMAT(date, "%Y%c")'))
-                ->orderBy('date', 'desc')
+                DB::raw('YEAR(date) as year'))
+                ->where('thirdry_category_id', $thirdry_category)
+                ->groupBy(DB::raw('YEAR(date)'))
+                ->orderBy('year', 'desc')
                 ->get();
-                $monthly_total_budgets[$i]['year'] = $date_newArry[$i]['year'];
-                $monthly_total_budgets[$i]['month'] = $date_newArry[$i]['month'];
-            }
 
-            //収支金額の全期間累計を取得
-            $all_total = Item::select(DB::raw("
-            SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS income,
-            SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgo,
-            SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) - SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) as total"))
-            ->where('secondary_category_id', $category)
-            ->first();
+                //４，月毎の収入と支出の合計を取得、更にその月に対応する日付を['year']['month']に代入
+                for($i=0; $i < count($date_newArry); $i++) {
+                    $monthly_total_budgets[$i]['total'] =  DB::table('items')
+                    ->select(DB::raw("
+                    SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS income,
+                    SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgo"),
+                    DB::raw('DATE_FORMAT(date, "%Y%c") as date'))
+                    ->where('thirdry_category_id', $thirdry_category)
+                    ->whereYear('date', $date_newArry[$i]['year'])
+                    ->whereMonth('date', $date_newArry[$i]['month'])
+                    ->groupBy(DB::raw('DATE_FORMAT(date, "%Y%c")'))
+                    ->orderBy('date', 'desc')
+                    ->get();
+                    $monthly_total_budgets[$i]['year'] = $date_newArry[$i]['year'];
+                    $monthly_total_budgets[$i]['month'] = $date_newArry[$i]['month'];
+                }
+
+                //収支金額の全期間累計を取得
+                $all_total = Item::select(DB::raw("
+                SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS income,
+                SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgo,
+                SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) - SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) as total"))
+                ->where('thirdry_category_id', $thirdry_category)
+                ->first();
+
+
+            } elseif(is_null($thirdry_category)) {
+
+                //３，各年の収入と支出の合計を取得
+                $total_budgets = DB::table('items')
+                ->select(DB::raw("
+                SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS income,
+                SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgo"),
+                DB::raw('YEAR(date) as year'))
+                ->where('secondary_category_id', $category)
+                ->groupBy(DB::raw('YEAR(date)'))
+                ->orderBy('year', 'desc')
+                ->get();
+
+                //４，月毎の収入と支出の合計を取得、更にその月に対応する日付を['year']['month']に代入
+                for($i=0; $i < count($date_newArry); $i++) {
+                    $monthly_total_budgets[$i]['total'] =  DB::table('items')
+                    ->select(DB::raw("
+                    SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS income,
+                    SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgo"),
+                    DB::raw('DATE_FORMAT(date, "%Y%c") as date'))
+                    ->where('secondary_category_id', $category)
+                    ->whereYear('date', $date_newArry[$i]['year'])
+                    ->whereMonth('date', $date_newArry[$i]['month'])
+                    ->groupBy(DB::raw('DATE_FORMAT(date, "%Y%c")'))
+                    ->orderBy('date', 'desc')
+                    ->get();
+                    $monthly_total_budgets[$i]['year'] = $date_newArry[$i]['year'];
+                    $monthly_total_budgets[$i]['month'] = $date_newArry[$i]['month'];
+                }
+
+                //収支金額の全期間累計を取得
+                $all_total = Item::select(DB::raw("
+                SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS income,
+                SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgo,
+                SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) - SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) as total"))
+                ->where('secondary_category_id', $category)
+                ->first();
+
+            }
 
         } elseif(isset($partner) && is_null($category)) {
             //３，各年の収入と支出の合計を取得

@@ -14,7 +14,6 @@ class ChartController extends Controller
 {
     public function index()
     {
-
         //１，Itemモデルからフォーマット化した日付を取得
         $date_list = Item::query()
         ->select(DB::raw('DATE_FORMAT(date, "%Y%c") as date'))
@@ -26,7 +25,8 @@ class ChartController extends Controller
         list($total_budgets, $monthly_total_budgets, $year_list, $month_list) = ChartService::totalBudgets($date_list);
 
         //大カテゴリの取得
-        $categories = SecondaryCategory::select('id', 'name')
+        $categories = SecondaryCategory::with('thirdry_category')
+        ->select('id', 'name')
         ->get();
 
         //相手先の取得

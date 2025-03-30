@@ -75,6 +75,10 @@
 	font-size: 15px;
 }
 
+.arrow:active {
+    opacity: 0.7;
+}
+
 .arrow:hover {
     opacity: 0.7;
 }

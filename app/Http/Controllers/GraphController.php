@@ -14,11 +14,21 @@ class GraphController extends Controller
         $year = 2025;
         $month = 03;
         // $month = null;
-        $category_id = 1;
+        $category_id = 5;
         $partner_id = 3;
 
         $category = 1;
         $partner = null;
+
+        $data = DB::table('items')
+        ->select(DB::raw('DATE_FORMAT(date, "%Y年") as year'),'thirdry_category_id', DB::raw('SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS incomes,SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgoes'), DB::raw('0 as totals'))
+        ->groupBy(DB::raw('DATE_FORMAT(date, "%Y年")'), 'thirdry_category_id')
+        ->where('thirdry_category_id', $category_id)
+        ->orderBy('year', 'asc')
+        ->get();
+
+
+        dd($data);
 
         // $subQuery = Item::categoryPartner(1, null);
 

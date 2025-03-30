@@ -29,7 +29,17 @@ class ChartController extends Controller
                 } else {
                     //個別のカテゴリ
 
-                    list($data ,$labels, $totals, $incomes, $outgoes) = ChartService::dailyCategoryGraphs($request->year, $request->month, $request->category_id);
+                    if(isset($request->thirdry_category_id)) {
+                        $thirdry_category = true;
+
+                        list($data ,$labels, $totals, $incomes, $outgoes) = ChartService::dailyCategoryGraphs($request->year, $request->month, $request->thirdry_category_id, $thirdry_category);
+
+                    } elseif(is_null($request->thirdry_category_id)) {
+                        $thirdry_category = false;
+
+                        list($data ,$labels, $totals, $incomes, $outgoes) = ChartService::dailyCategoryGraphs($request->year, $request->month, $request->category_id, $thirdry_category);
+
+                    }
 
                 }
 
@@ -74,7 +84,17 @@ class ChartController extends Controller
                 } else {
                     //個別のカテゴリ
 
-                    list($data ,$labels, $totals, $incomes, $outgoes) = ChartService::monthlyCategoryGraphs($request->year, $request->category_id);
+                    if(isset($request->thirdry_category_id)) {
+                        $thirdry_category = true;
+
+                        list($data ,$labels, $totals, $incomes, $outgoes) = ChartService::monthlyCategoryGraphs($request->year, $request->thirdry_category_id, $thirdry_category);
+
+                    } elseif(is_null($request->thirdry_category_id)) {
+                        $thirdry_category = false;
+
+                        list($data ,$labels, $totals, $incomes, $outgoes) = ChartService::monthlyCategoryGraphs($request->year, $request->category_id, $thirdry_category);
+
+                    }
 
                 }
 
@@ -127,12 +147,26 @@ class ChartController extends Controller
 
                 } else {
                     //個別のカテゴリ
-                    $data = DB::table('items')
-                    ->select(DB::raw('DATE_FORMAT(date, "%Y年") as year'),'secondary_category_id', DB::raw('SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS incomes,SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgoes'), DB::raw('0 as totals'))
-                    ->groupBy(DB::raw('DATE_FORMAT(date, "%Y年")'), 'secondary_category_id')
-                    ->where('secondary_category_id', $request->category_id)
-                    ->orderBy('year', 'asc')
-                    ->get();
+
+                    if(isset($request->thirdry_category_id)) {
+
+                        $data = DB::table('items')
+                        ->select(DB::raw('DATE_FORMAT(date, "%Y年") as year'),'thirdry_category_id', DB::raw('SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS incomes,SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgoes'), DB::raw('0 as totals'))
+                        ->groupBy(DB::raw('DATE_FORMAT(date, "%Y年")'), 'thirdry_category_id')
+                        ->where('thirdry_category_id', $request->thirdry_category_id)
+                        ->orderBy('year', 'asc')
+                        ->get();
+
+                    } elseif(is_null($request->thirdry_category_id)) {
+
+                        $data = DB::table('items')
+                        ->select(DB::raw('DATE_FORMAT(date, "%Y年") as year'),'secondary_category_id', DB::raw('SUM(CASE WHEN primary_category_id = 1 THEN price ELSE 0 END) AS incomes,SUM(CASE WHEN primary_category_id = 2 THEN price ELSE 0 END) AS outgoes'), DB::raw('0 as totals'))
+                        ->groupBy(DB::raw('DATE_FORMAT(date, "%Y年")'), 'secondary_category_id')
+                        ->where('secondary_category_id', $request->category_id)
+                        ->orderBy('year', 'asc')
+                        ->get();
+
+                    }
 
                     $labels = $data->pluck('year');
                     $totals = $data->pluck('totals');
@@ -221,7 +255,7 @@ class ChartController extends Controller
         ->get();
 
         //２以降サービスへ切り離した配列を受け取り、変数に代入
-        list($total_budgets, $monthly_total_budgets, $all_total) = ChartService::chartTable($date_list, $request->category, $request->partner);
+        list($total_budgets, $monthly_total_budgets, $all_total) = ChartService::chartTable($date_list, $request->category, $request->partner, $request->thirdry_category);
 
         return response()->json([
             'total_budgets' => $total_budgets,

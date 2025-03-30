@@ -33,7 +33,12 @@ const form = reactive({
     month: null,
     category_id: null,
     partner_id: null,
+    thirdry_category_id: null,
 })
+
+const isNotEmpty = obj => {
+    return Object.keys(obj).length != 0
+}
 
 const data = reactive({})
 
@@ -49,6 +54,7 @@ const getData = async() => {
                 month: form.month,
                 category_id: form.category_id,
                 partner_id: form.partner_id,
+                thirdry_category_id: form.thirdry_category_id,
             }
         })
         .then( res => {
@@ -66,6 +72,7 @@ const getData = async() => {
 const table_form = reactive({
     category: null,
     partner: null,
+    thirdry_category: null,
 })
 
 const table_data = reactive({})
@@ -76,6 +83,7 @@ const getTable = async() => {
             params: {
                 category: table_form.category,
                 partner: table_form.partner,
+                thirdry_category: table_form.thirdry_category,
             }
         })
         .then( res => {
@@ -119,12 +127,25 @@ const getTable = async() => {
                         </div>
                         <div class="sm:flex items-center w-fit mx-auto mt-8 md:mt-5">
                             <div v-show="form.partner_id === null" class="mr-3">
-                                <label for="category_id" class="leading-7 font-semibold text-sm text-gray-500 mr-2">カテゴリ</label>
+                                <label for="category_id" class="leading-7 font-semibold text-sm text-gray-500 mr-2">大カテゴリ</label>
                                 <select id="category_id" name="category_id" v-model="form.category_id" class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-8 leading-8 transition-colors duration-200 ease-in-out mr-1">
                                     <option :value="null">指定なし</option>
                                     <option value="0">全てのカテゴリ</option>
                                     <option v-for="category in categories" :value="category['id']" :key="category['id']">{{ category['name'] }}</option>
                                 </select>
+                            </div>
+
+                            <!-- form.secondary_categoryの値によって条件分岐 -->
+                            <div v-for="category in categories">
+                                <div v-if="isNotEmpty(category.thirdry_category)">
+                                    <div class="flex items-center sm:mt-0 mt-5" v-if="category.id === form.category_id">
+                                        <label for="thirdry_category" class="leading-7 font-semibold text-sm text-gray-500 mr-2">小カテゴリ</label>
+                                        <select id="thirdry_category" name="thirdry_category" v-model="form.thirdry_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                            <option :value="null">指定なし</option>
+                                            <option v-for="thirdry_category in category.thirdry_category" :value="thirdry_category.id" :key="thirdry_category.id">{{ thirdry_category.name }}</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
 
                             <div v-show="form.category_id === null" class="sm:mt-0 mt-6">
@@ -149,11 +170,24 @@ const getTable = async() => {
                     <form @submit.prevent="getTable">
                         <div class="sm:flex items-center w-fit mx-auto mt-8 md:mt-5">
                             <div v-show="table_form.partner === null" class="mr-3">
-                                <label for="category" class="leading-7 font-semibold text-sm text-gray-500 mr-2">カテゴリ</label>
+                                <label for="category" class="leading-7 font-semibold text-sm text-gray-500 mr-2">大カテゴリ</label>
                                 <select id="category" name="table_category_id" v-model="table_form.category" class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-8 leading-8 transition-colors duration-200 ease-in-out mr-1">
                                     <option :value="null">指定なし</option>
                                     <option v-for="category in categories" :value="category['id']" :key="category['id']">{{ category['name'] }}</option>
                                 </select>
+                            </div>
+
+                            <!-- table_form.secondary_categoryの値によって条件分岐 -->
+                            <div v-for="category in categories">
+                                <div v-if="isNotEmpty(category.thirdry_category)">
+                                    <div class="flex items-center sm:mt-0 mt-5" v-if="category.id === table_form.category">
+                                        <label for="thirdry_category" class="leading-7 font-semibold text-sm text-gray-500 mr-2">小カテゴリ</label>
+                                        <select id="thirdry_category" name="thirdry_category" v-model="table_form.thirdry_category" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                            <option :value="null">指定なし</option>
+                                            <option v-for="thirdry_category in category.thirdry_category" :value="thirdry_category.id" :key="thirdry_category.id">{{ thirdry_category.name }}</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
 
                             <div v-show="table_form.category === null" class="sm:mt-0 mt-6">
