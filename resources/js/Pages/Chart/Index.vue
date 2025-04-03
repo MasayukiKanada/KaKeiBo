@@ -24,8 +24,17 @@ const separateNum = num => {
 }
 
 onMounted(() => {
-    form.year = getThisYear();
-    form.month = getThisMonth();
+    if(getThisYear() !==  props.year_list[0]['year']) {
+        form.year = null;
+    } else {
+        form.year = getThisYear();
+    }
+
+    if(getThisMonth() !== props.year_list[0]['month'][0]['month']) {
+        form.month = null;
+    } else {
+        form.month = getThisMonth();
+    }
 })
 
 const form = reactive({
