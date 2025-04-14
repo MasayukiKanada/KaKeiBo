@@ -67,9 +67,18 @@ class ItemController extends Controller
     {
 
         if($request->partner_name) {
-            Partner::create([
-                'name' => $request->partner_name,
-            ]);
+
+            // もし、登録済みのパートナー名と同じ名前が入力されているか確認
+            $old_partner_name = Partner::where('name', $request->partner_name)
+            ->select('name')
+            ->first();
+
+            if(is_null($old_partner_name)) {
+            // もし、新規パートナー名が入力されていたら新規作成
+                Partner::create([
+                    'name' => $request->partner_name,
+                ]);
+            }
 
             $partner = Partner::select('id')
             ->where('name', $request->partner_name)
