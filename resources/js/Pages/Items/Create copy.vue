@@ -1,12 +1,11 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
-import { onMounted, reactive } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { getToday } from '@/common';
 import { Inertia } from '@inertiajs/inertia';
 import ValidationErrors from '@/Components/ValidationErrors.vue';
 import autoComplete from "@tarekraafat/autocomplete.js";
-import FlashMessage from '@/Components/FlashMessage.vue';
 
 const props = defineProps({
     partners: Array,
@@ -37,20 +36,11 @@ const form = reactive({
     user_id: null,
 })
 
-let toCreate = false;
-
 const storeItem = () => {
-    toCreate = false;
-    Inertia.post(route('items.index'), [form, toCreate])
-}
-
-const pushForm = () => {
-    toCreate = true;
-    Inertia.post(route('items.index'), [form, toCreate])
+    Inertia.post(route('items.index'), form)
 }
 
 const deleteData = () => {
-    //入力取消の場合の処理
     form.primary_category_id = null;
     form.partner_id = null;
     form.partner_name = null;
@@ -59,12 +49,6 @@ const deleteData = () => {
     form.price = null;
     form.memo = null;
     form.thirdry_category_id = null;
-
-    //指定位置までのスクロール処理
-    const btnToForm = document.querySelector("#create-form");
-    btnToForm.scrollIntoView({
-        behavior: "smooth"
-    });
 }
 
 const isNotEmpty = obj => {
@@ -72,7 +56,6 @@ const isNotEmpty = obj => {
 }
 
 window.addEventListener('load', function() {
-    //相手方検索のためのAPI
     let partnerData = [];
     const autoCompleteJS = new autoComplete({
         selector: "#partner_search",
@@ -139,12 +122,11 @@ window.addEventListener('load', function() {
                     <div class="p-6 text-gray-900">
 
                         <ValidationErrors :errors="errors" />
-                        <section id="create-form" class="text-gray-600 body-font relative">
+                        <section class="text-gray-600 body-font relative">
                             <div class="container px-5 py-8 mx-auto">
-                                <FlashMessage />
 
                                 <form @submit.prevent="storeItem">
-                                <div class="lg:w-2/3 md:w-4/5 mx-auto mt-8">
+                                <div class="lg:w-2/3 md:w-4/5 mx-auto">
                                 <div class="flex flex-wrap -m-2">
 
                                         <div class="p-2 w-full">
@@ -154,15 +136,11 @@ window.addEventListener('load', function() {
                                         </div>
                                         </div>
 
-                                        <div class="p-2 w-full">
+                                        <div class="p-2 w-full" v-if="form.partner_name === null">
                                         <div class="relative">
                                             <label for="partner_search" class="leading-7 text-sm text-gray-500">相手方<span class="text-red-500">※</span><span class="text-red-500 text-xs">新規作成の場合は不要</span></label>
                                             <input class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out hidden md:block" id="partner_search" type="text" name="partner_search[]">
-                                            <select id="partner" name="partner[]" v-model="form.partner_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out hidden md:block" v-if="form.partner_id !== null">
-                                                <option :value="null">選択してください／空白にする</option>
-                                                <option v-for="partner in partners" :value="partner.id" :key="partner.id">{{ partner.name }}</option>
-                                            </select>
-                                            <select id="partner" name="partner[]" v-model="form.partner_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out block md:hidden">
+                                            <select id="partner" name="partner[]" v-model="form.partner_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out md:hidden">
                                                 <option :value="null">選択してください／空白にする</option>
                                                 <option v-for="partner in partners" :value="partner.id" :key="partner.id">{{ partner.name }}</option>
                                             </select>
@@ -242,12 +220,8 @@ window.addEventListener('load', function() {
 
 
                                         <div class="p-2 w-full flex mt-10">
-                                            <button type="button" @click="pushForm(form)" as="button" class="flex mx-auto text-white bg-orange-500 border-0 py-2 sm:px-8 px-5 focus:outline-none hover:bg-orange-600 rounded text-lg">連続登録</button>
-                                            <button type="button" @click="deleteData" as="button" class="flex mx-auto text-white bg-green-500 border-0 py-2 sm:px-8 px-5 focus:outline-none hover:bg-green-600 rounded text-lg">入力の取消</button>
-                                        </div>
-
-                                        <div class="p-2 w-full flex mt-10">
-                                            <button type="submit" class="flex mx-auto text-white bg-indigo-500 border-0 py-2 sm:px-8 px-5 focus:outline-none hover:bg-indigo-600 rounded text-lg">登録する</button>
+                                            <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 sm:px-8 px-5 focus:outline-none hover:bg-indigo-600 rounded text-lg">登録する</button>
+                                            <button @click="deleteData" as="button" class="flex mx-auto text-white bg-green-500 border-0 py-2 sm:px-8 px-5 focus:outline-none hover:bg-green-600 rounded text-lg">入力の取消</button>
                                         </div>
                                     </div>
                                 </div>
