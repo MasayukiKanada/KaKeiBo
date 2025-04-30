@@ -13,7 +13,6 @@ use App\Models\SecondaryCategory;
 use App\Models\ThirdryCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 // use App\Models\User;
 // use Illuminate\Support\Facades\DB;
 
@@ -24,30 +23,13 @@ class ItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        if($request->sortBy == "createAsc") {
-            //登録昇順の場合
-            $items = Item::with('partner', 'primary_category', 'secondary_category' ,'subject')
-            ->orderBy('created_at', 'asc')->paginate(20);
-        } elseif($request->sortBy == "dateDesc") {
-            //日付降順の場合
-            $items = Item::with('partner', 'primary_category', 'secondary_category' ,'subject')
-            ->orderBy('date', 'desc')->paginate(20);
-        } elseif($request->sortBy == "dateAsc") {
-            //日付昇順の場合
-            $items = Item::with('partner', 'primary_category', 'secondary_category' ,'subject')
-            ->orderBy('date', 'asc')->paginate(20);
-        } else {
-            //登録降順またはnullの場合
-            $request->sortBy = "createDesc";
-            $items = Item::with('partner', 'primary_category', 'secondary_category' ,'subject')
-            ->orderBy('created_at', 'desc')->paginate(20);
-        }
+        $items = Item::with('partner', 'primary_category', 'secondary_category' ,'subject')
+        ->orderBy('created_at', 'desc')->paginate(20);
 
         return Inertia::render('Items/Index',[
             'items' => $items,
-            'sortBy' => $request->sortBy,
         ]);
     }
 
@@ -81,93 +63,60 @@ class ItemController extends Controller
      * @param  \App\Http\Requests\StoreItemRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreItemRequest $request)
     {
-        $request = $request->toArray();
 
-        $validator = Validator::make($request[0], [
-            'primary_category_id' => ['required'],
-            'date' => ['required'],
-            'partner_name' => ['max:100'],
-            'secondary_category_id' => ['required'],
-            'price' => ['required', 'numeric'],
-            'user_id' => ['required'],
-        ]);
+        if($request->partner_name) {
 
-        if ($validator->fails()) {
-            //　バリデーションが失敗した場合
+            // もし、登録済みのパートナー名と同じ名前が入力されているか確認
+            $old_partner_name = Partner::where('name', $request->partner_name)
+            ->select('name')
+            ->first();
 
-            return to_route('items.create')
-            ->with([
-                'message' => '必須項目が未入力です。',
-                'status' => 'danger'
+            if(is_null($old_partner_name)) {
+            // もし、新規パートナー名が入力されていたら新規作成
+                Partner::create([
+                    'name' => $request->partner_name,
+                ]);
+            }
+
+            $partner = Partner::select('id')
+            ->where('name', $request->partner_name)
+            ->first();
+
+            Item::create([
+                'primary_category_id' => $request->primary_category_id,
+                'date' => $request->date,
+                'partner_id' => $partner['id'],
+                'secondary_category_id' => $request->secondary_category_id,
+                'thirdry_category_id' => $request->thirdry_category_id,
+                'subject_id' => $request->subject_id,
+                'price' => $request->price,
+                'memo' => $request->memo,
+                'user_id' => $request->user_id,
             ]);
 
         } else {
-            //　バリデーションが成功した場合
 
-            if($request[0]['partner_name']) {
+            Item::create([
+                'primary_category_id' => $request->primary_category_id,
+                'date' => $request->date,
+                'partner_id' => $request->partner_id,
+                'secondary_category_id' => $request->secondary_category_id,
+                'thirdry_category_id' => $request->thirdry_category_id,
+                'subject_id' => $request->subject_id,
+                'price' => $request->price,
+                'memo' => $request->memo,
+                'user_id' => $request->user_id,
+            ]);
 
-                // もし、登録済みのパートナー名と同じ名前が入力されているか確認
-                $old_partner_name = Partner::where('name', $request[0]['partner_name'])
-                ->select('name')
-                ->first();
-
-                if(is_null($old_partner_name)) {
-                // もし、新規パートナー名が入力されていたら新規作成
-                    Partner::create([
-                        'name' => $request[0]['partner_name'],
-                    ]);
-                }
-
-                $partner = Partner::select('id')
-                ->where('name', $request[0]['partner_name'])
-                ->first();
-
-                Item::create([
-                    'primary_category_id' => $request[0]['primary_category_id'],
-                    'date' => $request[0]['date'],
-                    'partner_id' => $partner['id'],
-                    'secondary_category_id' => $request[0]['secondary_category_id'],
-                    'thirdry_category_id' => $request[0]['thirdry_category_id'],
-                    'subject_id' => $request[0]['subject_id'],
-                    'price' => $request[0]['price'],
-                    'memo' => $request[0]['memo'],
-                    'user_id' => $request[0]['user_id'],
-                ]);
-
-            } else {
-
-                Item::create([
-                    'primary_category_id' => $request[0]['primary_category_id'],
-                    'date' => $request[0]['date'],
-                    'partner_id' => $request[0]['partner_id'],
-                    'secondary_category_id' => $request[0]['secondary_category_id'],
-                    'thirdry_category_id' => $request[0]['thirdry_category_id'],
-                    'subject_id' => $request[0]['subject_id'],
-                    'price' => $request[0]['price'],
-                    'memo' => $request[0]['memo'],
-                    'user_id' => $request[0]['user_id'],
-                ]);
-
-            }
-
-            if($request[1] === true) {
-                //連続入力の場合
-                return to_route('items.create')
-                ->with([
-                    'message' => '登録しました。',
-                    'status' => 'success',
-                ]);
-            } else {
-                //１件のみ登録の場合
-                return to_route('items.index')
-                ->with([
-                    'message' => '登録しました。',
-                    'status' => 'success',
-                ]);
-            }
         }
+
+        return to_route('items.index')
+        ->with([
+            'message' => '登録しました。',
+            'status' => 'success',
+        ]);
     }
 
     /**

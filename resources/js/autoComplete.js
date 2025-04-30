@@ -4,7 +4,7 @@ window.addEventListener('load', function() {
     let partnerData = [];
     const autoCompleteJS = new autoComplete({
         selector: "#partner_search",
-        placeHolder: "相手先を検索する",
+        placeHolder: "相手方を検索する",
         resultItem: {
             highlight: true,
         },
@@ -19,8 +19,8 @@ window.addEventListener('load', function() {
                     console.log(error)
                     return [];
                 }
-          },
-          cache: true,
+            },
+            cache: true,
         },
         resultsList: {
             element: (list,data) => {
@@ -36,15 +36,15 @@ window.addEventListener('load', function() {
         },
         events: {
             input: {
-              selection: (event) => {
-                const selection = event.detail.selection.value;
-                autoCompleteJS.input.value = selection;
+                selection: (event) => {
+                    const selection = event.detail.selection.value;
+                    autoCompleteJS.input.value = selection;
 
-                const selectedPartner = partnerData.find(partner => partner.name === selection);
-                if (selectedPartner) {
-                    document.getElementById('partner_id').value = selectedPartner.id;
+                    const selectedPartner = partnerData.find(partner => partner.name === selection);
+                    if (selectedPartner) {
+                        document.getElementById('partner_id').value = selectedPartner.id;
+                    }
                 }
-              }
             }
         },
     })

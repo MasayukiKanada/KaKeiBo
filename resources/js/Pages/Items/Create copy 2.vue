@@ -37,16 +37,37 @@ const form = reactive({
     user_id: null,
 })
 
-let toCreate = false;
-
 const storeItem = () => {
-    toCreate = false;
-    Inertia.post(route('items.index'), [form, toCreate])
+    Inertia.post(route('items.index'), forms)
 }
 
-const pushForm = () => {
-    toCreate = true;
-    Inertia.post(route('items.index'), [form, toCreate])
+// 連続入力のフォーム数を数えるための変数
+let i = 0;
+
+// 連続入力のフォームを格納するための配列
+let forms = [];
+
+const pushForm = form => {
+    //連続入力の場合の処理
+    forms[i] = form;
+    i++;
+
+    console.log(forms);
+
+    //既存のフォームの値を空にする
+    // forms[i].primary_category_id = null;
+    // forms[i].partner_name = null;
+    // forms[i].secondary_category_id = null;
+    // forms[i].subject_id = null;
+    // forms[i].price = null;
+    // forms[i].memo = null;
+    // forms[i].thirdry_category_id = null;
+
+    //指定位置までのスクロール処理
+    const createForm = document.querySelector("#create-form");
+    createForm.scrollIntoView({
+        behavior: "smooth"
+    });
 }
 
 const deleteData = () => {
@@ -59,12 +80,6 @@ const deleteData = () => {
     form.price = null;
     form.memo = null;
     form.thirdry_category_id = null;
-
-    //指定位置までのスクロール処理
-    const btnToForm = document.querySelector("#create-form");
-    btnToForm.scrollIntoView({
-        behavior: "smooth"
-    });
 }
 
 const isNotEmpty = obj => {
@@ -132,6 +147,8 @@ window.addEventListener('load', function() {
         <template #header>
             <h2 class="font-semibold text-lg text-gray-500 leading-none">仕訳入力</h2>
         </template>
+
+        {{ forms }}
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -242,7 +259,7 @@ window.addEventListener('load', function() {
 
 
                                         <div class="p-2 w-full flex mt-10">
-                                            <button type="button" @click="pushForm(form)" as="button" class="flex mx-auto text-white bg-orange-500 border-0 py-2 sm:px-8 px-5 focus:outline-none hover:bg-orange-600 rounded text-lg">連続登録</button>
+                                            <button type="button" @click="pushForm(form)" as="button" class="flex mx-auto text-white bg-orange-500 border-0 py-2 sm:px-8 px-5 focus:outline-none hover:bg-orange-600 rounded text-lg">連続入力</button>
                                             <button type="button" @click="deleteData" as="button" class="flex mx-auto text-white bg-green-500 border-0 py-2 sm:px-8 px-5 focus:outline-none hover:bg-green-600 rounded text-lg">入力の取消</button>
                                         </div>
 
