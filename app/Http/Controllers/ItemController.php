@@ -24,13 +24,30 @@ class ItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $items = Item::with('partner', 'primary_category', 'secondary_category' ,'subject')
-        ->orderBy('created_at', 'desc')->paginate(20);
+        if($request->sortBy == "createAsc") {
+            //登録昇順の場合
+            $items = Item::with('partner', 'primary_category', 'secondary_category' ,'subject')
+            ->orderBy('created_at', 'asc')->paginate(20);
+        } elseif($request->sortBy == "dateDesc") {
+            //日付降順の場合
+            $items = Item::with('partner', 'primary_category', 'secondary_category' ,'subject')
+            ->orderBy('date', 'desc')->paginate(20);
+        } elseif($request->sortBy == "dateAsc") {
+            //日付昇順の場合
+            $items = Item::with('partner', 'primary_category', 'secondary_category' ,'subject')
+            ->orderBy('date', 'asc')->paginate(20);
+        } else {
+            //登録降順またはnullの場合
+            $request->sortBy = "createDesc";
+            $items = Item::with('partner', 'primary_category', 'secondary_category' ,'subject')
+            ->orderBy('created_at', 'desc')->paginate(20);
+        }
 
         return Inertia::render('Items/Index',[
             'items' => $items,
+            'sortBy' => $request->sortBy,
         ]);
     }
 
