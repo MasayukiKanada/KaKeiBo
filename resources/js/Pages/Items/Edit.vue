@@ -73,7 +73,7 @@ const isNotEmpty = obj => {
 
                                         <div class="p-2 w-full">
                                         <div class="relative">
-                                            <label for="partner" class="leading-7 text-sm text-gray-500">相手先<span class="text-red-500">※</span></label>
+                                            <label for="partner" class="leading-7 text-sm text-gray-500">相手方<span class="text-red-500">※</span></label>
                                             <select id="partner" name="partner" v-model="form.partner_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                                                 <option v-for="partner in partners" :value="partner.id" :key="partner.id">{{ partner.name }}</option>
                                             </select>
