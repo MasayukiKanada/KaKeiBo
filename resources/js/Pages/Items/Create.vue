@@ -144,113 +144,115 @@ window.addEventListener('load', function() {
                                 <FlashMessage />
 
                                 <form @submit.prevent="storeItem">
-                                <div class="lg:w-2/3 md:w-4/5 mx-auto mt-8">
-                                <div class="flex flex-wrap -m-2">
+                                    <div class="lg:w-2/3 md:w-4/5 mx-auto mt-8">
+                                        <div class="flex flex-wrap -m-2">
 
-                                        <div class="p-2 w-full">
-                                        <div class="relative">
-                                            <label for="date" class="leading-7 text-sm text-gray-500">日付<span class="text-red-500">※</span></label>
-                                            <input type="date" id="date" name="date[]" v-model="form.date" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                        </div>
-                                        </div>
-
-                                        <div class="p-2 w-full">
-                                        <div class="relative">
-                                            <label for="partner_search" class="leading-7 text-sm text-gray-500">相手方<span class="text-red-500">※</span><span class="text-red-500 text-xs">新規作成の場合は不要</span></label>
-                                            <input class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out hidden md:block" id="partner_search" type="text" name="partner_search[]">
-                                            <select id="partner" name="partner[]" v-model="form.partner_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out hidden md:block" v-if="form.partner_id !== null">
-                                                <option :value="null">選択してください／空白にする</option>
-                                                <option v-for="partner in partners" :value="partner.id" :key="partner.id">{{ partner.name }}</option>
-                                            </select>
-                                            <select id="partner" name="partner[]" v-model="form.partner_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out block md:hidden">
-                                                <option :value="null">選択してください／空白にする</option>
-                                                <option v-for="partner in partners" :value="partner.id" :key="partner.id">{{ partner.name }}</option>
-                                            </select>
-                                        </div>
-                                        </div>
-
-                                        <div class="p-2 w-full" v-if="form.partner_id === null">
-                                        <div class="relative">
-                                            <label for="partner_name" class="leading-7 text-sm text-gray-500">新規相手方</label>
-                                            <input id="partner_name" name="partner_name[]" v-model="form.partner_name" placeholder="追加する相手方を入力してください" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                        </div>
-                                        </div>
-
-                                        <div class="p-2 w-full">
-                                        <div class="relative">
-                                            <label for="primary_category1" class="leading-7 text-sm text-gray-500">収支区分<span class="text-red-500">※</span></label>
-                                            <div class="multi_choice">
-                                                <input type="radio" id="primary_category1" name="primary_category1[]" :value="1" v-model="form.primary_category_id">
-                                                <label for="primary_category1">収入</label>
-                                                <input type="radio" id="primary_category2" name="primary_category2[]" :value="2" v-model="form.primary_category_id">
-                                                <label class="red" for="primary_category2">支出</label>
-                                            </div>
-                                        </div>
-                                        </div>
-
-                                        <!-- form.primary.categoryの値によって条件分岐 -->
-                                        <div v-for="primary_category in primary_categories">
-                                            <div class="p-2 w-full" v-if="primary_category.id === form.primary_category_id">
+                                            <div class="p-2 w-full">
                                                 <div class="relative">
-                                                    <label for="secondary_category" class="leading-7 text-sm text-gray-500">大カテゴリ<span class="text-red-500">※</span></label>
-                                                    <select id="secondary_category" name="secondary_category[]" v-model="form.secondary_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                                        <option :value="null">選択してください</option>
-                                                        <option v-for="secondary_category in  primary_category.secondary_category" :value="secondary_category.id" :key="secondary_category.id">{{ secondary_category.name }}</option>
+                                                    <label for="date" class="leading-7 text-sm text-gray-500">日付<span class="text-red-500">※</span></label>
+                                                    <input type="date" id="date" name="date[]" v-model="form.date" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                                </div>
+                                            </div>
+
+                                            <div class="p-2 w-full">
+                                                <div class="relative">
+                                                    <label for="partner_search" class="leading-7 text-sm text-gray-500">相手方<span class="text-red-500">※</span><span class="text-red-500 text-xs">新規作成の場合は不要</span></label>
+                                                    <input class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out hidden md:block" id="partner_search" type="text" name="partner_search[]">
+                                                    <select id="partner" name="partner[]" v-model="form.partner_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out hidden md:block" v-if="form.partner_id !== null">
+                                                        <option :value="null">選択してください／空白にする</option>
+                                                        <option v-for="partner in partners" :value="partner.id" :key="partner.id">{{ partner.name }}</option>
+                                                    </select>
+                                                    <select id="partner" name="partner[]" v-model="form.partner_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out block md:hidden">
+                                                        <option :value="null">選択してください／空白にする</option>
+                                                        <option v-for="partner in partners" :value="partner.id" :key="partner.id">{{ partner.name }}</option>
                                                     </select>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <!-- form.secondary_categoryの値によって条件分岐 -->
-                                        <div v-for="secondary_category in secondary_categories">
-                                            <div v-if="isNotEmpty(secondary_category.thirdry_category)">
-                                                <div class="p-2 w-full" v-if="secondary_category.id === form.secondary_category_id">
+                                            <div class="p-2 w-full" v-if="form.partner_id === null">
+                                                <div class="relative">
+                                                    <label for="partner_name" class="leading-7 text-sm text-gray-500">新規相手方</label>
+                                                    <input id="partner_name" name="partner_name[]" v-model="form.partner_name" placeholder="追加する相手方を入力してください" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                                </div>
+                                            </div>
+
+                                            <div class="p-2 w-full">
+                                                <div class="relative">
+                                                    <label for="primary_category1" class="leading-7 text-sm text-gray-500">収支区分<span class="text-red-500">※</span></label>
+                                                    <div class="multi_choice">
+                                                        <input type="radio" id="primary_category1" name="primary_category1[]" :value="1" v-model="form.primary_category_id">
+                                                        <label for="primary_category1">収入</label>
+                                                        <input type="radio" id="primary_category2" name="primary_category2[]" :value="2" v-model="form.primary_category_id">
+                                                        <label class="red" for="primary_category2">支出</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- form.primary.categoryの値によって条件分岐 -->
+                                            <div v-for="primary_category in primary_categories">
+                                                <div class="p-2 w-full" v-if="primary_category.id === form.primary_category_id">
                                                     <div class="relative">
-                                                        <label for="thirdry_category" class="leading-7 text-sm text-gray-500">小カテゴリ</label>
-                                                        <select id="thirdry_category" name="thirdry_category[]" v-model="form.thirdry_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                                            <option :value="null">選択してください／空白にする</option>
-                                                            <option v-for="thirdry_category in secondary_category.thirdry_category" :value="thirdry_category.id" :key="thirdry_category.id">{{ thirdry_category.name }}</option>
+                                                        <label for="secondary_category" class="leading-7 text-sm text-gray-500">大カテゴリ<span class="text-red-500">※</span></label>
+                                                        <select id="secondary_category" name="secondary_category[]" v-model="form.secondary_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                                            <option :value="null">選択してください</option>
+                                                            <option v-for="secondary_category in  primary_category.secondary_category" :value="secondary_category.id" :key="secondary_category.id">{{ secondary_category.name }}</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="p-2 w-full">
-                                        <div class="relative">
-                                            <label for="subject" class="leading-7 text-sm text-gray-500">対象者</label>
-                                            <select id="subject" name="subject[]" v-model="form.subject_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                                <option :value="null">選択してください</option>
-                                                <option v-for="subject in subjects" :value="subject.id" :key="subject.id">{{ subject.name }}</option>
-                                            </select>
-                                        </div>
-                                        </div>
-                                        <div class="p-2 w-full">
-                                        <div class="relative">
-                                            <label for="price" class="leading-7 text-sm text-gray-500">金額<span class="text-red-500">※</span></label>
-                                            <input type="number" placeholder="金額を入力してください" id="price" name="price[]" v-model="form.price" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                        </div>
-                                        </div>
-                                        <div class="p-2 w-full">
-                                        <div class="relative">
-                                            <label for="memo" class="leading-7 text-sm text-gray-500">メモ</label>
-                                            <textarea id="memo" name="memo[]" v-model="form.memo" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-500 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"></textarea>
-                                        </div>
-                                        </div>
+                                            <!-- form.secondary_categoryの値によって条件分岐 -->
+                                            <div v-for="secondary_category in secondary_categories">
+                                                <div v-if="isNotEmpty(secondary_category.thirdry_category)">
+                                                    <div class="p-2 w-full" v-if="secondary_category.id === form.secondary_category_id">
+                                                        <div class="relative">
+                                                            <label for="thirdry_category" class="leading-7 text-sm text-gray-500">小カテゴリ</label>
+                                                            <select id="thirdry_category" name="thirdry_category[]" v-model="form.thirdry_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                                                <option :value="null">選択してください／空白にする</option>
+                                                                <option v-for="thirdry_category in secondary_category.thirdry_category" :value="thirdry_category.id" :key="thirdry_category.id">{{ thirdry_category.name }}</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                                        <input hidden id="user" name="user" v-model="form.user_id">
+                                            <div class="p-2 w-full">
+                                                <div class="relative">
+                                                    <label for="subject" class="leading-7 text-sm text-gray-500">対象者</label>
+                                                    <select id="subject" name="subject[]" v-model="form.subject_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                                        <option :value="null">選択してください</option>
+                                                        <option v-for="subject in subjects" :value="subject.id" :key="subject.id">{{ subject.name }}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="p-2 w-full">
+                                                <div class="relative">
+                                                    <label for="price" class="leading-7 text-sm text-gray-500">金額<span class="text-red-500">※</span></label>
+                                                    <input type="number" placeholder="金額を入力してください" id="price" name="price[]" v-model="form.price" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                                </div>
+                                            </div>
+
+                                            <div class="p-2 w-full">
+                                                <div class="relative">
+                                                    <label for="memo" class="leading-7 text-sm text-gray-500">メモ</label>
+                                                    <textarea id="memo" name="memo[]" v-model="form.memo" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-500 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"></textarea>
+                                                </div>
+                                            </div>
+
+                                            <input hidden id="user" name="user" v-model="form.user_id">
 
 
-                                        <div class="p-2 w-full flex mt-10">
-                                            <button type="button" @click="pushForm(form)" as="button" class="flex mx-auto text-white bg-orange-500 border-0 py-2 sm:px-8 px-5 focus:outline-none hover:bg-orange-600 rounded text-lg">連続登録</button>
-                                            <button type="button" @click="deleteData" as="button" class="flex mx-auto text-white bg-green-500 border-0 py-2 sm:px-8 px-5 focus:outline-none hover:bg-green-600 rounded text-lg">入力の取消</button>
-                                        </div>
+                                            <div class="p-2 w-full flex mt-10">
+                                                <button type="button" @click="pushForm(form)" as="button" class="flex mx-auto text-white bg-orange-500 border-0 py-2 sm:px-8 px-5 focus:outline-none hover:bg-orange-600 rounded text-lg">連続登録</button>
+                                                <button type="button" @click="deleteData" as="button" class="flex mx-auto text-white bg-green-500 border-0 py-2 sm:px-8 px-5 focus:outline-none hover:bg-green-600 rounded text-lg">入力の取消</button>
+                                            </div>
 
-                                        <div class="p-2 w-full flex mt-10">
-                                            <button type="submit" class="flex mx-auto text-white bg-indigo-500 border-0 py-2 sm:px-8 px-5 focus:outline-none hover:bg-indigo-600 rounded text-lg">登録する</button>
+                                            <div class="p-2 w-full flex mt-10">
+                                                <button type="submit" class="flex mx-auto text-white bg-indigo-500 border-0 py-2 sm:px-8 px-5 focus:outline-none hover:bg-indigo-600 rounded text-lg">登録する</button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
                                 </form>
 
                             </div>
