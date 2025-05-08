@@ -1,64 +1,35 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
-import ApplicationLogoS from '@/Components/ApplicationLogoS.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
-import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link, Head } from '@inertiajs/vue3';
+import { active_btn } from '@/common';
 
 const showingNavigationDropdown = ref(false);
 
 onMounted(() => {
     const btn_cat = window.document.querySelectorAll('.btn_cat');
-    if(route().current('chart.category')) {
-        btn_cat.forEach( el => {
-            el.classList.add('nav_btn', 'active');
-        })
-    }
+    active_btn(btn_cat, 'chart.category');
 
     const btn_item_add = window.document.querySelectorAll('.btn_item_add');
-    if(route().current('items.create')) {
-        btn_item_add.forEach( el => {
-            el.classList.add('nav_btn', 'active');
-        })
-    }
+    active_btn(btn_item_add, 'items.create');
 
     const btn_daily = window.document.querySelectorAll('.btn_daily');
-    if(route().current('chart.daily')) {
-        btn_daily.forEach( el => {
-            el.classList.add('nav_btn', 'active');
-        })
-    }
+    active_btn(btn_daily, 'chart.daily')
 
     const btn_chart = window.document.querySelectorAll('.btn_chart');
-    if(route().current('chart.index')) {
-        btn_chart.forEach( el => {
-            el.classList.add('nav_btn', 'active');
-        })
-    }
+    active_btn(btn_chart, 'chart.index')
 
     const btn_cat_add = window.document.querySelectorAll('.btn_cat_add');
-    if(route().current('categories.create')) {
-        btn_cat_add.forEach( el => {
-            el.classList.add('nav_btn', 'active');
-        })
-    }
+    active_btn(btn_cat_add, 'categories.create')
 
     const btn_cat_index = window.document.querySelectorAll('.btn_cat_index');
-    if(route().current('categories.index')) {
-        btn_cat_index.forEach( el => {
-            el.classList.add('nav_btn', 'active');
-        })
-    }
+    active_btn(btn_cat_index, 'categories.index')
 
     const btn_item_index = window.document.querySelectorAll('.btn_item_index');
-    if(route().current('items.index')) {
-        btn_item_index.forEach( el => {
-            el.classList.add('nav_btn', 'active');
-        })
-    }
+    active_btn(btn_item_index, 'items.index');
 
 })
 
@@ -68,6 +39,7 @@ onMounted(() => {
 <Head>
     <link rel="icon" href="/favicon.ico">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
 </Head>
 
     <div>
@@ -83,7 +55,7 @@ onMounted(() => {
                         </Link>
                     </div>
                 </div>
-             </div>
+            </div>
             <nav class="bg-white border-b border-gray-100">
 
                 <div id="sp_header" class="sm:hidden block px-4">
@@ -122,6 +94,9 @@ onMounted(() => {
                                     <img class="px-4" src="/images/icon/index.png" alt="仕訳一覧">
                                     <p class="nav_text text-gray-500 font-medium">仕訳一覧</p>
                                 </Link>
+                                <!-- <NavLink :href="route('graph')" :active="route().current('graph')">
+                                    グラフ
+                                </NavLink> -->
                             </div>
                         </div>
 
