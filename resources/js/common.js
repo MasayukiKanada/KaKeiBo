@@ -31,3 +31,13 @@ const nl2br = (str) => {
 }
 
 export { nl2br }
+
+const active_btn = (els, currentRoute) => {
+    if(route().current(currentRoute)) {
+        els.forEach(el => {
+            el.classList.add('nav_btn', 'active');
+        });
+    }
+}
+
+export { active_btn }
