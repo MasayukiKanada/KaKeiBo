@@ -58,7 +58,7 @@ class ItemController extends Controller
      */
     public function create()
     {
-        $partners = Partner::select('id', 'name')->get();
+        $partners = Partner::select('id', 'name')->orderByRaw('CAST(name as CHAR) COLLATE utf8mb4_general_ci asc')->get();
         $primary_categories = PrimaryCategory::with('secondary_category')->select('id', 'name')->get();
         $secondary_categories = SecondaryCategory::with('thirdry_category')->get();
         $thirdry_categories = ThirdryCategory::select('id', 'name')->get();
