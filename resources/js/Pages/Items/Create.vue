@@ -5,7 +5,6 @@ import { onMounted, reactive } from 'vue';
 import { getToday } from '@/common';
 import { Inertia } from '@inertiajs/inertia';
 import ValidationErrors from '@/Components/ValidationErrors.vue';
-import autoComplete from "@tarekraafat/autocomplete.js";
 import FlashMessage from '@/Components/FlashMessage.vue';
 
 const props = defineProps({
@@ -71,58 +70,6 @@ const isNotEmpty = obj => {
     return Object.keys(obj).length != 0
 }
 
-window.addEventListener('load', function() {
-    //相手方検索のためのAPI
-    let partnerData = [];
-    const autoCompleteJS = new autoComplete({
-        selector: "#partner_search",
-        placeHolder: "相手方を検索する",
-        resultItem: {
-            highlight: true,
-        },
-        data: {
-            src: async (query) => {
-                try{
-                    const source = await fetch(`/api/searchPartners/?search=${query}`);
-                    const data = await source.json();
-                    partnerData = data;
-                    return data.map((item) => item.name);
-                } catch (error) {
-                    console.log(error)
-                    return [];
-                }
-            },
-            cache: true,
-        },
-        resultsList: {
-            element: (list,data) => {
-                if (!data.results.length) {
-                    const message = document.createElement("div");
-                    message.setAttribute("class", "no_result");
-                    message.innerHTML = `<span>該当する結果が見つかりませんでした: "${data.query}"</span>`;
-                    list.prepend(message);
-                }
-            },
-            noResults: true,
-            id: "partner_list",
-        },
-        events: {
-            input: {
-                selection: (event) => {
-                const selection = event.detail.selection.value;
-                autoCompleteJS.input.value = selection;
-
-                const selectedPartner = partnerData.find(partner => partner.name === selection);
-                if (selectedPartner) {
-                    form.partner_id = selectedPartner.id;
-                }
-            }
-            }
-        },
-    })
-
-});
-
 </script>
 
 <template>
@@ -154,15 +101,10 @@ window.addEventListener('load', function() {
                                                 </div>
                                             </div>
 
-                                            <div class="p-2 w-full">
+                                            <div class="p-2 w-full" v-if="form.partner_name === null || form.partner_name === ''">
                                                 <div class="relative">
-                                                    <label for="partner_search" class="leading-7 text-sm text-gray-500">相手方<span class="text-red-500">※</span><span class="text-red-500 text-xs">新規作成の場合は不要</span></label>
-                                                    <input class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out hidden md:block" id="partner_search" type="text" name="partner_search[]">
-                                                    <select id="partner" name="partner[]" v-model="form.partner_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out hidden md:block" v-if="form.partner_id !== null">
-                                                        <option :value="null">選択してください／空白にする</option>
-                                                        <option v-for="partner in partners" :value="partner.id" :key="partner.id">{{ partner.name }}</option>
-                                                    </select>
-                                                    <select id="partner" name="partner[]" v-model="form.partner_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out block md:hidden">
+                                                    <label  for="partner" class="leading-7 text-sm text-gray-500">相手方<span class="text-red-500">※</span><span class="text-red-500 text-xs">新規作成の場合は不要</span></label>
+                                                    <select id="partner" name="partner[]" v-model="form.partner_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                                                         <option :value="null">選択してください／空白にする</option>
                                                         <option v-for="partner in partners" :value="partner.id" :key="partner.id">{{ partner.name }}</option>
                                                     </select>
