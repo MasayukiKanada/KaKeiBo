@@ -70,7 +70,7 @@ const selectSort =() => {
                                         </div>
                                         <div>
                                             <div v-for="item in items.data" :key="item.id">
-                                                <Link :href="route('items.show', { item:item.id })" class="hover:opacity-70 flex">
+                                                <Link :href="route('items.edit', { item:item.id })" class="hover:opacity-70 flex">
                                                     <div class="w-1/4 px-4 py-3 text-center border-t-2 border-gray-100 text-gray-500">{{ changeDay(item.date) }}</div>
                                                     <div class="w-1/4 px-4 py-3 border-t-2 border-gray-100 text-gray-500">{{ item.partner.name }}</div>
                                                     <div class="w-1/4 px-4 py-3 border-t-2 border-gray-100 text-gray-500">{{ item.secondary_category.name }}</div>
