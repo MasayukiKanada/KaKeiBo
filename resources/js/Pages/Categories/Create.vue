@@ -62,7 +62,7 @@ const deleteData = () => {
                                                         <input type="radio" id="primary_category1" name="primary_category" :value="1" v-model="form.primary_category_id">
                                                         <label for="primary_category1">収入</label>
                                                         <input type="radio" id="primary_category2" name="primary_category" :value="2" v-model="form.primary_category_id">
-                                                        <label for="primary_category2">支出</label>
+                                                        <label class="red" for="primary_category2">支出</label>
                                                     </div>
                                                 </div>
                                             </div>
