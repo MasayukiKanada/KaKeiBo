@@ -37,6 +37,12 @@ const updateItem = id => {
     Inertia.put(route('items.update', { item: id }), form)
 }
 
+const deleteItem = id => {
+    Inertia.delete(route('items.destroy', {item:id}), {
+        onBefore: () => confirm('本当に削除しますか？')
+    });
+}
+
 const isNotEmpty = obj => {
     return Object.keys(obj).length != 0
 }
@@ -147,6 +153,12 @@ const isNotEmpty = obj => {
                                                 <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">更新する</button>
                                             </div>
                                         </div>
+                                    </div>
+                                </form>
+
+                                <form @submit.prevent="deleteItem(props.item[0].id)">
+                                    <div class="lg:w-2/3 md:w-4/5 mx-auto">
+                                        <button class="flex mx-auto text-white bg-red-500 border-0 focus:outline-none hover:bg-red-600 rounded text-lg mt-8 py-2 px-8">削除する</button>
                                     </div>
                                 </form>
 
