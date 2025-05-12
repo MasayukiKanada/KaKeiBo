@@ -113,7 +113,8 @@ const getTable = async() => {
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg md:p-8 px-0 py-8">
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg md:p-8 px-0 py-8 mb-10">
+                    <h1 class="section-title text-gray-500 font-bold mb-10">収支グラフ</h1>
                     <form @submit.prevent="getData">
                         <div class="flex items-center w-fit mx-auto mt-8 md:mt-2">
                             <select id="year" name="year" v-model="form.year" class="bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-8 leading-8 transition-colors duration-200 ease-in-out mr-1">
@@ -172,8 +173,12 @@ const getTable = async() => {
                         <button id="chart-button" class="mt-6 mb-8 flex mx-auto text-white bg-indigo-400 border-0 py-2 sm:px-5 px-5 focus:outline-none hover:bg-indigo-500 rounded text-md">グラフを表示する</button>
                     </form>
 
-                    <Chart :data="data" class="mb-20"/>
+                    <Chart :data="data" class="mb-16"/>
 
+                </div>
+
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg md:p-8 px-0 py-8">
+                    <h1 class="section-title text-gray-500 font-bold mb-10">収支表</h1>
                     <form @submit.prevent="getTable">
                         <div class="sm:flex items-center w-fit mx-auto mt-8 md:mt-5">
                             <div v-show="table_form.partner === null" class="mr-3">
