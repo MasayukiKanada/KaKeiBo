@@ -85,23 +85,46 @@ class ItemController extends Controller
     {
         $request = $request->toArray();
 
-        $validator = Validator::make($request[0], [
-            'primary_category_id' => ['required'],
-            'date' => ['required'],
-            'partner_name' => ['max:100'],
-            'secondary_category_id' => ['required'],
-            'price' => ['required', 'numeric'],
-            'user_id' => ['required'],
-        ]);
+        if($request[0]['partner_name']) {
+            $validator = Validator::make($request[0], [
+                'primary_category_id' => ['required'],
+                'date' => ['required'],
+                'partner_name' => ['max:100'],
+                'secondary_category_id' => ['required'],
+                'price' => ['required', 'numeric'],
+                'user_id' => ['required'],
+            ],$messages =[
+                'primary_category_id.required' => '収支区分は必須項目です。',
+                'date.required' => '日付は必須項目です。',
+                'partner_name.required' => '新規相手方は必須項目です。',
+                'secondary_category_id.required' => '大カテゴリは必須項目です。',
+                'price.required' => '金額は必須項目です。',
+                'user_id.required' => 'ユーザーは必須項目です。',
+            ]);
+        } else {
+            $validator = Validator::make($request[0], [
+                'primary_category_id' => ['required'],
+                'date' => ['required'],
+                'partner_id' => ['required'],
+                'secondary_category_id' => ['required'],
+                'price' => ['required', 'numeric'],
+                'user_id' => ['required'],
+            ],$messages =[
+                'primary_category_id.required' => '収支区分は必須項目です。',
+                'date.required' => '日付は必須項目です。',
+                'partner_name.required' => '新規相手方は必須項目です。',
+                'secondary_category_id.required' => '大カテゴリは必須項目です。',
+                'price.required' => '金額は必須項目です。',
+                'user_id.required' => 'ユーザーは必須項目です。',
+            ]);
+        }
 
         if ($validator->fails()) {
             //　バリデーションが失敗した場合
 
             return to_route('items.create')
-            ->with([
-                'message' => '必須項目が未入力です。',
-                'status' => 'danger'
-            ]);
+            ->withErrors($validator)
+            ->withInput();
 
         } else {
             //　バリデーションが成功した場合
