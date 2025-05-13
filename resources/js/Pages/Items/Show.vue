@@ -1,12 +1,41 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
-import { nl2br } from '@/common';
+import { Head } from '@inertiajs/vue3';
+import { onMounted, reactive } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
+import ValidationErrors from '@/Components/ValidationErrors.vue';
 
 const props = defineProps({
-    item: Object
+    item: Object,
+    partners: Array,
+    subjects: Array,
+    primary_categories: Array,
+    secondary_categories: Array,
+    thirdry_categories: Array,
+    user_id: Number,
+    errors: Object
 });
+
+onMounted(() => {
+    form.user_id = props.user_id;
+})
+
+const form = reactive({
+    id: props.item[0].id,
+    primary_category_id: props.item[0].primary_category_id,
+    date: props.item[0].date,
+    partner_id: props.item[0].partner_id,
+    secondary_category_id: props.item[0].secondary_category_id,
+    subject_id: props.item[0].subject_id,
+    price: props.item[0].price,
+    memo: props.item[0].memo,
+    thirdry_category_id: props.item[0].thirdry_category_id,
+    user_id: props.item[0].user_id,
+})
+
+const updateItem = id => {
+    Inertia.put(route('items.update', { item: id }), form)
+}
 
 const deleteItem = id => {
     Inertia.delete(route('items.destroy', {item:id}), {
@@ -14,19 +43,18 @@ const deleteItem = id => {
     });
 }
 
-const changeDay = date => {
-    return new Date(date).toLocaleDateString("ja-JP", {year: "numeric",month: "2-digit",
-    day: "2-digit"}).replace('-', '/');
+const isNotEmpty = obj => {
+    return Object.keys(obj).length != 0
 }
 
 </script>
 
 <template>
-    <Head title="仕訳詳細" />
+    <Head title="仕訳編集" />
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-lg text-gray-500 leading-none">仕訳詳細</h2>
+            <h2 class="font-semibold text-lg text-gray-500 leading-none">仕訳編集</h2>
         </template>
 
         <div class="py-12">
@@ -34,102 +62,108 @@ const changeDay = date => {
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
 
+                        <ValidationErrors :errors="errors" />
                         <section class="text-gray-600 body-font relative">
                             <div class="container px-5 py-8 mx-auto">
 
-                                <div class="lg:w-2/3 md:w-4/5 mx-auto">
-                                    <div class="flex flex-wrap -m-2">
+                                <form @submit.prevent="updateItem(form.id)">
+                                    <div class="lg:w-2/3 md:w-4/5 mx-auto">
+                                        <div class="flex flex-wrap -m-2">
 
-                                        <div class="p-2 w-full">
-                                            <div class="relative">
-                                                <label for="date" class="leading-7 text-sm text-gray-500">日付</label>
-                                                <div type="date" id="date" name="date" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                                    {{ changeDay(props.item[0].date) }}
+                                            <div class="p-2 w-full">
+                                                <div class="relative">
+                                                    <label for="date" class="leading-7 text-sm text-gray-500">日付<span class="text-red-500">※</span></label>
+                                                    <input type="date" id="date" name="date" v-model="form.date" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="p-2 w-full">
-                                            <div class="relative">
-                                                <label for="partner" class="leading-7 text-sm text-gray-500">相手先</label>
-                                                <div id="partner" name="partner" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                                    {{props.item[0].partner.name }}
+                                            <div class="p-2 w-full">
+                                                <div class="relative">
+                                                    <label for="partner" class="leading-7 text-sm text-gray-500">相手先<span class="text-red-500">※</span></label>
+                                                    <select id="partner" name="partner" v-model="form.partner_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                                        <option v-for="partner in partners" :value="partner.id" :key="partner.id">{{ partner.name }}</option>
+                                                    </select>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="p-2 w-full">
-                                            <div class="relative">
-                                                <label for="primary_category" class="leading-7 text-sm text-gray-500">収支区分</label>
-                                                <div id="primary_category" name="primary_category" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                                    {{ props.item[0].primary_category.name }}
+                                            <div class="p-2 w-full">
+                                                <div class="relative">
+                                                    <label for="primary_category" class="leading-7 text-sm text-gray-500">収支区分<span class="text-red-500">※</span></label>
+                                                    <select id="primary_category" name="primary_category" v-model="form.primary_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                                        <option v-for="primary_category in primary_categories" :value="primary_category.id" :key="primary_category.id">{{ primary_category.name }}</option>
+                                                    </select>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="p-2 w-full">
-                                            <div class="relative">
-                                                <label for="secondary_category" class="leading-7 text-sm text-gray-500">大カテゴリ</label>
-                                                <div id="secondary_category" name="secondary_category" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                                    {{ props.item[0].secondary_category.name }}
+                                            <!-- form.primary.categoryの値によって条件分岐 -->
+                                            <div v-for="primary_category in primary_categories">
+                                                <div class="p-2 w-full" v-if="primary_category.id === form.primary_category_id">
+                                                    <div class="relative">
+                                                        <label for="secondary_category" class="leading-7 text-sm text-gray-500">大カテゴリ<span class="text-red-500">※</span></label>
+                                                        <select id="secondary_category" name="secondary_category" v-model="form.secondary_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                                            <option :value="null">選択してください</option>
+                                                            <option v-for="secondary_category in  primary_category.secondary_category" :value="secondary_category.id" :key="secondary_category.id">{{ secondary_category.name }}</option>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="p-2 w-full" v-if="props.item[0].thirdry_category">
-                                            <div class="relative">
-                                                <label for="thirdry_category" class="leading-7 text-sm text-gray-500">小カテゴリ</label>
-                                                <div id="thirdry_category" name="thirdry_category" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                                    {{ props.item[0].thirdry_category.name }}
+                                            <!-- form.secondary_categoryの値によって条件分岐 -->
+                                            <div v-for="secondary_category in secondary_categories">
+                                                <div v-if="isNotEmpty(secondary_category.thirdry_category)">
+                                                    <div class="p-2 w-full" v-if="secondary_category.id === form.secondary_category_id">
+                                                        <div class="relative">
+                                                            <label for="thirdry_category" class="leading-7 text-sm text-gray-500">小カテゴリ</label>
+                                                            <select id="thirdry_category" name="thirdry_category" v-model="form.thirdry_category_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                                                <option :value="null">選択してください／空白にする</option>
+                                                                <option v-for="thirdry_category in secondary_category.thirdry_category" :value="thirdry_category.id" :key="thirdry_category.id">{{ thirdry_category.name }}</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="p-2 w-full" v-if="props.item[0].subject">
-                                            <div class="relative">
-                                                <label for="subject" class="leading-7 text-sm text-gray-500">対象者</label>
-                                                <div id="subject" name="subject" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                                    {{ props.item[0].subject.name }}
+                                            <div class="p-2 w-full">
+                                                <div class="relative">
+                                                    <label for="subject" class="leading-7 text-sm text-gray-500">対象者</label>
+                                                    <select id="subject" name="subject" v-model="form.subject_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                                        <option v-for="subject in subjects" :value="subject.id" :key="subject.id">{{ subject.name }}</option>
+                                                    </select>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="p-2 w-full">
-                                            <div class="relative">
-                                                <label for="price" class="leading-7 text-sm text-gray-500">金額</label>
-                                                <div type="number" id="price" name="price" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                                    {{ props.item[0].price }}
+                                            <div class="p-2 w-full">
+                                                <div class="relative">
+                                                    <label for="price" class="leading-7 text-sm text-gray-500">金額<span class="text-red-500">※</span></label>
+                                                    <div class="flex items-center">
+                                                        <input type="number" id="price" name="price" v-model="form.price" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                                        <p class="text-gray-500 px-3 text-base">円</p>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="p-2 w-full" v-if="props.item[0].memo">
-                                            <div class="relative">
-                                                <label for="memo" class="leading-7 text-sm text-gray-500">メモ</label>
-                                                <div v-html="nl2br(props.item[0].memo)" id="memo" name="memo" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-500 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out">
+                                            <div class="p-2 w-full">
+                                                <div class="relative">
+                                                    <label for="memo" class="leading-7 text-sm text-gray-500">メモ</label>
+                                                    <textarea id="memo" name="memo" v-model="form.memo" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-500 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"></textarea>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="p-2 w-full">
-                                            <div class="relative">
-                                                <label for="user" class="leading-7 text-sm text-gray-500">作成者</label>
-                                                <div id="user" name="user" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-outt">
-                                                    {{ props.item[0].user.name }}
-                                                </div>
+                                            <input hidden id="user" name="user" v-model="form.user_id" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-500 py-1 px-3 leading-8 transition-colors duration-200 ease-in-outt">
+
+
+                                            <div class="p-2 w-full">
+                                                <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">更新する</button>
                                             </div>
-                                        </div>
-
-
-                                        <div class="p-2 w-full">
-                                            <Link as="button" :href="route('items.edit', { item:props.item[0].id })" class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg mt-4">編集する</Link>
-                                        </div>
-
-                                        <div class="flex mx-auto text-white bg-red-500 border-0 focus:outline-none hover:bg-red-600 rounded text-lg mt-8">
-                                            <button @click="deleteItem(props.item[0].id)" class="py-2 px-8">削除する</button>
                                         </div>
                                     </div>
-                                </div>
+                                </form>
+
+                                <form @submit.prevent="deleteItem(props.item[0].id)">
+                                    <div class="lg:w-2/3 md:w-4/5 mx-auto">
+                                        <button class="flex mx-auto text-white bg-red-500 border-0 focus:outline-none hover:bg-red-600 rounded text-lg mt-8 py-2 px-8">削除する</button>
+                                    </div>
+                                </form>
 
                             </div>
                         </section>
