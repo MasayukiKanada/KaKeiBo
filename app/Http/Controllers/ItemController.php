@@ -96,7 +96,7 @@ class ItemController extends Controller
             ],$messages =[
                 'primary_category_id.required' => '収支区分は必須項目です。',
                 'date.required' => '日付は必須項目です。',
-                'partner_name.required' => '新規相手方は必須項目です。',
+                'partner_name.max' => '相手方名は100文字以内で入力してください。',
                 'secondary_category_id.required' => '大カテゴリは必須項目です。',
                 'price.required' => '金額は必須項目です。',
                 'user_id.required' => 'ユーザーは必須項目です。',
@@ -115,6 +115,7 @@ class ItemController extends Controller
                 'partner_name.required' => '新規相手方は必須項目です。',
                 'secondary_category_id.required' => '大カテゴリは必須項目です。',
                 'price.required' => '金額は必須項目です。',
+                'price.numeric' => '金額は数字で入力してください。',
                 'user_id.required' => 'ユーザーは必須項目です。',
             ]);
         }
